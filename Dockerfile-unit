@@ -1,0 +1,4 @@
+FROM golang
+COPY ./coverage.sh /usr/bin/coverage
+RUN chmod +x /usr/bin/coverage
+ENTRYPOINT ["bash", "-c", "coverage"]

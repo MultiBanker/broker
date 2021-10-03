@@ -1,0 +1,51 @@
+version: '3'
+networks:
+  worker:
+
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    restart: always
+    volumes:
+      - /go/src/device.ufo/broker/src:/data/db
+    networks:
+      - worker
+  broker:
+    container_name: broker
+    build:
+      context: .
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "8080:8080"
+    environment:
+      - DATASTORE_URL=mongodb://mongodb:27017
+    networks:
+      - worker
+    depends_on:
+      - 'mongodb'
+  unit:
+    container_name: unit
+    build:
+      context: .
+      dockerfile: Dockerfile-unit
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - .:/go/src/device.ufo/broker
+    working_dir: /go/src/device.ufo/broker/src
+    environment:
+      - UID=1000
+      - GID=1000
+    networks:
+      - worker

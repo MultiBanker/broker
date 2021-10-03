@@ -1,0 +1,931 @@
+{
+  "data": [
+    {
+      "state": "ACTIVE",
+      "code": "halykbank",
+      "nameKk": "Қазақстан Халық Банкі",
+      "nameRu": "Народный банк Казахстана",
+      "nameEn": "Halyk Bank",
+      "paymentTypeGroupCode": "online_broker",
+      "paymentType":
+      {
+        "state": "ACTIVE",
+        "code": "online_broker",
+        "nameKk": "Halyk Bank",
+        "nameRu": "Halyk Bank",
+        "nameEn": "Halyk Bank",
+        "description": "Оплата товара в рассрочку/кредит с Halyk Bank",
+        "method": "GET",
+        "link": "/api/v1/broker-service-catalog/payment-property",
+        "parameters": [
+          {
+            "name": "paymentTypeCode",
+            "type": "queryParam",
+            "description": "Код способа оплаты",
+            "example": "online_broker"
+          }
+        ],
+        "paymentProperties": [
+          {
+            "state": "ACTIVE",
+            "method": "POST",
+            "description": "Создание платежной заявки. Создание заявки в Broker. Все параметры необходимо передать в body запроса",
+            "url": "/api/v1/broker-order-service/payment-order/create-order",
+            "parameters": [
+              {
+                "name": "paymentTypeCode",
+                "type": "queryParam",
+                "description": "Код способа оплаты",
+                "example": "online_broker"
+              }
+            ],
+            "properties": [
+              {
+                "name": "systemCode",
+                "type": "string",
+                "isDisplay": false,
+                "description": "Система поступления заявки",
+                "validation": {
+                  "required": false
+                },
+                "example": "oms/magento"
+              },
+              {
+                "name": "channel",
+                "type": "string",
+                "isDisplay": false,
+                "description": "Канал поступления заявки",
+                "validation": {
+                  "required": false
+                },
+                "example": "technodom_web/technodom_mob"
+              },
+              {
+                "name": "redirectUrl",
+                "type": "string",
+                "isDisplay": false,
+                "description": "Redirect url после успешного создания платежной заявки",
+                "validation": {
+                  "required": false
+                },
+                "example": "https://www.technodom.kz"
+              },
+              {
+                "name": "orderId",
+                "type": "string",
+                "isDisplay": false,
+                "description": "Номер платежной заявки",
+                "validation": {
+                  "required": false
+                },
+                "example": "OMSR001239"
+              },
+              {
+                "name": "productType",
+                "type": "string",
+                "isDisplay": false,
+                "description": "Тип продукта(Кредит-loan/Рассрочка-installment)",
+                "validation": {
+                  "required": true
+                },
+                "example": "loan/installment"
+              },
+              {
+                "name": "paymentMethod",
+                "type": "string",
+                "isDisplay": false,
+                "description": "Метод платежа(Аннуитетный-annuity/Дифференцированный-equal)",
+                "validation": {
+                  "required": true
+                },
+                "example": "annuity(по умолчанию)"
+              },
+              {
+                "name": "isDelivery",
+                "type": "boolean",
+                "isDisplay": false,
+                "description": "Доставка/Самовывоз",
+                "validation": {
+                  "required": true
+                },
+                "example": "false"
+              },
+              {
+                "name": "amount",
+                "type": "int",
+                "isDisplay": false,
+                "description": "Сумма кредита",
+                "validation": {
+                  "required": true
+                },
+                "example": 40000
+              },
+              {
+                "name": "salesPlace",
+                "type": "string",
+                "isDisplay": false,
+                "description": "Место покупки",
+                "validation": {
+                  "required": false
+                },
+                "example": "050000"
+              },
+              {
+                "name": "cityId",
+                "type": "string",
+                "isDisplay": false,
+                "description": "Идентификатор города",
+                "validation": {
+                  "required": false
+                },
+                "example": "5fab9ae8bc0bfb0d8f112f96"
+              },
+              {
+                "name": "verificationSmsCode",
+                "type": "string",
+                "isDisplay": false,
+                "description": "СМС код верификации",
+                "validation": {
+                  "required": true
+                },
+                "example": "1242"
+              },
+              {
+                "name": "verificationSmsDateTime",
+                "type": "string",
+                "isDisplay": false,
+                "description": "Дата и время верификации СМС(формат DD.MM.YYYY HH:MM:SS)",
+                "validation": {
+                  "required": true
+                },
+                "example": "22.02.20.21 10:41:28"
+              },
+              {
+                "name": "customer",
+                "type": "object",
+                "isDisplay": true,
+                "description": "Информация о клиенте",
+                "validation": {
+                  "required": true
+                },
+                "properties": [
+                  {
+                    "name": "state",
+                    "type": "string",
+                    "input": {
+                      "fieldType": "text",
+                      "keyboardType": "text"
+                    },
+                    "isDisplay": true,
+                    "description": "Статус клиента",
+                    "validation": {
+                      "required": true
+                    },
+                    "example": "orange/black"
+                  },
+                  {
+                    "name": "taxCode",
+                    "type": "string",
+                    "input": {
+                      "fieldType": "text",
+                      "keyboardType": "number"
+                    },
+                    "isDisplay": true,
+                    "description": "ИНН клиента",
+                    "validation": {
+                      "required": true,
+                      "minLength": "12",
+                      "maxLength": "12"
+                    },
+                    "example": "900601301477"
+                  },
+                  {
+                    "name": "firstName",
+                    "type": "string",
+                    "input": {
+                      "fieldType": "text",
+                      "keyboardType": "text"
+                    },
+                    "isDisplay": true,
+                    "description": "Имя клиента",
+                    "validation": {
+                      "required": true
+                    },
+                    "example": "Джуманджи"
+                  },
+                  {
+                    "name": "lastName",
+                    "type": "string",
+                    "input": {
+                      "fieldType": "text",
+                      "keyboardType": "text"
+                    },
+                    "isDisplay": true,
+                    "description": "Фамилия клиента",
+                    "validation": {
+                      "required": true
+                    },
+                    "example": "Джуманджи"
+                  },
+                  {
+                    "name": "middleName",
+                    "type": "string",
+                    "input": {
+                      "fieldType": "text",
+                      "keyboardType": "text"
+                    },
+                    "isDisplay": true,
+                    "description": "Отчество клиента",
+                    "validation": {
+                      "required": true
+                    },
+                    "example": "Джуманджи"
+                  },
+                  {
+                    "name": "contact",
+                    "type": "object",
+                    "isDisplay": true,
+                    "description": "Контактные данные",
+                    "validation": {
+                      "required": true
+                    },
+                    "properties": [
+                      {
+                        "name": "mobileNumber",
+                        "type": "string",
+                        "input": {
+                          "fieldType": "text",
+                          "keyboardType": "number"
+                        },
+                        "isDisplay": false,
+                        "description": "Мобильный телефон",
+                        "validation": {
+                          "required": true,
+                          "mask": "+7(999)9999999",
+                          "regexp": "/\\+7\\(?[0-9]{3}\\)?[0-9]{7}/"
+                        },
+                        "example": "7771550505"
+                      },
+                      {
+                        "name": "email",
+                        "type": "string",
+                        "isDisplay": false,
+                        "description": "Email",
+                        "validation": {
+                          "required": true,
+                          "regexp": "/^([\\w.%+-]+)@([\\w-]+\\.)+([\\w]{2,})$/i"
+                        },
+                        "example": "zhumandzji@gmail.com"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "address",
+                "type": "object",
+                "isDisplay": true,
+                "description": "Информация о доставке",
+                "validation": {
+                  "required": true
+                },
+                "properties": [
+                  {
+                    "name": "delivery",
+                    "type": "string",
+                    "isDisplay": false,
+                    "description": "Адрес доставки",
+                    "validation": {
+                      "required": true
+                    },
+                    "example": "ул. Абая Гагарина"
+                  },
+                  {
+                    "name": "pickupPoint",
+                    "type": "string",
+                    "isDisplay": false,
+                    "description": "Самовывоз",
+                    "validation": {
+                      "required": true
+                    },
+                    "example": "Мега Алматы"
+                  }
+                ]
+              },
+              {
+                "name": "basketId",
+                "type": "string",
+                "isDisplay": false,
+                "description": "ID корзины",
+                "validation": {
+                  "required": false
+                },
+                "example": "5fab9ae8bc0bfb0"
+              },
+              {
+                "name": "goods",
+                "type": "array",
+                "isDisplay": false,
+                "description": "Информация о товарах",
+                "validation": {
+                  "required": true
+                },
+                "properties": [
+                  {
+                    "name": "category",
+                    "type": "string",
+                    "isDisplay": false,
+                    "description": "Категория товара",
+                    "validation": {
+                      "required": true
+                    },
+                    "example": "Мобильный телефон"
+                  },
+                  {
+                    "name": "brand",
+                    "type": "string",
+                    "isDisplay": false,
+                    "description": "Бренд товара",
+                    "validation": {
+                      "required": true
+                    },
+                    "example": "Apple"
+                  },
+                  {
+                    "name": "price",
+                    "type": "int",
+                    "isDisplay": false,
+                    "description": "Цена",
+                    "validation": {
+                      "required": true
+                    },
+                    "example": 499000
+                  },
+                  {
+                    "name": "model",
+                    "type": "string",
+                    "isDisplay": false,
+                    "description": "Модель",
+                    "validation": {
+                      "required": true
+                    },
+                    "example": "iPhone 11 Pro"
+                  },
+                  {
+                    "name": "image",
+                    "type": "string",
+                    "isDisplay": false,
+                    "description": "Изображение",
+                    "validation": {
+                      "required": true
+                    },
+                    "example": "https://technodom.kz/image-url"
+                  }
+                ]
+              },
+              {
+                "name": "paymentPartners",
+                "type": "array",
+                "isDisplay": false,
+                "description": "Список партнеров для отправки",
+                "validation": {
+                  "required": true
+                },
+                "properties": [
+                  {
+                    "name": "code",
+                    "type": "string",
+                    "isDisplay": false,
+                    "description": "Код партнера",
+                    "validation": {
+                      "required": true
+                    },
+                    "example": "halykbank"
+                  }
+                ]
+              }
+            ],
+            "dictionaries": [
+              {
+                "name": "Справочник статусов по заказам",
+                "description": "Справочник статусов по заказам",
+                "link": "/api/v1/broker-order-service/order-state",
+                "method": "GET"
+              }
+            ],
+            "response": {
+              "properties": [
+                {
+                  "status": "Success",
+                  "code": "200",
+                  "message": "Заявка успешно создана",
+                  "referenceId": "100000153"
+                },
+                {
+                  "status": "Bad request",
+                  "code": "400",
+                  "message": "Не все обязательные параметры переданы, либо ошибка валидации"
+                },
+                {
+                  "status": "Unauthorized",
+                  "code": "401",
+                  "message": "Отсутствует token или время его жизни истекло."
+                }
+              ]
+            }
+          },
+          {
+            "state": "ACTIVE",
+            "method": "POST",
+            "description": "Отправка решения клиента/Изменение содержимого корзины",
+            "url": "/api/v1/broker-order-service/payment-order/save-chosen-offer",
+            "parameters": [
+              {
+                "name": "referenceId",
+                "type": "queryParam",
+                "description": "Номер заказа",
+                "example": "1000034582"
+              }
+            ],
+            "properties": [
+              {
+                "name": "code",
+                "type": "String",
+                "isDisplay": false,
+                "description": "Код партнера",
+                "validation": {
+                  "required": true
+                },
+                "example": "halykbank"
+              },
+              {
+                "name": "id",
+                "type": "String",
+                "isDisplay": false,
+                "description": "Идентификатор",
+                "validation": {
+                  "required": true
+                },
+                "example": "10153000345"
+              },
+              {
+                "name": "product",
+                "type": "String",
+                "isDisplay": false,
+                "description": "Продукт(кредит/рассрочка)",
+                "validation": {
+                  "required": true
+                },
+                "example": "loan"
+              },
+              {
+                "name": "loanAmount",
+                "type": "int",
+                "isDisplay": false,
+                "description": "Сумма кредита",
+                "validation": {
+                  "required": true
+                },
+                "example": "180000"
+              },
+              {
+                "name": "loanLength",
+                "type": "int",
+                "isDisplay": false,
+                "description": "Срок кредита(в мес.)",
+                "validation": {
+                  "required": true
+                },
+                "example": "12"
+              },
+              {
+                "name": "contractNumber",
+                "type": "string",
+                "isDisplay": false,
+                "description": "Номер договора",
+                "validation": {
+                  "required": false
+                },
+                "example": "CR-12"
+              },
+              {
+                "name": "monthlyPayment",
+                "type": "int",
+                "isDisplay": false,
+                "description": "Ежемесячный платеж",
+                "validation": {
+                  "required": true
+                },
+                "example": "12500"
+              }
+            ],
+            "response": {
+              "properties": [
+                {
+                  "status": "Success",
+                  "code": "200",
+                  "message": "Решение отправлено успешно"
+                },
+                {
+                  "status": "Bad request",
+                  "code": "400",
+                  "message": "Не все обязательные параметры переданы, либо ошибка валидации"
+                },
+                {
+                  "status": "Unauthorized",
+                  "code": "401",
+                  "message": "Отсутствует token или время его жизни истекло."
+                }
+              ]
+            }
+          },
+          {
+            "state": "ACTIVE",
+            "method": "POST",
+            "description": "Сохранение orderId для заявок OMS. Параметры необходимо передать в body запроса",
+            "url": "/api/v1/broker-order-service/payment-order/save-order-id",
+            "properties": [
+              {
+                "name": "referenceId",
+                "type": "string",
+                "isDisplay": false,
+                "description": "Номер заказа",
+                "validation": {
+                  "required": true
+                },
+                "example": "10000010"
+              },
+              {
+                "name": "orderId",
+                "type": "String",
+                "isDisplay": false,
+                "description": "Id платежной заявки",
+                "validation": {
+                  "required": true
+                },
+                "example": "100001235449"
+              }
+            ],
+            "response": {
+              "properties": [
+                {
+                  "status": "Success",
+                  "code": "200",
+                  "message": "Решение отправлено успешно"
+                },
+                {
+                  "status": "Bad request",
+                  "code": "400",
+                  "message": "Не все обязательные параметры переданы, либо ошибка валидации"
+                },
+                {
+                  "status": "Unauthorized",
+                  "code": "401",
+                  "message": "Отсутствует token или время его жизни истекло."
+                }
+              ]
+            }
+          },
+          {
+            "state": "ACTIVE",
+            "method": "GET",
+            "description": "Получение списка партнеров с предложениями",
+            "url": "/api/v1/broker-order-service/payment-order/get-payment-partners",
+            "parameters": [
+              {
+                "name": "referenceId",
+                "type": "queryParam",
+                "description": "Номер заказа",
+                "example": "1000034582"
+              }
+            ],
+            "response": {
+              "properties": [
+                {
+                  "name": "code",
+                  "type": "String",
+                  "isDisplay": false,
+                  "description": "Код партнера",
+                  "validation": {
+                    "required": true
+                  },
+                  "example": "halykbank"
+                },
+                {
+                  "name": "state",
+                  "type": "String",
+                  "isDisplay": false,
+                  "description": "Статус партнера",
+                  "validation": {
+                    "required": true
+                  },
+                  "example": "APPROVED"
+                },
+                {
+                  "name": "stateTitle",
+                  "type": "String",
+                  "isDisplay": false,
+                  "description": "Статус партнера",
+                  "validation": {
+                    "required": false
+                  },
+                  "example": "Одобрен"
+                },
+                {
+                  "name": "offers",
+                  "type": "array",
+                  "isDisplay": false,
+                  "description": "Предложения(Offer)",
+                  "validation": {
+                    "required": true
+                  },
+                  "properties": [
+                    {
+                      "name": "id",
+                      "type": "string",
+                      "isDisplay": false,
+                      "description": "Идентификатор предложения(оффер)",
+                      "validation": {
+                        "required": true
+                      },
+                      "example": "180000"
+                    },
+                    {
+                      "name": "productType",
+                      "type": "string",
+                      "isDisplay": false,
+                      "description": "Тип продукта",
+                      "validation": {
+                        "required": false
+                      },
+                      "example": "loan | installment"
+                    },
+                    {
+                      "name": "productCode",
+                      "type": "string",
+                      "isDisplay": false,
+                      "description": "Код продукта партнера",
+                      "validation": {
+                        "required": true
+                      },
+                      "example": "CR-20210208-001"
+                    },
+                    {
+                      "name": "loanAmount",
+                      "type": "int",
+                      "isDisplay": false,
+                      "description": "Сумма кредита",
+                      "validation": {
+                        "required": true
+                      },
+                      "example": "180000"
+                    },
+                    {
+                      "name": "loanLength",
+                      "type": "int",
+                      "isDisplay": false,
+                      "description": "Срок кредита(в мес.)",
+                      "validation": {
+                        "required": true
+                      },
+                      "example": "12"
+                    },
+                    {
+                      "name": "contractNumber",
+                      "type": "string",
+                      "isDisplay": false,
+                      "description": "Номер договора",
+                      "validation": {
+                        "required": false
+                      },
+                      "example": "CR-12"
+                    },
+                    {
+                      "name": "monthlyPayment",
+                      "type": "int",
+                      "isDisplay": false,
+                      "description": "Ежемесячный платеж",
+                      "validation": {
+                        "required": true
+                      },
+                      "example": "12500"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "configurations": [
+        {
+          "state": "ACTIVE",
+          "code": "min_order_total_cost",
+          "nameKk": "Минималды бағасы",
+          "nameRu": "Минимальная сумма заказа",
+          "nameEn": "Minimum Order Sum",
+          "value": 10000,
+          "fieldType": "INTEGER"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "max_order_total_cost",
+          "nameKk": "Максималды бағасы",
+          "nameRu": "Максимальная сумма заказа",
+          "nameEn": "Maximum Order Sum",
+          "value": 1500000,
+          "fieldType": "INTEGER"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "returnDayCount",
+          "nameKk": "Количество дней для отказа",
+          "nameRu": "Количество дней для отказа",
+          "nameEn": "Number of days to refuse",
+          "value": 14,
+          "fieldType": "Long"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "partnerId",
+          "nameKk": "Id партнера",
+          "nameRu": "Id партнера",
+          "nameEn": "Id партнера",
+          "value": "test",
+          "fieldType": "STRING"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "organizationId",
+          "nameKk": "Id партнера в системе 1С",
+          "nameRu": "Id партнера в системе 1С",
+          "nameEn": "Id партнера в системе 1С",
+          "value": "60b01d50-ddd7-11e9-8431-00224dd83add",
+          "fieldType": "STRING"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "partnerProductCode",
+          "nameKk": "Код программы банка для installment",
+          "nameRu": "Код программы банка для installment",
+          "nameEn": "Partner product code for installment",
+          "value": "16168",
+          "fieldType": "STRING"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "authorizationType",
+          "nameKk": "Тип авторизации партнера",
+          "nameRu": "Тип авторизации партнера",
+          "nameEn": "Partner authorization type",
+          "value": "Halyk",
+          "fieldType": "STRING"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "customAuthHeader",
+          "nameKk": "Access токен",
+          "nameRu": "Access токен",
+          "nameEn": "Access token",
+          "value": "Bearer",
+          "fieldType": "STRING"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "accessToken",
+          "nameKk": "Access токен",
+          "nameRu": "Access токен",
+          "nameEn": "Access token",
+          "value": "RSA123",
+          "fieldType": "STRING"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "accessLogin",
+          "nameKk": "Логин при Basic авторизации",
+          "nameRu": "Логин при Basic авторизации",
+          "nameEn": "Basic authorization login",
+          "value": "test",
+          "fieldType": "STRING"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "accessPassword",
+          "nameKk": "Пароль при Basic авторизации",
+          "nameRu": "Пароль при Basic авторизации",
+          "nameEn": "Basic authorization password",
+          "value": "test_pass",
+          "fieldType": "STRING"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "createPaymentService",
+          "nameKk": "Сервис для создания платежа",
+          "nameRu": "Сервис для создания платежа",
+          "nameEn": "Service to create payment order",
+          "value": "https://testapi2.homebank.kz/commodity-credits/v2/create-order",
+          "fieldType": "STRING"
+        },
+        {
+        "state": "ACTIVE",
+        "code": "updateStatusServiceHost",
+        "nameKk": "Сервис для изменения статуса заявки",
+        "nameRu": "Сервис для изменения статуса заявки",
+        "nameEn": "Service to update status of order",
+        "value": "https://testapi2.homebank.kz/homebank-api/api/v1/applications/commodity-credits/status",
+        "fieldType": "STRING"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "getMoneyTransferStateUrl",
+          "nameKk": "Сервис для получения статуса перевода денег",
+          "nameRu": "Сервис для получения статуса перевода денег",
+          "nameEn": "Service to get money transfer state",
+          "value": "https://murik.free.beeceptor.com/get-money",
+          "fieldType": "STRING"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "isNeedProxy",
+          "nameKk": "Необходимо подключение по vpn",
+          "nameRu": "Необходимо подключение по vpn",
+          "nameEn": "Need vpn connection",
+          "value": "false",
+          "fieldType": "boolean"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "partnerUsername",
+          "nameKk": "Сервис для создания платежа",
+          "nameRu": "Сервис для создания платежа",
+          "nameEn": "Service to create payment order",
+          "value": "halykbank",
+          "fieldType": "STRING"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "action",
+          "nameKk": "Действие необходимое для OMS",
+          "nameRu": "Действие необходимое для OMS",
+          "nameEn": "Действие необходимое для OMS",
+          "value": "GO_REDIRECT",
+          "fieldType": "STRING"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "isImplementedTransferStateCheck",
+          "nameKk": "У партнера Реализован сервис по проверке статуса перевода денег",
+          "nameRu": "У партнера Реализован сервис по проверке статуса перевода денег",
+          "nameEn": "У партнера Реализован сервис по проверке статуса перевода денег",
+          "value": "false",
+          "fieldType": "BOOLEAN"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "halykOauth2Endpoint",
+          "nameKk": "URI для межсервисной авторизации",
+          "nameRu": "URI для межсервисной авторизации",
+          "nameEn": "URI for interservice authorization",
+          "value": "https://testoauth.homebank.kz/oauth2/token",
+          "fieldType": "STRING"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "halykOauth2ClientId",
+          "nameKk": "ID клиента",
+          "nameRu": "ID клиента",
+          "nameEn": "ID client",
+          "value": "technodom",
+          "fieldType": "STRING"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "halykOauth2ClientSecret",
+          "nameKk": "Пароль ID клиента",
+          "nameRu": "Пароль ID клиента",
+          "nameEn": "Client ID password",
+          "value": "tigqmVMY7I3GkoOHX$xLLA8Lpj8C%hi3",
+          "fieldType": "STRING"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "halykOauth2Scope",
+          "nameKk": "Скоуп операций доступных пользователю",
+          "nameRu": "Скоуп операций доступных пользователю",
+          "nameEn": "Scope operations",
+          "value": "commodity_credits user user_registration",
+          "fieldType": "STRING"
+        },
+        {
+          "state": "ACTIVE",
+          "code": "halykOauth2GrantType",
+          "nameKk": "Тип доступа",
+          "nameRu": "Тип доступа",
+          "nameEn": "Access type",
+          "value": "client_credentials",
+          "fieldType": "STRING"
+        }
+      ]
+    }
+  ]
+}

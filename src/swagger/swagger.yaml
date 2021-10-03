@@ -1,0 +1,435 @@
+basePath: /broker/api/v1
+definitions:
+  agreemodels.Agreement:
+    properties:
+      code:
+        type: string
+      languages:
+        additionalProperties:
+          additionalProperties:
+            type: string
+          type: object
+        type: object
+    type: object
+  agreemodels.SignatureAgreement:
+    properties:
+      agreements:
+        items:
+          type: string
+        type: array
+      created:
+        type: string
+      expired:
+        type: string
+      id:
+        type: string
+      specification:
+        $ref: '#/definitions/agreemodels.SpecificationAgreement'
+      tdid:
+        type: string
+      updated:
+        type: string
+      verification_id:
+        type: string
+    type: object
+  agreemodels.SpecificationAgreement:
+    properties:
+      agreements:
+        items:
+          $ref: '#/definitions/agreemodels.Agreement'
+        type: array
+      channels:
+        items:
+          type: string
+        type: array
+      code:
+        type: string
+      duration:
+        type: integer
+      id:
+        type: string
+      languages:
+        additionalProperties:
+          additionalProperties:
+            type: string
+          type: object
+        type: object
+      must_verification:
+        type: boolean
+      notification_templates:
+        additionalProperties:
+          type: string
+        type: object
+    type: object
+  dto.NewVerifyAgreementRequest:
+    properties:
+      sign_agreement_id:
+        type: string
+    type: object
+  dto.SignAgreementRequest:
+    properties:
+      agreements:
+        items:
+          type: string
+        type: array
+      specification_code:
+        type: string
+    type: object
+  dto.VerifyTokenAgreementRequest:
+    properties:
+      token:
+        type: string
+      verification_id:
+        type: string
+    type: object
+  models.ErrorDetails:
+    properties:
+      code:
+        description: application-определенный код ошибки
+        type: integer
+      message:
+        description: application-level сообщение, для дебага
+        type: string
+      status:
+        description: сообщение пользовательского уровня
+        type: string
+    type: object
+  models.ErrorResponse:
+    properties:
+      error:
+        $ref: '#/definitions/models.ErrorDetails'
+      validation:
+        additionalProperties:
+          type: string
+        description: ошибки валидации
+        type: object
+    type: object
+  models.Response:
+    properties:
+      id:
+        type: string
+      status:
+        type: string
+    type: object
+host: api.test.airba.dev
+info:
+  contact: {}
+  description: Broker banker requester
+  title: Broker API
+  version: "1.0"
+paths:
+  /agreement:
+    get:
+      consumes:
+      - application/json
+      description: Returns signatures of agreement
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/agreemodels.SignatureAgreement'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      tags:
+      - Signature of Agreement
+  /agreement/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Returns signature of agreement by id
+      parameters:
+      - description: Id
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/agreemodels.SignatureAgreement'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      tags:
+      - Signature of Agreement
+  /agreement/sign:
+    put:
+      consumes:
+      - application/json
+      description: Sign Agreement
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SignAgreementRequest'
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - Signature of Agreement
+  /agreement/verify:
+    put:
+      consumes:
+      - application/json
+      description: New Verify of Agreement
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.NewVerifyAgreementRequest'
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - Verify of Agreement
+  /agreement/verify/token:
+    put:
+      consumes:
+      - application/json
+      description: Verify Token
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dto.VerifyTokenAgreementRequest'
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - Verify of Agreement
+  /specifications:
+    get:
+      consumes:
+      - application/json
+      description: Returns specifications of agreement
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/agreemodels.SpecificationAgreement'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      tags:
+      - Specification of Agreement
+    post:
+      consumes:
+      - application/json
+      description: Create new specification of agreement
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/agreemodels.SpecificationAgreement'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      tags:
+      - Specification of Agreement
+  /specifications/{code}:
+    get:
+      consumes:
+      - application/json
+      description: Returns specification of agreement by code
+      parameters:
+      - description: Code
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/agreemodels.SpecificationAgreement'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      tags:
+      - Specification of Agreement
+  /specifications/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete specification of agreement
+      parameters:
+      - description: Identifier
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      tags:
+      - Specification of Agreement
+    put:
+      consumes:
+      - application/json
+      description: Update specification of agreement
+      parameters:
+      - description: Identifier
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/agreemodels.SpecificationAgreement'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      tags:
+      - Specification of Agreement
+schemes:
+- https
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
