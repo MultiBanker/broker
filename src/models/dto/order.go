@@ -1,6 +1,10 @@
 package dto
 
-import "github.com/MultiBanker/broker/src/models"
+import (
+	"time"
+
+	"github.com/MultiBanker/broker/src/models"
+)
 
 type OrderRequest struct {
 	ID                      string   `json:"id" bson:"_id"`
@@ -20,7 +24,9 @@ type OrderRequest struct {
 	Address                 Address  `json:"address" bson:"address"`
 	Goods                   []Goods  `json:"goods" bson:"goods"`
 
-	BankType string `json:"-" bson:"bank_type"`
+	BankType  string    `json:"-" bson:"bank_type"`
+	CreatedAt time.Time `json:"created_at" bson:"created_at"`
+	UpdatedAt time.Time `json:"updated_at" bson:"updated_at"`
 }
 type Contact struct {
 	MobileNumber string `json:"mobileNumber" bson:"mobile_number"`
@@ -76,6 +82,6 @@ type Orders struct {
 }
 
 type Partners struct {
-	Total    int64             `json:"total"`
+	Total    int64            `json:"total"`
 	Partners []models.Partner `json:"partners"`
 }
