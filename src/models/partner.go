@@ -9,15 +9,16 @@ import (
 )
 
 type Partner struct {
-	ID          string `json:"id" bson:"_id"`
-	CompanyName string `json:"company_name" bson:"company_name"`
-	Phone       string `json:"phone" bson:"phone"`
-	Email       string `json:"email" bson:"email"`
-	BIN         string `json:"bin" bson:"bin"`
-	Commission  int    `json:"commission" bson:"commission"`
-	LogoURL     string `json:"logo_url" bson:"logo_url"`
-	URL         *URL   `json:"url" bson:"url"`
-	Enabled     bool   `json:"enabled" bson:"enabled"`
+	ID          string      `json:"id" bson:"_id"`
+	CompanyName string      `json:"company_name" bson:"company_name"`
+	Phone       string      `json:"phone" bson:"phone"`
+	Email       string      `json:"email" bson:"email"`
+	BIN         string      `json:"bin" bson:"bin"`
+	Commission  int         `json:"commission" bson:"commission"`
+	LogoURL     string      `json:"logo_url" bson:"logo_url"`
+	URL         *URL        `json:"url" bson:"url"`
+	Contact     ContactInfo `json:"contact" bson:"contact"`
+	Enabled     bool        `json:"enabled" bson:"enabled"`
 
 	Username string `json:"username" bson:"username"`
 	Password string `json:"password" bson:"password"`

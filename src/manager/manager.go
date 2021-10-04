@@ -5,6 +5,7 @@ import (
 	"github.com/MultiBanker/broker/src/database/drivers"
 	"github.com/MultiBanker/broker/src/database/repository"
 	"github.com/MultiBanker/broker/src/manager/auth"
+	"github.com/MultiBanker/broker/src/manager/market"
 	"github.com/MultiBanker/broker/src/manager/order"
 	"github.com/MultiBanker/broker/src/manager/partner"
 )
@@ -13,6 +14,7 @@ type Abstractor interface {
 	Auther() auth.Authenticator
 	Partnerer() partner.Partnerer
 	Orderer() order.Orderer
+	Marketer() market.Marketer
 	Pinger() error
 }
 
@@ -21,6 +23,7 @@ type Abstract struct {
 	partnerMan partner.Partnerer
 	authMan    auth.Authenticator
 	orderMan   order.Orderer
+	marketMan  market.Marketer
 }
 
 func (a Abstract) Pinger() error {
@@ -39,11 +42,16 @@ func (a *Abstract) Orderer() order.Orderer {
 	return a.orderMan
 }
 
+func (a *Abstract) Marketer() market.Marketer {
+	return a.marketMan
+}
+
 func NewAbstract(db drivers.Datastore, repo repository.Repositories, opts *config.Config) Abstractor {
 	return &Abstract{
 		db:         db,
 		partnerMan: partner.NewPartner(repo),
 		authMan:    auth.NewAuthenticator(opts),
 		orderMan:   order.NewOrder(repo),
+		marketMan:  market.NewMarket(repo),
 	}
 }

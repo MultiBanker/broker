@@ -17,6 +17,19 @@ import (
 	"github.com/MultiBanker/broker/src/models"
 )
 
+// @Tags Order
+// @Summary Создание нового заказа
+// @Description Создание нового заказа
+// @Accept  json
+// @Produce  json
+// @Param market body dto.OrderRequest true "body"
+// @Security ApiKeyAuth
+// @Param Authorization header string true "Authorization"
+// @Success 200 {object} dto.IDResponse
+// @Failure 400 {object} httperrors.Response
+// @Failure 429 {object} httperrors.Response
+// @Failure 500 {object} httperrors.Response
+// @Router /orders [post]
 func (o Order) neworder() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
@@ -42,6 +55,20 @@ func (o Order) neworder() http.HandlerFunc {
 	}
 }
 
+// @Tags Order
+// @Summary Обновление заказа
+// @Description Обновление заказа
+// @Accept  json
+// @Produce  json
+// @Param market body dto.OrderRequest true "body"
+// @Security ApiKeyAuth
+// @Param id path string true "id of the order"
+// @Param Authorization header string true "Authorization"
+// @Success 200 {object} models.Response
+// @Failure 400 {object} httperrors.Response
+// @Failure 429 {object} httperrors.Response
+// @Failure 500 {object} httperrors.Response
+// @Router /orders/{id} [put]
 func (o Order) updateorder() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
@@ -77,6 +104,19 @@ func (o Order) updateorder() http.HandlerFunc {
 	}
 }
 
+// @Tags Order
+// @Summary Получение заказа
+// @Description Получение заказа
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param id path string true "id of the order"
+// @Param Authorization header string true "Authorization"
+// @Success 200 {object} dto.OrderRequest
+// @Failure 400 {object} httperrors.Response
+// @Failure 429 {object} httperrors.Response
+// @Failure 500 {object} httperrors.Response
+// @Router /orders/{id} [get]
 func (o Order) order() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
@@ -103,6 +143,19 @@ func (o Order) order() http.HandlerFunc {
 	}
 }
 
+// list godoc
+// @Summary Получение заказов
+// @Description Получение заказов
+// @Tags Order
+// @Security ApiKeyAuth
+// @Param Authorization header string true "Authorization"
+// @Param limit query int false "pagination limit"
+// @Param skip query int false "pagination skip"
+// @Success 200 {object} dto.Orders
+// @Failure 400 {object} httperrors.Response
+// @Failure 404 {object} httperrors.Response
+// @Failure 500 {object} httperrors.Response
+// @Router /orders [get]
 func (o Order) orders() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
@@ -129,7 +182,7 @@ func (o Order) orders() http.HandlerFunc {
 			paging.Limit = limit
 		}
 
-		res, err := o.orderMan.Orders(ctx, &paging)
+		res, total, err := o.orderMan.Orders(ctx, &paging)
 		switch err {
 		case drivers.ErrDoesNotExist:
 			_ = render.Render(w, r, httperrors.ResourceNotFound(err))
@@ -139,36 +192,11 @@ func (o Order) orders() http.HandlerFunc {
 			_ = render.Render(w, r, httperrors.Internal(err))
 		}
 
-		render.JSON(w, r, res)
+		render.JSON(w, r, &dto.Orders{
+			Total:  total,
+			Orders: res,
+		})
 		render.Status(r, http.StatusOK)
 
 	}
 }
-
-func (o Order) referenceOrders() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		ctx := r.Context()
-
-		id := chi.URLParam(r, "id")
-		if id == "" {
-			_ = render.Render(w, r, httperrors.BadRequest(fmt.Errorf("[ERROR] empty reference ID")))
-			return
-		}
-
-		orders, err := o.orderMan.OrdersByReferenceID(ctx, id)
-		switch err {
-		case drivers.ErrDoesNotExist:
-			_ = render.Render(w, r, httperrors.ResourceNotFound(err))
-			return
-		case nil:
-		default:
-			_ = render.Render(w, r, httperrors.Internal(err))
-			return
-		}
-
-		render.JSON(w, r, orders)
-		render.Status(r, http.StatusOK)
-	}
-}
-
-

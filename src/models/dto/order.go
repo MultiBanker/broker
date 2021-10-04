@@ -1,6 +1,9 @@
 package dto
 
+import "github.com/MultiBanker/broker/src/models"
+
 type OrderRequest struct {
+	ID                      string   `json:"id" bson:"_id"`
 	ReferenceID             string   `json:"referenceId" bson:"reference_id"`
 	OrderState              string   `json:"orderState" bson:"order_state"`
 	RedirectURL             string   `json:"redirectUrl" bson:"redirect_url"`
@@ -55,4 +58,24 @@ type Response struct {
 	Status  string `json:"status"`
 	Code    int    `json:"code"`
 	Message string `json:"message"`
+}
+
+type IDResponse struct {
+	ID     string `json:"id"`
+	Status string `json:"status"`
+}
+
+type Markets struct {
+	Total   int64           `json:"total"`
+	Markets []models.Market `json:"markets"`
+}
+
+type Orders struct {
+	Total  int64           `json:"total"`
+	Orders []*OrderRequest `json:"orders"`
+}
+
+type Partners struct {
+	Total    int64             `json:"total"`
+	Partners []models.Partner `json:"partners"`
 }

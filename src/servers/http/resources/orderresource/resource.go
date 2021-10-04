@@ -23,14 +23,12 @@ func (o Order) Route() chi.Router {
 
 	r.Group(func(r chi.Router) {
 		r.Post("/", o.neworder())
-		r.Put("/{id}", o.updateorder())
-		r.Get("/{id}", o.order())
 		r.Get("/", o.orders())
-		r.Get("/reference/{id}", o.referenceOrders())
-
+		r.Route("/{id}", func(r chi.Router) {
+			r.Put("/", o.updateorder())
+			r.Get("/", o.order())
+		})
 	})
 
 	return r
 }
-
-

@@ -4,37 +4,38 @@ import (
 	"context"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
+	"github.com/MultiBanker/broker/src/database/repository"
 	"github.com/MultiBanker/broker/src/models/dto"
 	"github.com/MultiBanker/broker/src/models/selector"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type OrderRepository struct {
+type Repository struct {
 	collection *mongo.Collection
 }
 
-func NewOrderRepository(collection *mongo.Collection) *OrderRepository {
-	return &OrderRepository{collection: collection}
+func NewRepository(collection *mongo.Collection) repository.Orderer {
+	return &Repository{collection: collection}
 }
 
-func (or OrderRepository) NewOrder(ctx context.Context, order *dto.OrderRequest) (string, error) {
+func (or Repository) NewOrder(ctx context.Context, order *dto.OrderRequest) (string, error) {
 	return "", nil
 }
 
-func (or OrderRepository) UpdateOrder(ctx context.Context, order *dto.OrderRequest) (string, error) {
+func (or Repository) UpdateOrder(ctx context.Context, order *dto.OrderRequest) (string, error) {
 	return "", nil
 }
 
-func (or OrderRepository) OrderByID(ctx context.Context, id string) (dto.OrderRequest, error) {
+func (or Repository) OrderByID(ctx context.Context, id string) (dto.OrderRequest, error) {
 	return dto.OrderRequest{}, nil
 }
 
-func (or OrderRepository) Orders(ctx context.Context, paging *selector.Paging) ([]*dto.OrderRequest, error) {
-	return nil, nil
+func (or Repository) Orders(ctx context.Context, paging *selector.Paging) ([]*dto.OrderRequest, int64, error) {
+	return nil, 0, nil
 }
 
-func (or OrderRepository) OrdersByReferenceID(ctx context.Context, referenceID string) ([]*dto.OrderRequest, error) {
+func (or Repository) OrdersByReferenceID(ctx context.Context, referenceID string) ([]*dto.OrderRequest, error) {
 	filter := bson.D{
 		{"reference_id", referenceID},
 	}

@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/MultiBanker/broker/pkg/httperrors"
+	"github.com/MultiBanker/broker/src/models/dto"
 	"github.com/MultiBanker/broker/src/models/selector"
 
 	"github.com/go-chi/chi"
@@ -16,6 +17,19 @@ import (
 	"github.com/MultiBanker/broker/src/models"
 )
 
+// @Tags Partner
+// @Summary Создание нового партнера
+// @Description Создание нового партнера
+// @Accept  json
+// @Produce  json
+// @Param partner body models.Partner true "body"
+// @Security ApiKeyAuth
+// @Param Authorization header string true "Authorization"
+// @Success 200 {object} models.Response
+// @Failure 400 {object} httperrors.Response
+// @Failure 429 {object} httperrors.Response
+// @Failure 500 {object} httperrors.Response
+// @Router /partners [post]
 func (a Auth) newpartner() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
@@ -43,6 +57,20 @@ func (a Auth) newpartner() http.HandlerFunc {
 	}
 }
 
+// @Tags Partner
+// @Summary Обновление партнера
+// @Description Обновление партнера
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param partner body models.Partner true "body"
+// @Param id path string true "id of the market"
+// @Param Authorization header string true "Authorization"
+// @Success 200 {object} models.Response
+// @Failure 400 {object} httperrors.Response
+// @Failure 429 {object} httperrors.Response
+// @Failure 500 {object} httperrors.Response
+// @Router /partners/{id} [put]
 func (a Auth) update() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
@@ -76,6 +104,19 @@ func (a Auth) update() http.HandlerFunc {
 	}
 }
 
+// @Tags Partner
+// @Summary Получение партнера
+// @Description Получение партнера
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param Authorization header string true "Authorization"
+// @Param id path string true "id of the market"
+// @Success 200 {object} models.Partner
+// @Failure 400 {object} httperrors.Response
+// @Failure 429 {object} httperrors.Response
+// @Failure 500 {object} httperrors.Response
+// @Router /partners/{id} [get]
 func (a Auth) partner() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
@@ -102,6 +143,20 @@ func (a Auth) partner() http.HandlerFunc {
 	}
 }
 
+// @Tags Partner
+// @Summary Получение партнеров
+// @Description Получение партнеров
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param Authorization header string true "Authorization"
+// @Param limit query int false "pagination limit"
+// @Param skip query int false "pagination skip"
+// @Success 200 {object} dto.Partners
+// @Failure 400 {object} httperrors.Response
+// @Failure 429 {object} httperrors.Response
+// @Failure 500 {object} httperrors.Response
+// @Router /partners [get]
 func (a Auth) partners() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
@@ -128,7 +183,7 @@ func (a Auth) partners() http.HandlerFunc {
 			paging.Limit = limit
 		}
 
-		res, err := a.partnerMan.Partners(ctx, &paging)
+		res, total, err := a.partnerMan.Partners(ctx, &paging)
 		switch err {
 		case drivers.ErrDoesNotExist:
 			_ = render.Render(w, r, httperrors.ResourceNotFound(err))
@@ -139,8 +194,10 @@ func (a Auth) partners() http.HandlerFunc {
 			return
 		}
 
-		render.JSON(w, r, res)
+		render.JSON(w, r, dto.Partners{
+			Total:    total,
+			Partners: res,
+		})
 		render.Status(r, http.StatusOK)
 	}
 }
-
