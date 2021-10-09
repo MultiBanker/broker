@@ -23,321 +23,6 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/markets": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Получение маркетов",
-                "tags": [
-                    "Market"
-                ],
-                "summary": "Получение маркетов",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "pagination limit",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "pagination skip",
-                        "name": "skip",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dto.Markets"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Создание нового маркета",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Market"
-                ],
-                "summary": "Создание нового маркета",
-                "parameters": [
-                    {
-                        "description": "body",
-                        "name": "market",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.Market"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Response"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "429": {
-                        "description": "Too Many Requests",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/markets/login": {
-            "post": {
-                "description": "Авторизация маркета",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Market"
-                ],
-                "summary": "Авторизация маркета",
-                "parameters": [
-                    {
-                        "description": "body",
-                        "name": "auth",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.Login"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dto.TokenResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "429": {
-                        "description": "Too Many Requests",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/markets/logout": {
-            "get": {
-                "description": "выход с авторизации маркета",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Market"
-                ],
-                "summary": "выход с авторизации маркета"
-            }
-        },
-        "/markets/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Получение маркета",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Market"
-                ],
-                "summary": "Получение маркета",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "id of the partner",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Market"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "429": {
-                        "description": "Too Many Requests",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Обновление определенного маркета",
-                "tags": [
-                    "Market"
-                ],
-                "summary": "Обновление определенного маркета",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "body",
-                        "name": "market",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.Market"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "id of the partner",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Response"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    }
-                }
-            }
-        },
         "/orders": {
             "get": {
                 "security": [
@@ -347,7 +32,7 @@ var doc = `{
                 ],
                 "description": "Получение заказов",
                 "tags": [
-                    "Order"
+                    "ADMIN"
                 ],
                 "summary": "Получение заказов",
                 "parameters": [
@@ -412,7 +97,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Market-Order"
+                    "Techno-Order"
                 ],
                 "summary": "Создание нового заказа",
                 "parameters": [
@@ -438,70 +123,6 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/dto.IDResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "429": {
-                        "description": "Too Many Requests",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/orders/markets": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Обновление заказа по решению клиента",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Market-Order"
-                ],
-                "summary": "Обновление заказа по решению клиента",
-                "parameters": [
-                    {
-                        "description": "body",
-                        "name": "market",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.UpdateMarketOrderRequest"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Response"
                         }
                     },
                     "400": {
@@ -604,7 +225,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Order"
+                    "ADMIN"
                 ],
                 "summary": "Получение заказа",
                 "parameters": [
@@ -664,7 +285,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Order"
+                    "ADMIN"
                 ],
                 "summary": "Обновление заказа",
                 "parameters": [
@@ -729,7 +350,7 @@ var doc = `{
                 ],
                 "description": "Получение заказов по reference_id",
                 "tags": [
-                    "Market-Order"
+                    "Techno-Order"
                 ],
                 "summary": "Получение заказов по reference_id",
                 "parameters": [
@@ -777,6 +398,68 @@ var doc = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Обновление заказа по решению клиента",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Techno-Order"
+                ],
+                "summary": "Обновление заказа по решению клиента",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "market",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateMarketOrderRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
             }
         },
         "/partners": {
@@ -794,7 +477,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Partner"
+                    "ADMIN"
                 ],
                 "summary": "Получение партнеров",
                 "parameters": [
@@ -859,7 +542,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Partner"
+                    "ADMIN"
                 ],
                 "summary": "Создание нового партнера",
                 "parameters": [
@@ -990,7 +673,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Partner"
+                    "ADMIN"
                 ],
                 "summary": "Получение партнера",
                 "parameters": [
@@ -1050,7 +733,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Partner"
+                    "ADMIN"
                 ],
                 "summary": "Обновление партнера",
                 "parameters": [
@@ -1203,20 +886,6 @@ var doc = `{
                 },
                 "username": {
                     "type": "string"
-                }
-            }
-        },
-        "dto.Markets": {
-            "type": "object",
-            "properties": {
-                "markets": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Market"
-                    }
-                },
-                "total": {
-                    "type": "integer"
                 }
             }
         },
@@ -1469,53 +1138,6 @@ var doc = `{
                     "type": "string"
                 },
                 "phone": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Market": {
-            "type": "object",
-            "properties": {
-                "bin": {
-                    "type": "string"
-                },
-                "code": {
-                    "type": "string"
-                },
-                "contact": {
-                    "$ref": "#/definitions/models.ContactInfo"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "enabled": {
-                    "type": "boolean"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "location": {
-                    "type": "string"
-                },
-                "logo_url": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "update_order_url": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                },
-                "web_address": {
                     "type": "string"
                 }
             }

@@ -63,15 +63,6 @@ definitions:
       username:
         type: string
     type: object
-  dto.Markets:
-    properties:
-      markets:
-        items:
-          $ref: '#/definitions/models.Market'
-        type: array
-      total:
-        type: integer
-    type: object
   dto.Offers:
     properties:
       contractNumber:
@@ -238,37 +229,6 @@ definitions:
       phone:
         type: string
     type: object
-  models.Market:
-    properties:
-      bin:
-        type: string
-      code:
-        type: string
-      contact:
-        $ref: '#/definitions/models.ContactInfo'
-      created_at:
-        type: string
-      enabled:
-        type: boolean
-      id:
-        type: string
-      location:
-        type: string
-      logo_url:
-        type: string
-      password:
-        type: string
-      title:
-        type: string
-      update_order_url:
-        type: string
-      updated_at:
-        type: string
-      username:
-        type: string
-      web_address:
-        type: string
-    type: object
   models.Partner:
     properties:
       bin:
@@ -319,210 +279,6 @@ info:
   title: Broker API
   version: "1.0"
 paths:
-  /markets:
-    get:
-      description: Получение маркетов
-      parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: pagination limit
-        in: query
-        name: limit
-        type: integer
-      - description: pagination skip
-        in: query
-        name: skip
-        type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dto.Markets'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Получение маркетов
-      tags:
-      - Market
-    post:
-      consumes:
-      - application/json
-      description: Создание нового маркета
-      parameters:
-      - description: body
-        in: body
-        name: market
-        required: true
-        schema:
-          $ref: '#/definitions/models.Market'
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "429":
-          description: Too Many Requests
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Создание нового маркета
-      tags:
-      - Market
-  /markets/{id}:
-    get:
-      consumes:
-      - application/json
-      description: Получение маркета
-      parameters:
-      - description: id of the partner
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Market'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "429":
-          description: Too Many Requests
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Получение маркета
-      tags:
-      - Market
-    put:
-      description: Обновление определенного маркета
-      parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: body
-        in: body
-        name: market
-        required: true
-        schema:
-          $ref: '#/definitions/models.Market'
-      - description: id of the partner
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Обновление определенного маркета
-      tags:
-      - Market
-  /markets/login:
-    post:
-      consumes:
-      - application/json
-      description: Авторизация маркета
-      parameters:
-      - description: body
-        in: body
-        name: auth
-        required: true
-        schema:
-          $ref: '#/definitions/dto.Login'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dto.TokenResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "429":
-          description: Too Many Requests
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      summary: Авторизация маркета
-      tags:
-      - Market
-  /markets/logout:
-    get:
-      consumes:
-      - application/json
-      description: выход с авторизации маркета
-      produces:
-      - application/json
-      summary: выход с авторизации маркета
-      tags:
-      - Market
   /orders:
     get:
       description: Получение заказов
@@ -561,7 +317,7 @@ paths:
       - ApiKeyAuth: []
       summary: Получение заказов
       tags:
-      - Order
+      - ADMIN
     post:
       consumes:
       - application/json
@@ -601,7 +357,7 @@ paths:
       - ApiKeyAuth: []
       summary: Создание нового заказа
       tags:
-      - Market-Order
+      - Techno-Order
   /orders/{id}:
     get:
       consumes:
@@ -641,7 +397,7 @@ paths:
       - ApiKeyAuth: []
       summary: Получение заказа
       tags:
-      - Order
+      - ADMIN
     put:
       consumes:
       - application/json
@@ -686,7 +442,7 @@ paths:
       - ApiKeyAuth: []
       summary: Обновление заказа
       tags:
-      - Order
+      - ADMIN
   /orders/{reference_id}/partners:
     get:
       description: Получение заказов по reference_id
@@ -724,8 +480,7 @@ paths:
       - ApiKeyAuth: []
       summary: Получение заказов по reference_id
       tags:
-      - Market-Order
-  /orders/markets:
+      - Techno-Order
     post:
       consumes:
       - application/json
@@ -765,7 +520,7 @@ paths:
       - ApiKeyAuth: []
       summary: Обновление заказа по решению клиента
       tags:
-      - Market-Order
+      - Techno-Order
   /orders/partners:
     post:
       consumes:
@@ -849,7 +604,7 @@ paths:
       - ApiKeyAuth: []
       summary: Получение партнеров
       tags:
-      - Partner
+      - ADMIN
     post:
       consumes:
       - application/json
@@ -889,7 +644,7 @@ paths:
       - ApiKeyAuth: []
       summary: Создание нового партнера
       tags:
-      - Partner
+      - ADMIN
   /partners/{id}:
     get:
       consumes:
@@ -929,7 +684,7 @@ paths:
       - ApiKeyAuth: []
       summary: Получение партнера
       tags:
-      - Partner
+      - ADMIN
     put:
       consumes:
       - application/json
@@ -974,7 +729,7 @@ paths:
       - ApiKeyAuth: []
       summary: Обновление партнера
       tags:
-      - Partner
+      - ADMIN
   /partners/login:
     post:
       consumes:

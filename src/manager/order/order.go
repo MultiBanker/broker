@@ -19,7 +19,6 @@ type Order struct {
 	orderColl        repository.Orderer
 	partnerOrderColl repository.PartnerOrderer
 	sequenceColl     repository.Sequencer
-	marketColl       repository.Marketer
 	partnerColl      repository.Partnerer
 }
 
@@ -43,7 +42,6 @@ func NewOrder(repos repository.Repositories) Orderer {
 		partnerOrderColl: repos.PartnerOrderRepo(),
 		partnerColl:      repos.PartnerRepo(),
 		sequenceColl:     repos.SequenceRepo(),
-		marketColl:       repos.MarketRepo(),
 	}
 }
 

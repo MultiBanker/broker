@@ -17,7 +17,7 @@ import (
 	"github.com/MultiBanker/broker/src/models"
 )
 
-// @Tags Partner
+// @Tags ADMIN
 // @Summary Создание нового партнера
 // @Description Создание нового партнера
 // @Accept  json
@@ -57,7 +57,7 @@ func (a Auth) newpartner() http.HandlerFunc {
 	}
 }
 
-// @Tags Partner
+// @Tags ADMIN
 // @Summary Обновление партнера
 // @Description Обновление партнера
 // @Accept  json
@@ -104,7 +104,7 @@ func (a Auth) update() http.HandlerFunc {
 	}
 }
 
-// @Tags Partner
+// @Tags ADMIN
 // @Summary Получение партнера
 // @Description Получение партнера
 // @Accept  json
@@ -143,7 +143,7 @@ func (a Auth) partner() http.HandlerFunc {
 	}
 }
 
-// @Tags Partner
+// @Tags ADMIN
 // @Summary Получение партнеров
 // @Description Получение партнеров
 // @Accept  json

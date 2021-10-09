@@ -30,7 +30,6 @@ type OrderRequest struct {
 	SystemCode              string            `json:"system_code"`
 	Channel                 string            `json:"channel"`
 	StateCode               string            `json:"-"`
-	MarketCode              string            `json:"-"`
 	RedirectURL             string            `json:"redirect_url"`
 	IsDelivery              bool              `json:"is_delivery"`
 	ProductType             string            `json:"product_type"`
@@ -111,11 +110,6 @@ type Response struct {
 type IDResponse struct {
 	ID     string `json:"id"`
 	Status string `json:"status"`
-}
-
-type Markets struct {
-	Total   int64           `json:"total"`
-	Markets []models.Market `json:"markets"`
 }
 
 type Orders struct {

@@ -18,7 +18,7 @@ import (
 // list godoc
 // @Summary Получение заказов
 // @Description Получение заказов
-// @Tags Order
+// @Tags ADMIN
 // @Security ApiKeyAuth
 // @Param Authorization header string true "Authorization"
 // @Param limit query int false "pagination limit"
@@ -73,7 +73,7 @@ func (o Order) orders() http.HandlerFunc {
 	}
 }
 
-// @Tags Order
+// @Tags ADMIN
 // @Summary Обновление заказа
 // @Description Обновление заказа
 // @Accept  json

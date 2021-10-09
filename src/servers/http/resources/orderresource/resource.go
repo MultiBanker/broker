@@ -23,7 +23,7 @@ func (o Order) Route() chi.Router {
 
 	r.Group(func(r chi.Router) {
 		r.Post("/", o.neworder())
-		r.Post("/markets/", o.marketOrderUpdate)
+		r.Put("/{reference_id}/partners", o.updateClientOrder)
 		r.Get("/{reference_id}/partners", o.ordersByReference)
 	})
 
