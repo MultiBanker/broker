@@ -10,7 +10,7 @@ import (
 	"github.com/MultiBanker/broker/src/models/dto"
 	"github.com/MultiBanker/broker/src/models/selector"
 
-	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
@@ -93,12 +93,18 @@ func (a Auth) update() http.HandlerFunc {
 			return
 		}
 
+		req.ID = id
+
 		id, err := a.partnerMan.UpdatePartner(ctx, &req)
-		if err != nil {
+		switch err {
+		case drivers.ErrDoesNotExist:
+			_ = render.Render(w, r, httperrors.ResourceNotFound(err))
+			return
+		case nil:
+		default:
 			_ = render.Render(w, r, httperrors.Internal(err))
 			return
 		}
-
 		render.JSON(w, r, &models.Response{ID: id, Status: "Updated"})
 		render.Status(r, http.StatusCreated)
 	}

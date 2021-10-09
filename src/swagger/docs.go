@@ -52,7 +52,7 @@ var doc = `{
                     {
                         "type": "integer",
                         "description": "pagination skip",
-                        "name": "skip",
+                        "name": "page",
                         "in": "query"
                     }
                 ],
@@ -1609,7 +1609,7 @@ type swaggerInfo struct {
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
 	Host:        "api.test.airba.dev",
-	BasePath:    "/broker/api/v1",
+	BasePath:    "/broker/api/v1/broker",
 	Schemes:     []string{"https"},
 	Title:       "Broker API",
 	Description: "Broker banker requester",

@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/MultiBanker/broker/pkg/httperrors"
-	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 
 	"github.com/MultiBanker/broker/src/database/drivers"

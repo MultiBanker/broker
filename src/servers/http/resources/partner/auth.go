@@ -47,6 +47,7 @@ func (a Auth) auth() http.HandlerFunc {
 		case nil:
 		default:
 			_ = render.Render(w, r, httperrors.Internal(err))
+			return
 		}
 
 		access, refresh, err := a.authMan.Tokens(partner.ID, partner.Code, models.PARTNER)

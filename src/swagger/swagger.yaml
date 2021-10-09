@@ -1,4 +1,4 @@
-basePath: /broker/api/v1
+basePath: /broker/api/v1/broker
 definitions:
   dto.Address:
     properties:
@@ -334,7 +334,7 @@ paths:
         type: integer
       - description: pagination skip
         in: query
-        name: skip
+        name: page
         type: integer
       responses:
         "200":

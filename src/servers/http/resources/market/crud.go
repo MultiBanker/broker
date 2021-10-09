@@ -12,7 +12,7 @@ import (
 	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/models/dto"
 	"github.com/MultiBanker/broker/src/models/selector"
-	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 )
 
@@ -98,7 +98,7 @@ func (res Resource) get(w http.ResponseWriter, r *http.Request) {
 // @Security ApiKeyAuth
 // @Param Authorization header string true "Authorization"
 // @Param limit query int false "pagination limit"
-// @Param skip query int false "pagination skip"
+// @Param page query int false "pagination skip"
 // @Success 200 {object} dto.Markets
 // @Failure 400 {object} httperrors.Response
 // @Failure 404 {object} httperrors.Response
@@ -111,7 +111,8 @@ func (res Resource) list(w http.ResponseWriter, r *http.Request) {
 		SortKey: "created_at",
 		SortVal: -1,
 	}
-	skipStr := r.URL.Query().Get("skip")
+	q := r.URL.Query()
+	skipStr := q.Get("page")
 	skip, err := strconv.ParseInt(skipStr, 10, 64)
 	if err != nil {
 		skip = 0
@@ -120,7 +121,7 @@ func (res Resource) list(w http.ResponseWriter, r *http.Request) {
 	if skip > 0 {
 		paging.Skip = skip
 	}
-	limitStr := r.URL.Query().Get("limit")
+	limitStr := q.Get("limit")
 	limit, err := strconv.ParseInt(limitStr, 10, 64)
 	if err != nil {
 		limit = 10
@@ -169,6 +170,14 @@ func (res Resource) update(w http.ResponseWriter, r *http.Request) {
 		_ = render.Render(w, r, httperrors.BadRequest(err))
 		return
 	}
+
+	id := chi.URLParam(r, "id")
+	if id == "" {
+		_ = render.Render(w, r, httperrors.BadRequest(fmt.Errorf("[ERROR] Empty ID")))
+		return
+	}
+
+	req.ID = id
 
 	id, err := res.market.UpdateMarket(ctx, req)
 	switch {

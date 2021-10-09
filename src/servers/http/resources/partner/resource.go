@@ -1,12 +1,9 @@
 package partner
 
 import (
-	"github.com/go-chi/chi"
-	"github.com/go-chi/jwtauth"
-
 	"github.com/MultiBanker/broker/src/manager/auth"
 	"github.com/MultiBanker/broker/src/manager/partner"
-	"github.com/MultiBanker/broker/src/servers/http/middleware"
+	"github.com/go-chi/chi/v5"
 )
 
 const maxOrderHistoryLimit = 100
@@ -32,8 +29,8 @@ func (a Auth) Route() chi.Router {
 	})
 
 	r.Group(func(r chi.Router) {
-		r.Use(jwtauth.Verifier(a.authMan.TokenAuth()))
-		r.Use(middleware.NewUserAccessCtx(a.authMan.JWTKey()).ChiMiddleware)
+		//r.Use(jwtauth.Verifier(a.authMan.TokenAuth()))
+		//r.Use(middleware.NewUserAccessCtx(a.authMan.JWTKey()).ChiMiddleware)
 		r.Post("/", a.newpartner())
 		r.Get("/{id}", a.partner())
 		r.Put("/{id}", a.update())

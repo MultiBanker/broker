@@ -7,7 +7,8 @@ import (
 
 	"github.com/MultiBanker/broker/src/servers/http/resources/health"
 	"github.com/MultiBanker/broker/src/servers/http/resources/market"
-	"github.com/go-chi/chi"
+
+	"github.com/go-chi/chi/v5"
 
 	"github.com/MultiBanker/broker/src/config"
 	"github.com/MultiBanker/broker/src/manager"
@@ -36,6 +37,7 @@ func Routing(opts *config.Config, man manager.Abstractor) chi.Router {
 			r.Mount("/markets", market.NewResource(man.Auther(), man.Marketer()).Route())
 		})
 	})
+
 
 	r.Mount("/kubernetes", health.NewKuber(isReady, func() error {
 		return man.Pinger()

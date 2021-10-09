@@ -15,7 +15,7 @@ var version = ""
 // @in header
 // @name Authorization
 // @host api.test.airba.dev
-// @BasePath /broker/api/v1
+// @BasePath /broker/api/v1/broker
 // @schemes https
 // @query.collection.format multi
 func main() {

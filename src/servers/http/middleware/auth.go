@@ -2,10 +2,11 @@ package middleware
 
 import (
 	"context"
-	"github.com/MultiBanker/broker/pkg/httperrors"
 	"net/http"
 
-	"github.com/go-chi/jwtauth"
+	"github.com/MultiBanker/broker/pkg/httperrors"
+
+	"github.com/go-chi/jwtauth/v5"
 	"github.com/go-chi/render"
 	"github.com/lestrrat-go/jwx/jwt"
 

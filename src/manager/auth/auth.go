@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/MultiBanker/broker/src/config"
-	"github.com/go-chi/jwtauth"
+	"github.com/go-chi/jwtauth/v5"
 )
 
 type Authenticator interface {

@@ -83,15 +83,17 @@ func (r Repository) UpdateMarket(ctx context.Context, market models.Market) (str
 	}
 
 	update := bson.D{
-		{"title", market.Title},
-		{"logo_url", market.LogoURL},
-		{"location", market.Location},
-		{"web_address", market.WebAddress},
-		{"bin", market.BIN},
-		{"update_order_url", market.UpdateOrderURL},
-		{"contact", market.Contact},
-		{"enabled", market.Enabled},
-		{"updated_at", time.Now().UTC()},
+		{"$set", bson.D{
+			{"title", market.Title},
+			{"logo_url", market.LogoURL},
+			{"location", market.Location},
+			{"web_address", market.WebAddress},
+			{"bin", market.BIN},
+			{"update_order_url", market.UpdateOrderURL},
+			{"contact", market.Contact},
+			{"enabled", market.Enabled},
+			{"updated_at", time.Now().UTC()},
+		}},
 	}
 
 	_, err := r.collection.UpdateOne(ctx, filter, update)

@@ -10,7 +10,7 @@
         "version": "1.0"
     },
     "host": "api.test.airba.dev",
-    "basePath": "/broker/api/v1",
+    "basePath": "/broker/api/v1/broker",
     "paths": {
         "/markets": {
             "get": {
@@ -41,7 +41,7 @@
                     {
                         "type": "integer",
                         "description": "pagination skip",
-                        "name": "skip",
+                        "name": "page",
                         "in": "query"
                     }
                 ],

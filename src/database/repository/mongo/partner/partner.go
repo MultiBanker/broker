@@ -33,16 +33,18 @@ func (p Repository) UpdatePartner(ctx context.Context, partner *models.Partner) 
 		{"_id", partner.ID},
 	}
 	update := bson.D{
-		{"company_name", partner.CompanyName},
-		{"username", partner.Username},
-		{"password", partner.Password},
-		{"url", partner.URL},
-		{"bin", partner.BIN},
-		{"commission", partner.Commission},
-		{"logo_url", partner.LogoURL},
-		{"contact", partner.Contact},
-		{"enabled", partner.Enabled},
-		{"updated_at", partner.UpdatedAt},
+		{"$set", bson.D{
+			{"company_name", partner.CompanyName},
+			{"username", partner.Username},
+			{"password", partner.Password},
+			{"url", partner.URL},
+			{"bin", partner.BIN},
+			{"commission", partner.Commission},
+			{"logo_url", partner.LogoURL},
+			{"contact", partner.Contact},
+			{"enabled", partner.Enabled},
+			{"updated_at", time.Now().UTC()},
+		}},
 	}
 	_, err := p.collection.UpdateOne(ctx, filter, update)
 	switch {
