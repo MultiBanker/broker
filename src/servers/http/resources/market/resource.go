@@ -7,19 +7,24 @@ import (
 )
 
 type Resource struct {
-	auth   auth.Authenticator
+	auther auth.Authenticator
 	market market.Marketer
 }
 
 func NewResource(auth auth.Authenticator, market market.Marketer) Resource {
 	return Resource{
-		auth:   auth,
+		auther: auth,
 		market: market,
 	}
 }
 
 func (res Resource) Route() chi.Router {
 	r := chi.NewRouter()
+
+	r.Group(func(r chi.Router) {
+		r.Post("/login", res.auth())
+		r.Get("/logout", res.out())
+	})
 
 	r.Group(func(r chi.Router) {
 		r.Post("/", res.create)

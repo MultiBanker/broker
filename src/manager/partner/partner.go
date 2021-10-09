@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/MultiBanker/broker/src/database/repository"
+	"github.com/MultiBanker/broker/src/manager/auth"
 	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/models/selector"
 )
@@ -15,7 +16,7 @@ type Partnerer interface {
 	UpdatePartner(ctx context.Context, partner *models.Partner) (string, error)
 	PartnerByID(ctx context.Context, id string) (models.Partner, error)
 	Partners(ctx context.Context, paging *selector.Paging) ([]models.Partner, int64, error)
-	PartnerByUsername(ctx context.Context, username string) (models.Partner, error)
+	PartnerByUsername(ctx context.Context, username, password string) (models.Partner, error)
 }
 
 type Partner struct {
@@ -31,7 +32,7 @@ func NewPartner(repos repository.Repositories) Partner {
 }
 
 func (p Partner) NewPartner(ctx context.Context, partner *models.Partner) (string, error) {
-	bytePass, err := HashPassword(partner.Password)
+	bytePass, err := auth.HashPassword(partner.Password)
 	if err != nil {
 		return "", err
 	}
@@ -50,7 +51,7 @@ func (p Partner) UpdatePartner(ctx context.Context, partner *models.Partner) (st
 	if err != nil {
 		return "", err
 	}
-	if !CheckPasswordHash(partner.Password, []byte(res.Password)) {
+	if !auth.CheckPasswordHash(partner.Password, []byte(res.Password)) {
 		return "", fmt.Errorf("[ERROR] Wrong Password")
 	}
 	return p.partnerColl.UpdatePartner(ctx, partner)
@@ -64,6 +65,15 @@ func (p Partner) Partners(ctx context.Context, paging *selector.Paging) ([]model
 	return p.partnerColl.Partners(ctx, paging)
 }
 
-func (p Partner) PartnerByUsername(ctx context.Context, username string) (models.Partner, error) {
-	return p.partnerColl.PartnerByUsername(ctx, username)
+func (p Partner) PartnerByUsername(ctx context.Context, username, password string) (models.Partner, error) {
+	var partner models.Partner
+	partner, err := p.partnerColl.PartnerByUsername(ctx, username)
+	if err != nil {
+		return partner, err
+	}
+
+	if !auth.CheckPasswordHash(password, []byte(partner.Password)) {
+		return partner, fmt.Errorf("[ERROR] Wrong Password")
+	}
+	return partner, nil
 }

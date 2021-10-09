@@ -10,9 +10,8 @@ import (
 
 type Partner struct {
 	ID          string      `json:"id" bson:"_id"`
+	Code        string      `json:"code" bson:"code"`
 	CompanyName string      `json:"company_name" bson:"company_name"`
-	Phone       string      `json:"phone" bson:"phone"`
-	Email       string      `json:"email" bson:"email"`
 	BIN         string      `json:"bin" bson:"bin"`
 	Commission  int         `json:"commission" bson:"commission"`
 	LogoURL     string      `json:"logo_url" bson:"logo_url"`
@@ -35,12 +34,6 @@ type URL struct {
 func (p Partner) Validate() error {
 	if p.CompanyName == "" {
 		return ErrCustomValidate("Company Name")
-	}
-	if p.ValidatePhone(p.Phone) != nil {
-		return ErrCustomValidate("phone")
-	}
-	if p.ValidateEmail(p.Email) != nil {
-		return ErrCustomValidate("email")
 	}
 	if p.BIN == "" {
 		return ErrCustomValidate("BIN")

@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
-	"github.com/MultiBanker/broker/src/database/repository"
 	"github.com/MultiBanker/broker/src/models/dto"
 	"github.com/MultiBanker/broker/src/models/selector"
 	"go.mongodb.org/mongo-driver/bson"
@@ -18,8 +17,8 @@ type Repository struct {
 	collection *mongo.Collection
 }
 
-func NewRepository(collection *mongo.Collection) repository.Orderer {
-	return &Repository{collection: collection}
+func NewRepository(collection *mongo.Collection) Repository {
+	return Repository{collection: collection}
 }
 
 func (or Repository) NewOrder(ctx context.Context, order *dto.OrderRequest) (string, error) {
@@ -33,23 +32,23 @@ func (or Repository) UpdateOrder(ctx context.Context, order *dto.OrderRequest) (
 		{"_id", order.ID},
 	}
 	update := bson.D{
-		{"reference_id", order.ReferenceID},
-		{"order_state", order.OrderState},
-		{"redirect_url", order.RedirectURL},
-		{"channel", order.Channel},
-		{"product_type", order.ProductType},
-		{"payment_method", order.PaymentMethod},
-		{"is_delivery", order.IsDelivery},
-		{"total_cost", order.TotalCost},
-		{"loan_length", order.LoanLength},
-		{"sales_price", order.SalesPlace},
-		{"verification_sms_code", order.VerificationSMSCode},
-		{"verification_sms_datetime", order.VerificationSMSDatetime},
-		{"customer", order.Customer},
-		{"address", order.Address},
-		{"goods", order.Goods},
-		{"bank_type", order.BankType},
-		{"updated_at", order.UpdatedAt},
+		//{"reference_id", order.ReferenceID},
+		//{"order_state", order.OrderState},
+		//{"redirect_url", order.RedirectURL},
+		//{"channel", order.Channel},
+		//{"product_type", order.ProductType},
+		//{"payment_method", order.PaymentMethod},
+		//{"is_delivery", order.IsDelivery},
+		//{"total_cost", order.Amount},
+		//{"loan_length", order.LoanLength},
+		//{"sales_price", order.SalesPlace},
+		//{"verification_sms_code", order.VerificationSmsCode},
+		//{"verification_sms_datetime", order.VerificationSmsDateTime},
+		//{"customer", order.Customer},
+		//{"address", order.Address},
+		//{"goods", order.Goods},
+		//{"bank_type", order.BankType},
+		//{"updated_at", order.UpdatedAt},
 	}
 	_, err := or.collection.UpdateOne(ctx, filter, update)
 	switch {
@@ -59,6 +58,26 @@ func (or Repository) UpdateOrder(ctx context.Context, order *dto.OrderRequest) (
 		return order.ID, nil
 	}
 	return "", err
+}
+
+func (or Repository) UpdateOrderState(ctx context.Context, request dto.UpdateMarketOrderRequest) error {
+	filter := bson.D{
+		{"reference_id", request.ReferenceId},
+	}
+	update := bson.D{
+		{"state", request.State},
+		{"state_title", request.StateTitle},
+		{"reason", request.Reason},
+	}
+
+	err := or.collection.FindOneAndUpdate(ctx, filter, update).Err()
+	switch {
+	case errors.Is(err, mongo.ErrNoDocuments):
+		return drivers.ErrDoesNotExist
+	case errors.Is(err, nil):
+		return nil
+	}
+	return err
 }
 
 func (or Repository) OrderByID(ctx context.Context, id string) (dto.OrderRequest, error) {

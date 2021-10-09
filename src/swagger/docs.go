@@ -146,6 +146,73 @@ var doc = `{
                 }
             }
         },
+        "/markets/login": {
+            "post": {
+                "description": "Авторизация маркета",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Market"
+                ],
+                "summary": "Авторизация маркета",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "auth",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.Login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.TokenResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/markets/logout": {
+            "get": {
+                "description": "выход с авторизации маркета",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Market"
+                ],
+                "summary": "выход с авторизации маркета"
+            }
+        },
         "/markets/{id}": {
             "get": {
                 "security": [
@@ -345,7 +412,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Order"
+                    "Market-Order"
                 ],
                 "summary": "Создание нового заказа",
                 "parameters": [
@@ -371,6 +438,134 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/dto.IDResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/markets": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Обновление заказа по решению клиента",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Market-Order"
+                ],
+                "summary": "Обновление заказа по решению клиента",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "market",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateMarketOrderRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/partners": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Обновление заказа по решению партнера",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Partner-Order"
+                ],
+                "summary": "Обновление заказа по решению партнера",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "market",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.OrderPartnerUpdateRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
                         }
                     },
                     "400": {
@@ -525,6 +720,65 @@ var doc = `{
                 }
             }
         },
+        "/orders/{reference_id}/partners": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Получение заказов по reference_id",
+                "tags": [
+                    "Market-Order"
+                ],
+                "summary": "Получение заказов по reference_id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "reference id of the order",
+                        "name": "reference_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.OrderResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/partners": {
             "get": {
                 "security": [
@@ -652,6 +906,73 @@ var doc = `{
                         }
                     }
                 }
+            }
+        },
+        "/partners/login": {
+            "post": {
+                "description": "Авторизация партнера",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Partner"
+                ],
+                "summary": "Авторизация партнера",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "auth",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.Login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.TokenResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/partners/logout": {
+            "get": {
+                "description": "выход авторизации партнера",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Partner"
+                ],
+                "summary": "выход авторизации партнера"
             }
         },
         "/partners/{id}": {
@@ -818,16 +1139,27 @@ var doc = `{
                 "firstName": {
                     "type": "string"
                 },
+                "iin": {
+                    "type": "string"
+                },
                 "lastName": {
                     "type": "string"
                 },
                 "middleName": {
                     "type": "string"
-                },
-                "state": {
+                }
+            }
+        },
+        "dto.FIO": {
+            "type": "object",
+            "properties": {
+                "firstName": {
                     "type": "string"
                 },
-                "taxCode": {
+                "lastName": {
+                    "type": "string"
+                },
+                "middleName": {
                     "type": "string"
                 }
             }
@@ -863,6 +1195,17 @@ var doc = `{
                 }
             }
         },
+        "dto.Login": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.Markets": {
             "type": "object",
             "properties": {
@@ -877,11 +1220,60 @@ var doc = `{
                 }
             }
         },
+        "dto.Offers": {
+            "type": "object",
+            "properties": {
+                "contractNumber": {
+                    "type": "string"
+                },
+                "loanAmount": {
+                    "type": "string"
+                },
+                "loanLength": {
+                    "type": "string"
+                },
+                "monthlyPayment": {
+                    "type": "integer"
+                },
+                "product": {
+                    "type": "string"
+                },
+                "productType": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.OrderPartnerUpdateRequest": {
+            "type": "object",
+            "properties": {
+                "customer": {
+                    "$ref": "#/definitions/dto.FIO"
+                },
+                "offers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.Offers"
+                    }
+                },
+                "referenceId": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "stateTitle": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.OrderRequest": {
             "type": "object",
             "properties": {
                 "address": {
                     "$ref": "#/definitions/dto.Address"
+                },
+                "amount": {
+                    "type": "string"
                 },
                 "channel": {
                     "type": "string"
@@ -898,37 +1290,66 @@ var doc = `{
                 "id": {
                     "type": "string"
                 },
-                "isDelivery": {
+                "is_delivery": {
                     "type": "boolean"
                 },
-                "loanLength": {
+                "order_id": {
                     "type": "string"
                 },
-                "orderState": {
+                "payment_method": {
                     "type": "string"
                 },
-                "paymentMethod": {
+                "payment_partners": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.PaymentPartners"
+                    }
+                },
+                "product_type": {
                     "type": "string"
                 },
-                "productType": {
+                "redirect_url": {
                     "type": "string"
+                },
+                "system_code": {
+                    "type": "string"
+                },
+                "verification_sms_code": {
+                    "type": "string"
+                },
+                "verification_sms_date_time": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.OrderResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "offers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.Offers"
+                    }
                 },
                 "redirectUrl": {
                     "type": "string"
                 },
-                "referenceId": {
+                "requestUuid": {
                     "type": "string"
                 },
-                "salesPlace": {
+                "state": {
                     "type": "string"
                 },
-                "totalCost": {
+                "state_title": {
                     "type": "string"
                 },
-                "verificationSmsCode": {
-                    "type": "string"
-                },
-                "verificationSmsDateTime": {
+                "status": {
                     "type": "string"
                 }
             }
@@ -958,6 +1379,48 @@ var doc = `{
                 },
                 "total": {
                     "type": "integer"
+                }
+            }
+        },
+        "dto.PaymentPartners": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.TokenResponse": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "response_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UpdateMarketOrderRequest": {
+            "type": "object",
+            "properties": {
+                "loanLength": {
+                    "type": "string"
+                },
+                "productCode": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "referenceId": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "stateTitle": {
+                    "type": "string"
                 }
             }
         },
@@ -1016,8 +1479,14 @@ var doc = `{
                 "bin": {
                     "type": "string"
                 },
+                "code": {
+                    "type": "string"
+                },
                 "contact": {
                     "$ref": "#/definitions/models.ContactInfo"
+                },
+                "created_at": {
+                    "type": "string"
                 },
                 "enabled": {
                     "type": "boolean"
@@ -1031,10 +1500,19 @@ var doc = `{
                 "logo_url": {
                     "type": "string"
                 },
+                "password": {
+                    "type": "string"
+                },
                 "title": {
                     "type": "string"
                 },
                 "update_order_url": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 },
                 "web_address": {
@@ -1046,6 +1524,9 @@ var doc = `{
             "type": "object",
             "properties": {
                 "bin": {
+                    "type": "string"
+                },
+                "code": {
                     "type": "string"
                 },
                 "commission": {
@@ -1060,9 +1541,6 @@ var doc = `{
                 "created_at": {
                     "type": "string"
                 },
-                "email": {
-                    "type": "string"
-                },
                 "enabled": {
                     "type": "boolean"
                 },
@@ -1073,9 +1551,6 @@ var doc = `{
                     "type": "string"
                 },
                 "password": {
-                    "type": "string"
-                },
-                "phone": {
                     "type": "string"
                 },
                 "updated_at": {

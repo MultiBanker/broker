@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 
-	"github.com/MultiBanker/broker/src/database/repository"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -19,12 +18,12 @@ type Repository struct {
 	collection *mongo.Collection
 }
 
-func NewRepository(collection *mongo.Collection) repository.Sequencer {
-	return &Repository{collection: collection}
+func NewRepository(collection *mongo.Collection) Repository {
+	return Repository{collection: collection}
 }
 
 // NextSequenceValue атомарно инкрементирует счетчик с именем sequenceName.
-func (sr *Repository) NextSequenceValue(ctx context.Context, sequenceName string) (int, error) {
+func (sr Repository) NextSequenceValue(ctx context.Context, sequenceName string) (int, error) {
 	if sequenceName == "" {
 		return -1, ErrEmptySequenceID
 	}
@@ -47,7 +46,7 @@ func (sr *Repository) NextSequenceValue(ctx context.Context, sequenceName string
 }
 
 // NewSequence создает новый инкремент с указанным идентификатором.
-func (sr *Repository) NewSequence(ctx context.Context, sequenceName string) error {
+func (sr Repository) NewSequence(ctx context.Context, sequenceName string) error {
 	if sequenceName == "" {
 		return ErrEmptySequenceID
 	}

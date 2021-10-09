@@ -50,7 +50,7 @@ func (p Client) RequestOrder(ctx context.Context, order interface{}, count int, 
 		return nil, err
 	}
 
-	req, err := http.NewRequest(http.MethodPost, p.URL+"/create-order", bytes.NewReader(b))
+	req, err := http.NewRequest(http.MethodPost, p.URL, bytes.NewReader(b))
 	if err != nil {
 		return nil, err
 	}

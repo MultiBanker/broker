@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
-	"github.com/MultiBanker/broker/src/database/repository"
 	"github.com/MultiBanker/broker/src/models/selector"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -19,8 +18,8 @@ type Repository struct {
 	collection *mongo.Collection
 }
 
-func NewRepository(collection *mongo.Collection) repository.Partnerer {
-	return &Repository{collection: collection}
+func NewRepository(collection *mongo.Collection) Repository {
+	return Repository{collection: collection}
 }
 
 func (p Repository) NewPartner(ctx context.Context, partner *models.Partner) (string, error) {
@@ -35,11 +34,9 @@ func (p Repository) UpdatePartner(ctx context.Context, partner *models.Partner) 
 	}
 	update := bson.D{
 		{"company_name", partner.CompanyName},
-		{"phone", partner.Phone},
 		{"username", partner.Username},
 		{"password", partner.Password},
 		{"url", partner.URL},
-		{"email", partner.Email},
 		{"bin", partner.BIN},
 		{"commission", partner.Commission},
 		{"logo_url", partner.LogoURL},
@@ -73,8 +70,20 @@ func (p Repository) PartnerByID(ctx context.Context, id string) (models.Partner,
 	return partner, err
 }
 
-func (p Repository) PartnerByUsername(ctx context.Context, id string) (models.Partner, error) {
-	panic("implement me")
+func (p Repository) PartnerByUsername(ctx context.Context, username string) (models.Partner, error) {
+	var partner models.Partner
+	filter := bson.D{
+		{"username", username},
+	}
+	err := p.collection.FindOne(ctx, filter).Decode(&partner)
+	switch {
+	case errors.Is(err, mongo.ErrNoDocuments):
+		return partner, drivers.ErrDoesNotExist
+	case errors.Is(err, nil):
+		return partner, nil
+	}
+
+	return partner, err
 }
 
 func (p Repository) Partners(ctx context.Context, paging *selector.Paging) ([]models.Partner, int64, error) {

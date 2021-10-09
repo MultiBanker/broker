@@ -15,7 +15,6 @@ type Config struct {
 	*Client
 	*WorkerConfigs
 	*Token
-	*BankerAPIs
 	Version string
 }
 
@@ -60,16 +59,6 @@ type WorkerConfigs struct {
 type Token struct {
 	AccessToken  int `long:"access-token" env:"ACCESS_TOKEN_DURATION_HOURS" description:"Access Token Duration" required:"true" default:"2"`
 	RefreshToken int `long:"refresh-token" env:"REFRESH_TOKEN_DURATION_MONTH" description:"Refresh Token Duration" required:"true" default:"1"`
-}
-
-type BankerAPIs struct {
-	*AirbaPay
-	*Altyn
-	*Jysan
-	*Freedom
-	*Halyk
-	*RBK
-	*Sber
 }
 
 

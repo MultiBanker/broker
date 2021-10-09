@@ -6,7 +6,7 @@ import (
 	"github.com/MultiBanker/broker/src/models"
 )
 
-type OrderRequest struct {
+type OrderBankRequest struct {
 	ID                      string   `json:"id" bson:"_id"`
 	ReferenceID             string   `json:"referenceId" bson:"reference_id"`
 	OrderState              string   `json:"orderState" bson:"order_state"`
@@ -16,30 +16,49 @@ type OrderRequest struct {
 	PaymentMethod           string   `json:"paymentMethod" bson:"payment_method"`
 	IsDelivery              bool     `json:"isDelivery" bson:"is_delivery"`
 	TotalCost               string   `json:"totalCost" bson:"total_cost"`
-	LoanLength              string   `json:"loanLength" bson:"loan_length"`
+	LoanLength              int      `json:"loanLength" bson:"loan_length"`
 	SalesPlace              string   `json:"salesPlace" bson:"sales_place"`
 	VerificationSMSCode     string   `json:"verificationSmsCode" bson:"verification_sms_code"`
 	VerificationSMSDatetime string   `json:"verificationSmsDateTime" bson:"verification_sms_datetime"`
 	Customer                Customer `json:"customer" bson:"customer"`
 	Address                 Address  `json:"address" bson:"address"`
 	Goods                   []Goods  `json:"goods" bson:"goods"`
-
-	BankType  string    `json:"-" bson:"bank_type"`
-	CreatedAt time.Time `json:"created_at" bson:"created_at"`
-	UpdatedAt time.Time `json:"updated_at" bson:"updated_at"`
 }
+
+type OrderRequest struct {
+	ID                      string            `json:"id" bson:"_id"`
+	SystemCode              string            `json:"system_code"`
+	Channel                 string            `json:"channel"`
+	StateCode               string            `json:"-"`
+	MarketCode              string            `json:"-"`
+	RedirectURL             string            `json:"redirect_url"`
+	IsDelivery              bool              `json:"is_delivery"`
+	ProductType             string            `json:"product_type"`
+	PaymentMethod           string            `json:"payment_method"`
+	OrderID                 string            `json:"order_id"`
+	Amount                  string            `json:"amount"`
+	VerificationSmsCode     string            `json:"verification_sms_code"`
+	VerificationSmsDateTime string            `json:"verification_sms_date_time"`
+	Customer                Customer          `json:"customer"`
+	Address                 Address           `json:"address"`
+	Goods                   []Goods           `json:"goods"`
+	PaymentPartners         []PaymentPartners `json:"payment_partners"`
+
+	CreatedAt time.Time `json:"-" bson:"created_at"`
+	UpdatedAt time.Time `json:"-" bson:"updated_at"`
+}
+
+func (o OrderRequest) ToBankOrder() OrderBankRequest {
+	return OrderBankRequest{
+		ReferenceID: o.ID,
+	}
+}
+
 type Contact struct {
 	MobileNumber string `json:"mobileNumber" bson:"mobile_number"`
 	Email        string `json:"email" bson:"email"`
 }
-type Customer struct {
-	TaxCode    string  `json:"taxCode" bson:"tax_code"`
-	Firstname  string  `json:"firstName" bson:"firstname"`
-	Lastname   string  `json:"lastName" bson:"lastname"`
-	MiddleName string  `json:"middleName" bson:"middle_name"`
-	State      string  `json:"state" bson:"state"`
-	Contact    Contact `json:"contact" bson:"contact"`
-}
+
 type Address struct {
 	Delivery    string `json:"delivery" bson:"delivery"`
 	PickupPoint string `json:"pickupPoint" bson:"pickup_point"`
@@ -52,12 +71,35 @@ type Goods struct {
 	Image    string `json:"image" bson:"image"`
 }
 
+type Customer struct {
+	IIN        string  `json:"iin"`
+	FirstName  string  `json:"firstName"`
+	LastName   string  `json:"lastName"`
+	MiddleName string  `json:"middleName"`
+	Contact    Contact `json:"contact"`
+}
+
+type PaymentPartners struct {
+	Code string `json:"code"`
+}
+
 type OrderResponse struct {
-	Status      string `json:"status"`
-	Code        string `json:"code"`
-	RedirectURL string `json:"redirectUrl"`
-	RequestUUID string `json:"requestUuid"`
-	Message     string `json:"message"`
+	ID          string `json:"-" bson:"_id"`
+	ReferenceID string `json:"-" bson:"reference_id"`
+	PartnerCode string `json:"-" bson:"partner_code"`
+	MarketCode  string `json:"-" bson:"market_code"`
+
+	Status      string   `json:"status" bson:"status"`
+	Code        string   `json:"code" bson:"code"`
+	RedirectURL string   `json:"redirectUrl" bson:"redirect_url"`
+	RequestUUID string   `json:"requestUuid" bson:"request_uuid"`
+	State       string   `json:"state" bson:"state"`
+	StateTitle  string   `json:"state_title"`
+	Message     string   `json:"message" bson:"message"`
+	Offers      []Offers `json:"offers" bson:"offers"`
+
+	CreatedAt time.Time `json:"-" bson:"created_at"`
+	UpdatedAt time.Time `json:"-" bson:"updated_at"`
 }
 
 type Response struct {

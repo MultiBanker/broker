@@ -1,4 +1,4 @@
-package partner
+package auth
 
 import "golang.org/x/crypto/bcrypt"
 
@@ -11,4 +11,3 @@ func HashPassword(password string) ([]byte, error) {
 func CheckPasswordHash(password string, hash []byte) bool {
 	return bcrypt.CompareHashAndPassword(hash, []byte(password)) == nil
 }
-

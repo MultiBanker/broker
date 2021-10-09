@@ -11,10 +11,11 @@ import (
 )
 
 const (
-	Order    = "order"
-	Sequence = "counters"
-	Partner  = "partner"
-	Market   = "market"
+	Order        = "order"
+	PartnerOrder = "partner_order"
+	Sequence     = "counters"
+	Partner      = "partner"
+	Market       = "market"
 )
 
 type Repositories interface {
@@ -22,23 +23,26 @@ type Repositories interface {
 	SequenceRepo() Sequencer
 	OrderRepo() Orderer
 	MarketRepo() Marketer
+	PartnerOrderRepo() PartnerOrderer
 }
 
 type Repository struct {
-	Partner  Partnerer
-	Sequence Sequencer
-	Order    Orderer
-	Market   Marketer
+	Partner      Partnerer
+	Sequence     Sequencer
+	Order        Orderer
+	Market       Marketer
+	PartnerOrder PartnerOrderer
 }
 
 func NewRepository(datastore drivers.Datastore) (Repositories, error) {
 	if datastore.Name() == "mongo" {
 		db := datastore.Database().(*mongo.Database)
 		return &Repository{
-			Sequence: sequence.NewRepository(db.Collection(Sequence)),
-			Partner:  partner.NewRepository(db.Collection(Partner)),
-			Order:    order.NewRepository(db.Collection(Order)),
-			Market:   market.NewRepository(db.Collection(Market)),
+			Sequence:     sequence.NewRepository(db.Collection(Sequence)),
+			Partner:      partner.NewRepository(db.Collection(Partner)),
+			Order:        order.NewRepository(db.Collection(Order)),
+			Market:       market.NewRepository(db.Collection(Market)),
+			PartnerOrder: order.NewPartnerOrderRepository(db.Collection(PartnerOrder)),
 		}, nil
 	}
 	return nil, ErrDatastoreNotImplemented

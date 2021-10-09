@@ -12,8 +12,8 @@ import (
 	"github.com/MultiBanker/broker/src/config"
 	"github.com/MultiBanker/broker/src/manager"
 	"github.com/MultiBanker/broker/src/servers/http/middleware"
-	"github.com/MultiBanker/broker/src/servers/http/resources/authresource"
 	"github.com/MultiBanker/broker/src/servers/http/resources/orderresource"
+	"github.com/MultiBanker/broker/src/servers/http/resources/partner"
 )
 
 const (
@@ -30,8 +30,8 @@ func Routing(opts *config.Config, man manager.Abstractor) chi.Router {
 
 	// основные роутеры
 	r.Route(ApiPath, func(r chi.Router) {
-		r.Route("/brokers", func(r chi.Router) {
-			r.Mount("/auth", authresource.NewAuth(man.Partnerer(), man.Auther()).Route())
+		r.Route("/broker", func(r chi.Router) {
+			r.Mount("/partners", partner.NewAuth(man.Partnerer(), man.Auther()).Route())
 			r.Mount("/orders", orderresource.NewOrder(man.Orderer()).Route())
 			r.Mount("/markets", market.NewResource(man.Auther(), man.Marketer()).Route())
 		})

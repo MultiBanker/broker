@@ -23,11 +23,21 @@ func (o Order) Route() chi.Router {
 
 	r.Group(func(r chi.Router) {
 		r.Post("/", o.neworder())
+		r.Post("/markets/", o.marketOrderUpdate)
+		r.Get("/{reference_id}/partners", o.ordersByReference)
+	})
+
+	r.Group(func(r chi.Router) {
+		// Admin Api
 		r.Get("/", o.orders())
-		r.Route("/{id}", func(r chi.Router) {
-			r.Put("/", o.updateorder())
-			r.Get("/", o.order())
-		})
+		r.Post("/", o.neworder())
+		r.Get("/{id}", o.order())
+		r.Put("/{id}", o.updateorder())
+	})
+
+	r.Group(func(r chi.Router) {
+		// Partner API
+		r.Post("/partners", o.updateorderpartner())
 	})
 
 	return r

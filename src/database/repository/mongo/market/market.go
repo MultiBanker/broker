@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
-	"github.com/MultiBanker/broker/src/database/repository"
 	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/models/selector"
 	"go.mongodb.org/mongo-driver/bson"
@@ -18,7 +17,7 @@ type Repository struct {
 	collection *mongo.Collection
 }
 
-func NewRepository(collection *mongo.Collection) repository.Marketer {
+func NewRepository(collection *mongo.Collection) Repository {
 	return Repository{
 		collection: collection,
 	}
@@ -103,4 +102,20 @@ func (r Repository) UpdateMarket(ctx context.Context, market models.Market) (str
 		return market.ID, nil
 	}
 	return "", err
+}
+
+func (r Repository) MarketByUsername(ctx context.Context, username string) (models.Market, error) {
+	var market models.Market
+
+	filter := bson.D{
+		{"username", username},
+	}
+	err := r.collection.FindOne(ctx, filter).Decode(&market)
+	switch {
+	case errors.Is(err, mongo.ErrNoDocuments):
+		return market, drivers.ErrDoesNotExist
+	case errors.Is(err, nil):
+		return market, nil
+	}
+	return market, err
 }

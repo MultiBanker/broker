@@ -1,4 +1,4 @@
-package authresource
+package partner
 
 import (
 	"github.com/go-chi/chi"

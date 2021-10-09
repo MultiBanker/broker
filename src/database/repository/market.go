@@ -14,6 +14,7 @@ func (r Repository) MarketRepo() Marketer {
 type Marketer interface {
 	CreateMarket(ctx context.Context, market models.Market) (string, error)
 	MarketByID(ctx context.Context, id string) (models.Market, error)
+	MarketByUsername(ctx context.Context, username string) (models.Market, error)
 	Markets(ctx context.Context, paging selector.Paging) ([]models.Market, int64, error)
 	UpdateMarket(ctx context.Context, market models.Market) (string, error)
 }

@@ -1,4 +1,4 @@
-package authresource
+package partner
 
 import (
 	"encoding/json"
