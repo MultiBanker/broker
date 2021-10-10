@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"github.com/MultiBanker/broker/src/models/dto"
+	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/models/selector"
 )
 
@@ -16,16 +16,17 @@ func (r Repository) PartnerOrderRepo() PartnerOrderer {
 }
 
 type Orderer interface {
-	NewOrder(ctx context.Context, order *dto.OrderRequest) (string, error)
-	UpdateOrder(ctx context.Context, order *dto.OrderRequest) (string, error)
-	OrderByID(ctx context.Context, id string) (dto.OrderRequest, error)
-	Orders(ctx context.Context, paging *selector.Paging) ([]*dto.OrderRequest, int64, error)
-	OrdersByReferenceID(ctx context.Context, referenceID string) ([]*dto.OrderRequest, error)
-	UpdateOrderState(ctx context.Context, request dto.UpdateMarketOrderRequest) error
+	NewOrder(ctx context.Context, order *models.Order) (string, error)
+	UpdateOrder(ctx context.Context, order *models.Order) (string, error)
+	OrderByID(ctx context.Context, id string) (models.Order, error)
+	Orders(ctx context.Context, paging *selector.Paging) ([]*models.Order, int64, error)
+	OrdersByReferenceID(ctx context.Context, referenceID string) ([]*models.Order, error)
+	//UpdateOrderState(ctx context.Context, request dto.UpdateMarketOrderRequest) error
 }
 
 type PartnerOrderer interface {
-	NewOrder(ctx context.Context, request dto.OrderResponse) (string, error)
-	UpdateOrder(ctx context.Context, response dto.OrderPartnerUpdateRequest) (string, error)
-	OrdersByReferenceID(ctx context.Context, partnerCode, referenceID string) ([]*dto.OrderResponse, error)
+	NewOrder(ctx context.Context, order models.PartnerOrder) (string, error)
+	UpdateOrder(ctx context.Context, order models.PartnerOrder) (string, error)
+	OrdersByReferenceID(ctx context.Context, marketCode, referenceID string) ([]*models.PartnerOrder, error)
+	OrderPartner(ctx context.Context, referenceID, partnerCode string) (models.PartnerOrder, error)
 }

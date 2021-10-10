@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
+	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/models/dto"
 	"github.com/MultiBanker/broker/src/models/selector"
 	"go.mongodb.org/mongo-driver/bson"
@@ -21,13 +22,13 @@ func NewRepository(collection *mongo.Collection) Repository {
 	return Repository{collection: collection}
 }
 
-func (or Repository) NewOrder(ctx context.Context, order *dto.OrderRequest) (string, error) {
+func (or Repository) NewOrder(ctx context.Context, order *models.Order) (string, error) {
 	order.CreatedAt = time.Now().UTC()
 	_, err := or.collection.InsertOne(ctx, order)
 	return order.ID, err
 }
 
-func (or Repository) UpdateOrder(ctx context.Context, order *dto.OrderRequest) (string, error) {
+func (or Repository) UpdateOrder(ctx context.Context, order *models.Order) (string, error) {
 	filter := bson.D{
 		{"_id", order.ID},
 	}
@@ -80,8 +81,8 @@ func (or Repository) UpdateOrderState(ctx context.Context, request dto.UpdateMar
 	return err
 }
 
-func (or Repository) OrderByID(ctx context.Context, id string) (dto.OrderRequest, error) {
-	var order dto.OrderRequest
+func (or Repository) OrderByID(ctx context.Context, id string) (models.Order, error) {
+	var order models.Order
 
 	filter := bson.D{
 		{"_id", id},
@@ -97,7 +98,7 @@ func (or Repository) OrderByID(ctx context.Context, id string) (dto.OrderRequest
 	return order, err
 }
 
-func (or Repository) Orders(ctx context.Context, paging *selector.Paging) ([]*dto.OrderRequest, int64, error) {
+func (or Repository) Orders(ctx context.Context, paging *selector.Paging) ([]*models.Order, int64, error) {
 	filter := bson.D{}
 
 	opts := options.FindOptions{
@@ -118,7 +119,7 @@ func (or Repository) Orders(ctx context.Context, paging *selector.Paging) ([]*dt
 	case errors.Is(err, mongo.ErrNoDocuments):
 		return nil, 0, drivers.ErrDoesNotExist
 	case errors.Is(err, nil):
-		orders := make([]*dto.OrderRequest, res.RemainingBatchLength())
+		orders := make([]*models.Order, res.RemainingBatchLength())
 		err = res.All(ctx, &orders)
 		if err != nil {
 			return nil, 0, err
@@ -129,7 +130,7 @@ func (or Repository) Orders(ctx context.Context, paging *selector.Paging) ([]*dt
 	return nil, 0, err
 }
 
-func (or Repository) OrdersByReferenceID(ctx context.Context, referenceID string) ([]*dto.OrderRequest, error) {
+func (or Repository) OrdersByReferenceID(ctx context.Context, referenceID string) ([]*models.Order, error) {
 	filter := bson.D{
 		{"reference_id", referenceID},
 	}
@@ -139,7 +140,7 @@ func (or Repository) OrdersByReferenceID(ctx context.Context, referenceID string
 	case mongo.ErrNoDocuments:
 		return nil, drivers.ErrDoesNotExist
 	case nil:
-		orders := make([]*dto.OrderRequest, res.RemainingBatchLength())
+		orders := make([]*models.Order, res.RemainingBatchLength())
 		if err := res.All(ctx, orders); err != nil {
 			return nil, err
 		}

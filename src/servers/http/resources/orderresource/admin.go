@@ -97,7 +97,7 @@ func (o Order) updateorder() http.HandlerFunc {
 			return
 		}
 
-		var req dto.OrderRequest
+		var req models.Order
 
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 			_ = render.Render(w, r, httperrors.BadRequest(err))

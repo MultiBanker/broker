@@ -1290,23 +1290,26 @@ var doc = `{
                 "id": {
                     "type": "string"
                 },
+                "installment": {
+                    "type": "string"
+                },
                 "is_delivery": {
                     "type": "boolean"
+                },
+                "loanLength": {
+                    "type": "string"
                 },
                 "order_id": {
                     "type": "string"
                 },
-                "payment_method": {
+                "paymentMethod": {
                     "type": "string"
                 },
-                "payment_partners": {
+                "paymentPartners": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/dto.PaymentPartners"
                     }
-                },
-                "product_type": {
-                    "type": "string"
                 },
                 "redirect_url": {
                     "type": "string"
@@ -1314,10 +1317,10 @@ var doc = `{
                 "system_code": {
                     "type": "string"
                 },
-                "verification_sms_code": {
+                "verificationSmsCode": {
                     "type": "string"
                 },
-                "verification_sms_date_time": {
+                "verificationSmsDateTime": {
                     "type": "string"
                 }
             }

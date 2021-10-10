@@ -1,13 +1,13 @@
 package dto
 
+import "github.com/MultiBanker/broker/src/models"
+
 type OrderPartnerUpdateRequest struct {
-	ID          string   `json:"-" bson:"_id"`
-	PartnerCode string   `json:"-" bson:"partner_code"`
-	ReferenceID string   `json:"referenceId" bson:"reference_id"`
-	State       string   `json:"state" bson:"state"`
-	StateTitle  string   `json:"stateTitle" bson:"state_title"`
-	Customer    FIO      `json:"customer" bson:"customer"`
-	Offers      []Offers `json:"offers" bson:"offers"`
+	ReferenceID string          `json:"referenceId" bson:"reference_id"`
+	State       string          `json:"state" bson:"state"`
+	StateTitle  string          `json:"stateTitle" bson:"state_title"`
+	Customer    FIO             `json:"customer" bson:"customer"`
+	Offers      []models.Offers `json:"offers" bson:"offers"`
 }
 type FIO struct {
 	FirstName  string `json:"firstName" bson:"first_name"`

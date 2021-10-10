@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"sync"
 
 	"github.com/MultiBanker/broker/src/clients"
 	"github.com/MultiBanker/broker/src/database/repository"
@@ -23,15 +24,15 @@ type Order struct {
 }
 
 type Orderer interface {
-	NewOrder(ctx context.Context, order *dto.OrderRequest) (string, error)
-	UpdateOrder(ctx context.Context, order *dto.OrderRequest) (string, error)
-	OrderByID(ctx context.Context, id string) (dto.OrderRequest, error)
-	Orders(ctx context.Context, paging *selector.Paging) ([]*dto.OrderRequest, int64, error)
-	OrdersByReferenceID(ctx context.Context, referenceID string) ([]*dto.OrderRequest, error)
-	UpdateMarketOrder(ctx context.Context, req dto.UpdateMarketOrderRequest) error
+	NewOrder(ctx context.Context, order *models.Order) (string, error)
+	UpdateOrder(ctx context.Context, order *models.Order) (string, error)
+	OrderByID(ctx context.Context, id string) (models.Order, error)
+	Orders(ctx context.Context, paging *selector.Paging) ([]*models.Order, int64, error)
+	OrdersByReferenceID(ctx context.Context, referenceID string) ([]*models.Order, error)
+	//UpdateMarketOrder(ctx context.Context, req models.Order) error
 
-	PartnerOrder(ctx context.Context, marketCode, referenceID string) ([]*dto.OrderResponse, error)
-	UpdatePartnerOrder(ctx context.Context, req dto.OrderPartnerUpdateRequest) (string, error)
+	PartnerOrder(ctx context.Context, marketCode, referenceID string) ([]*models.PartnerOrder, error)
+	UpdatePartnerOrder(ctx context.Context, req models.PartnerOrder) (string, error)
 }
 
 var _ Orderer = (*Order)(nil)
@@ -46,7 +47,7 @@ func NewOrder(repos repository.Repositories) Orderer {
 	}
 }
 
-func (o Order) NewOrder(ctx context.Context, order *dto.OrderRequest) (string, error) {
+func (o Order) NewOrder(ctx context.Context, order *models.Order) (string, error) {
 	idInt, err := o.sequenceColl.NextSequenceValue(ctx, models.OrderSequences)
 	if err != nil {
 		return "", err
@@ -57,88 +58,109 @@ func (o Order) NewOrder(ctx context.Context, order *dto.OrderRequest) (string, e
 		return "", err
 	}
 
-	//wg := sync.WaitGroup{}
+	wg := sync.WaitGroup{}
 	for _, partnersCode := range order.PaymentPartners {
-		//wg.Add(1)
-		//go func(partnerCode string) {
-		//	defer wg.Done()
-		//	if err := o.BankOrder(ctx, id, partnerCode, *order); err != nil {
-		//		log.Println(err)
-		//	}
-		//}(partnersCode.Code)
-		if err := o.BankOrder(ctx, id, partnersCode.Code, *order); err != nil {
-			log.Println(err)
-		}
+		wg.Add(1)
+		go func(partnerCode string) {
+			defer wg.Done()
+			if err := o.BankOrder(ctx, id, partnerCode, *order); err != nil {
+				log.Println(err)
+			}
+		}(partnersCode.Code)
 	}
-	//wg.Wait()
+	wg.Wait()
 
 	return id, nil
 }
 
-func (o Order) UpdateOrder(ctx context.Context, order *dto.OrderRequest) (string, error) {
+func (o Order) UpdateOrder(ctx context.Context, order *models.Order) (string, error) {
 	return o.orderColl.UpdateOrder(ctx, order)
 }
 
-func (o Order) OrderByID(ctx context.Context, id string) (dto.OrderRequest, error) {
+func (o Order) OrderByID(ctx context.Context, id string) (models.Order, error) {
 	return o.orderColl.OrderByID(ctx, id)
 }
 
-func (o Order) Orders(ctx context.Context, paging *selector.Paging) ([]*dto.OrderRequest, int64, error) {
+func (o Order) Orders(ctx context.Context, paging *selector.Paging) ([]*models.Order, int64, error) {
 	return o.orderColl.Orders(ctx, paging)
 }
 
-func (o Order) OrdersByReferenceID(ctx context.Context, referenceID string) ([]*dto.OrderRequest, error) {
+func (o Order) OrdersByReferenceID(ctx context.Context, referenceID string) ([]*models.Order, error) {
 	return o.orderColl.OrdersByReferenceID(ctx, referenceID)
 }
 
-func (o Order) PartnerOrder(ctx context.Context, partnerCode, referenceID string) ([]*dto.OrderResponse, error) {
-	return o.partnerOrderColl.OrdersByReferenceID(ctx, partnerCode, referenceID)
+func (o Order) PartnerOrder(ctx context.Context, marketCode, referenceID string) ([]*models.PartnerOrder, error) {
+	return o.partnerOrderColl.OrdersByReferenceID(ctx, marketCode, referenceID)
 }
 
-func (o Order) UpdatePartnerOrder(ctx context.Context, req dto.OrderPartnerUpdateRequest) (string, error) {
-	return o.partnerOrderColl.UpdateOrder(ctx, req)
-}
-
-func (o Order) UpdateMarketOrder(ctx context.Context, req dto.UpdateMarketOrderRequest) error {
-	partner, err := o.partnerColl.PartnerByCode(ctx, req.ProductCode)
+func (o Order) UpdatePartnerOrder(ctx context.Context, req models.PartnerOrder) (string, error) {
+	_, err := o.partnerOrderColl.UpdateOrder(ctx, req)
 	if err != nil {
-		return err
+		return "", err
 	}
-
-	err = o.orderColl.UpdateOrderState(ctx, req)
+	order, err := o.partnerOrderColl.OrderPartner(ctx, req.ReferenceID, req.PartnerCode)
 	if err != nil {
-		return err
+		return "", err
 	}
-
-	cli := clients.NewClient(partner.URL.Update, "")
-
+	m, err := o.marketColl.MarketByCode(ctx, order.MarketCode)
+	if err != nil {
+		return "", err
+	}
+	cli := clients.NewClient(m.UpdateOrderURL, "")
 	_, err = cli.RequestOrder(ctx, req, 3, nil)
-	if err != nil {
-		log.Println(err)
-		return err
-	}
-	return nil
+	return "", err
 }
 
-func (o Order) BankOrder(ctx context.Context, id string, partnerCode string, order dto.OrderRequest) error {
+//func (o Order) UpdateMarketOrder(ctx context.Context, req models.Order) error {
+//	partner, err := o.partnerColl.PartnerByCode(ctx, req.ProductCode)
+//	if err != nil {
+//		return err
+//	}
+//
+//	//err = o.orderColl.UpdateOrderState(ctx, req)
+//	//if err != nil {
+//	//	return err
+//	//}
+//
+//	cli := clients.NewClient(partner.URL.Update, "")
+//
+//	_, err = cli.RequestOrder(ctx, req, 3, nil)
+//	if err != nil {
+//		log.Println(err)
+//		return err
+//	}
+//	return nil
+//}
+
+func (o Order) BankOrder(ctx context.Context, id string, partnerCode string, order models.Order) error {
 	partner, err := o.partnerColl.PartnerByCode(ctx, partnerCode)
 	if err != nil {
 		return fmt.Errorf("[ERROR] getting partner from db %v", err)
 	}
-	order.OrderID = id
-
-	//_, err = o.partnerOrderColl.NewOrder(ctx, &order)
-	//if err != nil {
-	//	return fmt.Errorf("[ERROR] creating partner order %v", err)
-	//}
 
 	bankCli := clients.NewClient(partner.URL.Create, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW1fY29kZSI6IlREX0JST0tFUiJ9.Fa4wL9KID3A_-8fYmvhZKXi68K5GRMlLsYK0y6PASI4")
-	b, err := bankCli.RequestOrder(ctx, order.ToBankOrder(), 3, nil)
+	b, err := bankCli.RequestOrder(ctx, dto.PartnerOrderRequest{
+		ReferenceId:             order.ReferenceID,
+		IsDelivery:              order.IsDelivery,
+		Channel:                 order.Channel,
+		PaymentMethod:           order.PaymentMethod,
+		ProductType:             order.ProductType,
+		RedirectUrl:             order.RedirectURL,
+		OrderState:              order.OrderState,
+		SalesPlace:              order.SalesPlace,
+		VerificationSmsCode:     order.VerificationSMSCode,
+		VerificationSmsDateTime: order.VerificationSMSDatetime,
+		LoanLength:              order.LoanLength,
+		Customer:                order.Customer,
+		Address:                 order.Address,
+		Goods:                   order.Goods,
+		TotalCost:               order.TotalCost,
+	}, 3, nil)
 	if err != nil {
 		return fmt.Errorf("[ERROR] requesting order to partner from url %v", err)
 	}
 
-	var orderResponse dto.OrderResponse
+	var orderResponse dto.PartnerOrderResponse
 
 	if err = json.Unmarshal(b, &orderResponse); err != nil {
 		return fmt.Errorf("[ERROR] unmarshalling order partner response from url %v", err)
@@ -146,12 +168,21 @@ func (o Order) BankOrder(ctx context.Context, id string, partnerCode string, ord
 
 	log.Printf(
 		"[INFO] OrderID - %s, Partner code - %s, status - %s, http code - %s, redirectURL - %s, uuid - %s, message - %s",
-		id, partnerCode, orderResponse.Status, orderResponse.Code, orderResponse.RedirectURL, orderResponse.RequestUUID, orderResponse.RequestUUID,
+		id, partnerCode, orderResponse.Status, orderResponse.Code, orderResponse.RedirectUrl, orderResponse.RequestUuid, orderResponse.Message,
 	)
 
-	orderResponse.PartnerCode = partnerCode
-	orderResponse.State = models.INIT.Status()
-
-	_, err = o.partnerOrderColl.NewOrder(ctx, orderResponse)
+	_, err = o.partnerOrderColl.NewOrder(ctx, models.PartnerOrder{
+		ReferenceID: order.ReferenceID,
+		PartnerCode: partnerCode,
+		MarketCode:  order.MarketCode,
+		Status:      orderResponse.Status,
+		Code:        orderResponse.Code,
+		RedirectURL: orderResponse.RedirectUrl,
+		RequestUUID: orderResponse.RequestUuid,
+		Message:     orderResponse.Message,
+		State:       models.INIT.Status(),
+		StateTitle:  models.INIT.Title(),
+		Offers:      []models.Offers{},
+	})
 	return err
 }

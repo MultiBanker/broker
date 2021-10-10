@@ -72,6 +72,22 @@ func (p Repository) PartnerByCode(ctx context.Context, code string) (models.Part
 	return partner, err
 }
 
+func (p Repository) PartnerByID(ctx context.Context, id string) (models.Partner, error) {
+	var partner models.Partner
+	filter := bson.D{
+		{"_id", id},
+	}
+	err := p.collection.FindOne(ctx, filter).Decode(&partner)
+	switch {
+	case errors.Is(err, mongo.ErrNoDocuments):
+		return partner, drivers.ErrDoesNotExist
+	case errors.Is(err, nil):
+		return partner, nil
+	}
+
+	return partner, err
+}
+
 func (p Repository) PartnerByUsername(ctx context.Context, username string) (models.Partner, error) {
 	var partner models.Partner
 	filter := bson.D{

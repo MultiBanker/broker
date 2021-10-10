@@ -25,63 +25,8 @@ type OrderBankRequest struct {
 	Goods                   []Goods  `json:"goods" bson:"goods"`
 }
 
-type OrderRequest struct {
-	ID                      string            `json:"id" bson:"_id"`
-	SystemCode              string            `json:"system_code"`
-	Channel                 string            `json:"channel"`
-	StateCode               string            `json:"-"`
-	MarketCode              string            `json:"-"`
-	RedirectURL             string            `json:"redirect_url"`
-	IsDelivery              bool              `json:"is_delivery"`
-	LoanLength              string            `json:"loanLength"`
-	ProductType             string            `json:"installment"`
-	PaymentMethod           string            `json:"paymentMethod"`
-	OrderID                 string            `json:"order_id"`
-	Amount                  string            `json:"amount"`
-	VerificationSmsCode     string            `json:"verificationSmsCode"`
-	VerificationSmsDateTime string            `json:"verificationSmsDateTime"`
-	Customer                Customer          `json:"customer"`
-	Address                 Address           `json:"address"`
-	Goods                   []Goods           `json:"goods"`
-	PaymentPartners         []PaymentPartners `json:"paymentPartners"`
-
-	CreatedAt time.Time `json:"-" bson:"created_at"`
-	UpdatedAt time.Time `json:"-" bson:"updated_at"`
-}
-
 func (o OrderRequest) ToBankOrder() OrderBankRequest {
-	return OrderBankRequest{
-		ReferenceID: o.ID,
-	}
-}
-
-type Contact struct {
-	MobileNumber string `json:"mobileNumber" bson:"mobile_number"`
-	Email        string `json:"email" bson:"email"`
-}
-
-type Address struct {
-	Delivery    string `json:"delivery" bson:"delivery"`
-	PickupPoint string `json:"pickupPoint" bson:"pickup_point"`
-}
-type Goods struct {
-	Category string `json:"category" bson:"category"`
-	Brand    string `json:"brand" bson:"brand"`
-	Price    string `json:"price" bson:"price"`
-	Model    string `json:"model" bson:"model"`
-	Image    string `json:"image" bson:"image"`
-}
-
-type Customer struct {
-	IIN        string  `json:"iin"`
-	FirstName  string  `json:"firstName"`
-	LastName   string  `json:"lastName"`
-	MiddleName string  `json:"middleName"`
-	Contact    Contact `json:"contact"`
-}
-
-type PaymentPartners struct {
-	Code string `json:"code"`
+	return OrderBankRequest{}
 }
 
 type OrderResponse struct {
@@ -109,22 +54,51 @@ type Response struct {
 	Message string `json:"message"`
 }
 
-type IDResponse struct {
-	ID     string `json:"id"`
-	Status string `json:"status"`
+type OrderRequest struct {
+	Amount                  string                   `json:"amount"`
+	IsDelivery              bool                     `json:"isDelivery"`
+	CityId                  string                   `json:"cityId"`
+	Channel                 string                   `json:"channel"`
+	PaymentMethod           string                   `json:"paymentMethod"`
+	ProductType             string                   `json:"productType"`
+	RedirectUrl             string                   `json:"redirectUrl"`
+	SystemCode              string                   `json:"systemCode"`
+	VerificationSmsCode     string                   `json:"verificationSmsCode"`
+	VerificationId          string                   `json:"verificationId"`
+	LoanLength              int                      `json:"loanLength"`
+	VerificationSmsDateTime string                   `json:"verificationSmsDateTime"`
+	Customer                models.Customer          `json:"customer"`
+	Address                 models.Address           `json:"address"`
+	Goods                   []models.Goods           `json:"goods"`
+	PaymentPartners         []models.PaymentPartners `json:"paymentPartners"`
 }
 
-type Markets struct {
-	Total   int64           `json:"total"`
-	Markets []models.Market `json:"markets"`
+type Contact struct {
+	MobileNumber string `json:"mobileNumber" bson:"mobile_number"`
+	Email        string `json:"email" bson:"email"`
 }
 
-type Orders struct {
-	Total  int64           `json:"total"`
-	Orders []*OrderRequest `json:"orders"`
+type Address struct {
+	Delivery    string `json:"delivery" bson:"delivery"`
+	PickupPoint string `json:"pickupPoint" bson:"pickup_point"`
+}
+type Goods struct {
+	Category string `json:"category"`
+	Brand    string `json:"brand"`
+	Price    int    `json:"price"`
+	Model    string `json:"model"`
+	Image    string `json:"image"`
+	Sku      string `json:"sku"`
 }
 
-type Partners struct {
-	Total    int64            `json:"total"`
-	Partners []models.Partner `json:"partners"`
+type Customer struct {
+	IIN        string  `json:"iin"`
+	FirstName  string  `json:"firstName"`
+	LastName   string  `json:"lastName"`
+	MiddleName string  `json:"middleName"`
+	Contact    Contact `json:"contact"`
+}
+
+type PaymentPartners struct {
+	Code string `json:"code"`
 }

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
+	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/models/dto"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -20,25 +21,26 @@ func NewPartnerOrderRepository(coll *mongo.Collection) *PartnerOrderRepository {
 	return &PartnerOrderRepository{coll: coll}
 }
 
-func (p PartnerOrderRepository) NewOrder(ctx context.Context, request dto.OrderResponse) (string, error) {
-	request.ID = primitive.NewObjectID().Hex()
-	_, err := p.coll.InsertOne(ctx, request)
-	return request.ID, err
+func (p PartnerOrderRepository) NewOrder(ctx context.Context, order models.PartnerOrder) (string, error) {
+	order.ID = primitive.NewObjectID().Hex()
+	order.CreatedAt = time.Now().UTC()
+	_, err := p.coll.InsertOne(ctx, order)
+	return order.ID, err
 }
 
-func (p PartnerOrderRepository) UpdateOrder(ctx context.Context, response dto.OrderPartnerUpdateRequest) (string, error) {
+func (p PartnerOrderRepository) UpdateOrder(ctx context.Context, porder models.PartnerOrder) (string, error) {
 	var order dto.OrderResponse
 
 	filter := bson.D{
-		{"partner_code", response.PartnerCode},
-		{"reference_id", response.ReferenceID},
+		{"partner_code", porder.PartnerCode},
+		{"reference_id", porder.ReferenceID},
 	}
 
 	update := bson.D{
-		{"state", response.State},
-		{"state_title", response.StateTitle},
-		{"customer", response.Customer},
-		{"offers", response.Offers},
+		{"state", porder.State},
+		{"state_title", porder.StateTitle},
+		{"customer", porder.Customer},
+		{"offers", porder.Offers},
 		{"updated_at", time.Now().UTC()},
 	}
 
@@ -52,7 +54,7 @@ func (p PartnerOrderRepository) UpdateOrder(ctx context.Context, response dto.Or
 	return order.ID, nil
 }
 
-func (p PartnerOrderRepository) OrdersByReferenceID(ctx context.Context, marketCode, referenceID string) ([]*dto.OrderResponse, error) {
+func (p PartnerOrderRepository) OrdersByReferenceID(ctx context.Context, marketCode, referenceID string) ([]*models.PartnerOrder, error) {
 	filter := bson.D{
 		{"market_code", marketCode},
 		{"reference_id", referenceID},
@@ -63,11 +65,29 @@ func (p PartnerOrderRepository) OrdersByReferenceID(ctx context.Context, marketC
 	case errors.Is(err, mongo.ErrNoDocuments):
 		return nil, drivers.ErrDoesNotExist
 	case errors.Is(err, nil):
-		orders := make([]*dto.OrderResponse, cur.RemainingBatchLength())
+		orders := make([]*models.PartnerOrder, cur.RemainingBatchLength())
 		if err := cur.All(ctx, &orders); err != nil {
 			return nil, err
 		}
 		return orders, nil
 	}
 	return nil, err
+}
+
+func (p PartnerOrderRepository) OrderPartner(ctx context.Context, referenceID, partnerCode string) (models.PartnerOrder, error) {
+	var order models.PartnerOrder
+
+	filter := bson.D{
+		{"reference_id", referenceID},
+		{"partner_code", partnerCode},
+	}
+
+	err := p.coll.FindOne(ctx, filter).Decode(&order)
+	switch {
+	case errors.Is(err, mongo.ErrNoDocuments):
+		return order, drivers.ErrDoesNotExist
+	case errors.Is(err, nil):
+		return order, nil
+	}
+	return order, err
 }

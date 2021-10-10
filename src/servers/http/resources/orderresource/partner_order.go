@@ -42,9 +42,18 @@ func (o Order) updateorderpartner() http.HandlerFunc {
 			return
 		}
 
-		req.PartnerCode = partnerCode
-
-		id, err := o.orderMan.UpdatePartnerOrder(ctx, req)
+		id, err := o.orderMan.UpdatePartnerOrder(ctx, models.PartnerOrder{
+			ReferenceID: req.ReferenceID,
+			State:       req.State,
+			StateTitle:  req.StateTitle,
+			PartnerCode: partnerCode,
+			Customer: models.Customer{
+				FirstName:  req.Customer.FirstName,
+				MiddleName: req.Customer.MiddleName,
+				LastName:   req.Customer.LastName,
+			},
+			Offers: req.Offers,
+		})
 		switch err {
 		case drivers.ErrDoesNotExist:
 			_ = render.Render(w, r, httperrors.ResourceNotFound(err))

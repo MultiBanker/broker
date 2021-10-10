@@ -17,4 +17,5 @@ type Marketer interface {
 	MarketByUsername(ctx context.Context, username string) (models.Market, error)
 	Markets(ctx context.Context, paging selector.Paging) ([]models.Market, int64, error)
 	UpdateMarket(ctx context.Context, market models.Market) (string, error)
+	MarketByCode(ctx context.Context, code string) (models.Market, error)
 }

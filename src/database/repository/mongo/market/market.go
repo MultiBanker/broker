@@ -45,6 +45,22 @@ func (r Repository) MarketByID(ctx context.Context, id string) (models.Market, e
 	return market, err
 }
 
+func (r Repository) MarketByCode(ctx context.Context, code string) (models.Market, error) {
+	var market models.Market
+
+	filter := bson.D{
+		{"code", code},
+	}
+	err := r.collection.FindOne(ctx, filter).Decode(&market)
+	switch {
+	case errors.Is(err, mongo.ErrNoDocuments):
+		return market, drivers.ErrDoesNotExist
+	case errors.Is(err, nil):
+		return market, nil
+	}
+	return market, err
+}
+
 func (r Repository) Markets(ctx context.Context, paging selector.Paging) ([]models.Market, int64, error) {
 	filter := bson.D{}
 

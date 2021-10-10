@@ -5,9 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/MultiBanker/broker/pkg/httperrors"
 	"github.com/MultiBanker/broker/src/database/drivers"
+	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/models/dto"
 	"github.com/MultiBanker/broker/src/servers/http/middleware"
 	"github.com/go-chi/chi/v5"
@@ -31,7 +33,7 @@ func (o Order) neworder() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
-		var req dto.OrderRequest
+		var req dto.MarketOrderRequest
 
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 			_ = render.Render(w, r, httperrors.BadRequest(err))
@@ -44,9 +46,26 @@ func (o Order) neworder() http.HandlerFunc {
 			return
 		}
 
-		req.MarketCode = marketCode
-
-		id, err := o.orderMan.NewOrder(ctx, &req)
+		id, err := o.orderMan.NewOrder(ctx, &models.Order{
+			MarketCode:              marketCode,
+			OrderState:              models.INIT.Status(),
+			RedirectURL:             req.RedirectURL,
+			Channel:                 req.Channel,
+			StateCode:               models.INIT.Status(),
+			ProductType:             req.ProductType,
+			PaymentMethod:           req.PaymentMethod,
+			IsDelivery:              req.IsDelivery,
+			TotalCost:               req.Amount,
+			LoanLength:              strconv.Itoa(req.LoanLength),
+			VerificationId:          req.VerificationID,
+			VerificationSMSCode:     req.VerificationSmsCode,
+			VerificationSMSDatetime: req.VerificationSmsDateTime,
+			Customer:                req.Customer,
+			Address:                 req.Address,
+			Goods:                   req.Goods,
+			SystemCode:              req.SystemCode,
+			PaymentPartners:         req.PaymentPartners,
+		})
 		if err != nil {
 			_ = render.Render(w, r, httperrors.Internal(err))
 			return
@@ -72,29 +91,29 @@ func (o Order) neworder() http.HandlerFunc {
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
 // @Router /orders/markets [post]
-func (o Order) marketOrderUpdate(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	var req dto.UpdateMarketOrderRequest
-
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		_ = render.Render(w, r, httperrors.BadRequest(err))
-		return
-	}
-
-	err := o.orderMan.UpdateMarketOrder(ctx, req)
-	switch {
-	case errors.Is(err, drivers.ErrDoesNotExist):
-		_ = render.Render(w, r, httperrors.ResourceNotFound(err))
-		return
-	case errors.Is(err, nil):
-		render.Status(r, http.StatusOK)
-	default:
-		_ = render.Render(w, r, httperrors.Internal(err))
-		return
-	}
-
-}
+//func (o Order) marketOrderUpdate(w http.ResponseWriter, r *http.Request) {
+//	ctx := r.Context()
+//
+//	var req dto.UpdateMarketOrderRequest
+//
+//	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+//		_ = render.Render(w, r, httperrors.BadRequest(err))
+//		return
+//	}
+//
+//	err := o.orderMan.UpdateMarketOrder(ctx, req)
+//	switch {
+//	case errors.Is(err, drivers.ErrDoesNotExist):
+//		_ = render.Render(w, r, httperrors.ResourceNotFound(err))
+//		return
+//	case errors.Is(err, nil):
+//		render.Status(r, http.StatusOK)
+//	default:
+//		_ = render.Render(w, r, httperrors.Internal(err))
+//		return
+//	}
+//
+//}
 
 // list godoc
 // @Summary Получение заказов по reference_id
