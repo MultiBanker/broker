@@ -18,6 +18,7 @@ type ctxKey int
 const (
 	IDKey ctxKey = iota + 1
 	RolesKey
+	CodeKey
 )
 
 type UserAccessCtx struct {
@@ -56,9 +57,15 @@ func (ua *UserAccessCtx) ChiMiddleware(next http.Handler) http.Handler {
 			_ = render.Render(w, r, httperrors.Unauthorized(err))
 			return
 		}
+		code, hasCode := claims["code"]
+		if !hasCode {
+			_ = render.Render(w, r, httperrors.Unauthorized(err))
+			return
+		}
 
 		ctx = context.WithValue(ctx, IDKey, ID)
 		ctx = context.WithValue(ctx, RolesKey, claims["roles"])
+		ctx = context.WithValue(ctx, CodeKey, code)
 
 		// токен валидный, пропускаем его
 		next.ServeHTTP(w, r.WithContext(ctx))

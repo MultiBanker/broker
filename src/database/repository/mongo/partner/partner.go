@@ -56,10 +56,10 @@ func (p Repository) UpdatePartner(ctx context.Context, partner *models.Partner) 
 	return "", err
 }
 
-func (p Repository) PartnerByID(ctx context.Context, id string) (models.Partner, error) {
+func (p Repository) PartnerByCode(ctx context.Context, code string) (models.Partner, error) {
 	var partner models.Partner
 	filter := bson.D{
-		{"_id", id},
+		{"code", code},
 	}
 	err := p.collection.FindOne(ctx, filter).Decode(&partner)
 	switch {

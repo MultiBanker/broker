@@ -47,7 +47,7 @@ func (p Partner) NewPartner(ctx context.Context, partner *models.Partner) (strin
 }
 
 func (p Partner) UpdatePartner(ctx context.Context, partner *models.Partner) (string, error) {
-	res, err := p.partnerColl.PartnerByID(ctx, partner.ID)
+	res, err := p.partnerColl.PartnerByCode(ctx, partner.ID)
 	if err != nil {
 		return "", err
 	}
@@ -58,7 +58,7 @@ func (p Partner) UpdatePartner(ctx context.Context, partner *models.Partner) (st
 }
 
 func (p Partner) PartnerByID(ctx context.Context, id string) (models.Partner, error) {
-	return p.partnerColl.PartnerByID(ctx, id)
+	return p.partnerColl.PartnerByCode(ctx, id)
 }
 
 func (p Partner) Partners(ctx context.Context, paging *selector.Paging) ([]models.Partner, int64, error) {

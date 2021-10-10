@@ -54,7 +54,7 @@ func (p Client) RequestOrder(ctx context.Context, order interface{}, count int, 
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Add("Authorization ", "Bearer "+p.Token)
+	req.Header.Add("Authorization", "Bearer "+p.Token)
 	res, err := p.cli.Do(req.WithContext(ctx))
 	if err != nil {
 		count--

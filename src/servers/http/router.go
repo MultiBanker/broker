@@ -33,7 +33,7 @@ func Routing(opts *config.Config, man manager.Abstractor) chi.Router {
 	r.Route(ApiPath, func(r chi.Router) {
 		r.Route("/broker", func(r chi.Router) {
 			r.Mount("/partners", partner.NewAuth(man.Partnerer(), man.Auther()).Route())
-			r.Mount("/orders", orderresource.NewOrder(man.Orderer()).Route())
+			r.Mount("/orders", orderresource.NewOrder(man.Auther(), man.Orderer()).Route())
 			r.Mount("/markets", market.NewResource(man.Auther(), man.Marketer()).Route())
 		})
 	})

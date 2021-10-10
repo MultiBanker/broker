@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"strconv"
-	"sync"
 
 	"github.com/MultiBanker/broker/src/clients"
 	"github.com/MultiBanker/broker/src/database/repository"
@@ -58,17 +57,20 @@ func (o Order) NewOrder(ctx context.Context, order *dto.OrderRequest) (string, e
 		return "", err
 	}
 
-	wg := sync.WaitGroup{}
+	//wg := sync.WaitGroup{}
 	for _, partnersCode := range order.PaymentPartners {
-		wg.Add(1)
-		go func(partnerCode string) {
-			defer wg.Done()
-			if err := o.BankOrder(ctx, id, partnerCode, *order); err != nil {
-				log.Println(err)
-			}
-		}(partnersCode.Code)
+		//wg.Add(1)
+		//go func(partnerCode string) {
+		//	defer wg.Done()
+		//	if err := o.BankOrder(ctx, id, partnerCode, *order); err != nil {
+		//		log.Println(err)
+		//	}
+		//}(partnersCode.Code)
+		if err := o.BankOrder(ctx, id, partnersCode.Code, *order); err != nil {
+			log.Println(err)
+		}
 	}
-	wg.Wait()
+	//wg.Wait()
 
 	return id, nil
 }
@@ -98,7 +100,7 @@ func (o Order) UpdatePartnerOrder(ctx context.Context, req dto.OrderPartnerUpdat
 }
 
 func (o Order) UpdateMarketOrder(ctx context.Context, req dto.UpdateMarketOrderRequest) error {
-	partner, err := o.partnerColl.PartnerByID(ctx, req.ProductCode)
+	partner, err := o.partnerColl.PartnerByCode(ctx, req.ProductCode)
 	if err != nil {
 		return err
 	}
@@ -119,19 +121,19 @@ func (o Order) UpdateMarketOrder(ctx context.Context, req dto.UpdateMarketOrderR
 }
 
 func (o Order) BankOrder(ctx context.Context, id string, partnerCode string, order dto.OrderRequest) error {
-	partner, err := o.partnerColl.PartnerByID(ctx, partnerCode)
+	partner, err := o.partnerColl.PartnerByCode(ctx, partnerCode)
 	if err != nil {
 		return fmt.Errorf("[ERROR] getting partner from db %v", err)
 	}
 	order.OrderID = id
 
-	_, err = o.orderColl.NewOrder(ctx, &order)
-	if err != nil {
-		return fmt.Errorf("[ERROR] creating partner order %v", err)
-	}
+	//_, err = o.partnerOrderColl.NewOrder(ctx, &order)
+	//if err != nil {
+	//	return fmt.Errorf("[ERROR] creating partner order %v", err)
+	//}
 
-	bankCli := clients.NewClient(partner.URL.Create, "")
-	b, err := bankCli.RequestOrder(ctx, order, 3, nil)
+	bankCli := clients.NewClient(partner.URL.Create, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW1fY29kZSI6IlREX0JST0tFUiJ9.Fa4wL9KID3A_-8fYmvhZKXi68K5GRMlLsYK0y6PASI4")
+	b, err := bankCli.RequestOrder(ctx, order.ToBankOrder(), 3, nil)
 	if err != nil {
 		return fmt.Errorf("[ERROR] requesting order to partner from url %v", err)
 	}

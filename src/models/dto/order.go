@@ -16,7 +16,7 @@ type OrderBankRequest struct {
 	PaymentMethod           string   `json:"paymentMethod" bson:"payment_method"`
 	IsDelivery              bool     `json:"isDelivery" bson:"is_delivery"`
 	TotalCost               string   `json:"totalCost" bson:"total_cost"`
-	LoanLength              int      `json:"loanLength" bson:"loan_length"`
+	LoanLength              string   `json:"loanLength" bson:"loan_length"`
 	SalesPlace              string   `json:"salesPlace" bson:"sales_place"`
 	VerificationSMSCode     string   `json:"verificationSmsCode" bson:"verification_sms_code"`
 	VerificationSMSDatetime string   `json:"verificationSmsDateTime" bson:"verification_sms_datetime"`
@@ -33,16 +33,17 @@ type OrderRequest struct {
 	MarketCode              string            `json:"-"`
 	RedirectURL             string            `json:"redirect_url"`
 	IsDelivery              bool              `json:"is_delivery"`
-	ProductType             string            `json:"product_type"`
-	PaymentMethod           string            `json:"payment_method"`
+	LoanLength              string            `json:"loanLength"`
+	ProductType             string            `json:"installment"`
+	PaymentMethod           string            `json:"paymentMethod"`
 	OrderID                 string            `json:"order_id"`
 	Amount                  string            `json:"amount"`
-	VerificationSmsCode     string            `json:"verification_sms_code"`
-	VerificationSmsDateTime string            `json:"verification_sms_date_time"`
+	VerificationSmsCode     string            `json:"verificationSmsCode"`
+	VerificationSmsDateTime string            `json:"verificationSmsDateTime"`
 	Customer                Customer          `json:"customer"`
 	Address                 Address           `json:"address"`
 	Goods                   []Goods           `json:"goods"`
-	PaymentPartners         []PaymentPartners `json:"payment_partners"`
+	PaymentPartners         []PaymentPartners `json:"paymentPartners"`
 
 	CreatedAt time.Time `json:"-" bson:"created_at"`
 	UpdatedAt time.Time `json:"-" bson:"updated_at"`
