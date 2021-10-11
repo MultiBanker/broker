@@ -30,7 +30,7 @@ type Order struct {
 }
 
 type Customer struct {
-	IIN        string  `json:"iin"`
+	TaxCode    string  `json:"taxCode"`
 	FirstName  string  `json:"firstName"`
 	LastName   string  `json:"lastName"`
 	MiddleName string  `json:"middleName"`

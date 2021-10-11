@@ -58,6 +58,8 @@ func (o Order) NewOrder(ctx context.Context, order *models.Order) (string, error
 		return "", err
 	}
 
+	order.ReferenceID = id
+
 	wg := sync.WaitGroup{}
 	for _, partnersCode := range order.PaymentPartners {
 		wg.Add(1)
