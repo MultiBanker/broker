@@ -27,21 +27,21 @@ type OrderBankRequest struct {
 
 type OrderRequest struct {
 	ID                      string            `json:"id" bson:"_id"`
-	SystemCode              string            `json:"system_code"`
+	SystemCode              string            `json:"systemCode"`
 	Channel                 string            `json:"channel"`
 	StateCode               string            `json:"-"`
-	RedirectURL             string            `json:"redirect_url"`
-	IsDelivery              bool              `json:"is_delivery"`
-	ProductType             string            `json:"product_type"`
-	PaymentMethod           string            `json:"payment_method"`
+	RedirectURL             string            `json:"redirectUrl"`
+	IsDelivery              bool              `json:"isDelivery"`
+	ProductType             string            `json:"productType"`
+	PaymentMethod           string            `json:"paymentMethod"`
 	OrderID                 string            `json:"order_id"`
 	Amount                  string            `json:"amount"`
-	VerificationSmsCode     string            `json:"verification_sms_code"`
-	VerificationSmsDateTime string            `json:"verification_sms_date_time"`
+	VerificationSmsCode     string            `json:"verificationSmsCode"`
+	VerificationSmsDateTime string            `json:"verificationSmsDateTime"`
 	Customer                Customer          `json:"customer"`
 	Address                 Address           `json:"address"`
 	Goods                   []Goods           `json:"goods"`
-	PaymentPartners         []PaymentPartners `json:"payment_partners"`
+	PaymentPartners         []PaymentPartners `json:"paymentPartners"`
 
 	CreatedAt time.Time `json:"-" bson:"created_at"`
 	UpdatedAt time.Time `json:"-" bson:"updated_at"`
