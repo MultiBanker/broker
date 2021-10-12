@@ -2,6 +2,7 @@ package repository
 
 import (
 	"github.com/MultiBanker/broker/src/database/repository/mongo/market"
+	"github.com/MultiBanker/broker/src/database/repository/mongo/offer"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
@@ -16,6 +17,7 @@ const (
 	Sequence     = "counters"
 	Partner      = "partner"
 	Market       = "market"
+	OfferColl    = "offer"
 )
 
 type Repositories interface {
@@ -24,6 +26,7 @@ type Repositories interface {
 	OrderRepo() Orderer
 	MarketRepo() Marketer
 	PartnerOrderRepo() PartnerOrderer
+	OfferRepo() Offer
 }
 
 type Repository struct {
@@ -32,6 +35,7 @@ type Repository struct {
 	Order        Orderer
 	Market       Marketer
 	PartnerOrder PartnerOrderer
+	Offer        Offer
 }
 
 func NewRepository(datastore drivers.Datastore) (Repositories, error) {
@@ -43,6 +47,7 @@ func NewRepository(datastore drivers.Datastore) (Repositories, error) {
 			Order:        order.NewRepository(db.Collection(Order)),
 			Market:       market.NewRepository(db.Collection(Market)),
 			PartnerOrder: order.NewPartnerOrderRepository(db.Collection(PartnerOrder)),
+			Offer:        offer.NewRepository(db.Collection(OfferColl)),
 		}, nil
 	}
 	return nil, ErrDatastoreNotImplemented

@@ -35,4 +35,3 @@ func (vr VersionResource) Get(w http.ResponseWriter, r *http.Request) {
 		Version: vr.Version,
 	})
 }
-

@@ -77,7 +77,6 @@ func (a *application) shutdown(ctx context.Context) {
 	log.Println("[INFO] Terminated")
 }
 
-
 // resetEnv() - сбрасывает чувствительные переменные окружения.
 func resetEnv(envs ...string) {
 	for _, env := range envs {

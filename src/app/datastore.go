@@ -19,4 +19,3 @@ func (a *application) datastore(fn func(opts drivers.DataStoreConfig) (drivers.D
 	a.ds = ds
 	log.Printf("[INFO] Connected to Storage %s", a.opts.Database.DSName)
 }
-

@@ -338,6 +338,266 @@ var doc = `{
                 }
             }
         },
+        "/offers": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Получение офферов",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Offers"
+                ],
+                "summary": "Получение офферов",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pagination limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pagination skip",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.OfferSpecs"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Создание нового оффера",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Offers"
+                ],
+                "summary": "Создание нового оффера",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "partner",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.OfferRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.IDResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/offers/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Получение оффера",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Offers"
+                ],
+                "summary": "Получение оффера",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "id of the market",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Partner"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Обновление оффера",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Offers"
+                ],
+                "summary": "Обновление оффера",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "partner",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.OfferRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "id of the market",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Offer"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/orders": {
             "get": {
                 "security": [
@@ -438,70 +698,6 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/dto.IDResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "429": {
-                        "description": "Too Many Requests",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/orders/markets": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Обновление заказа по решению клиента",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Market-Order"
-                ],
-                "summary": "Обновление заказа по решению клиента",
-                "parameters": [
-                    {
-                        "description": "body",
-                        "name": "market",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.UpdateMarketOrderRequest"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Response"
                         }
                     },
                     "400": {
@@ -1108,48 +1304,6 @@ var doc = `{
         }
     },
     "definitions": {
-        "dto.Address": {
-            "type": "object",
-            "properties": {
-                "delivery": {
-                    "type": "string"
-                },
-                "pickupPoint": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.Contact": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "mobileNumber": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.Customer": {
-            "type": "object",
-            "properties": {
-                "contact": {
-                    "$ref": "#/definitions/dto.Contact"
-                },
-                "firstName": {
-                    "type": "string"
-                },
-                "iin": {
-                    "type": "string"
-                },
-                "lastName": {
-                    "type": "string"
-                },
-                "middleName": {
-                    "type": "string"
-                }
-            }
-        },
         "dto.FIO": {
             "type": "object",
             "properties": {
@@ -1160,26 +1314,6 @@ var doc = `{
                     "type": "string"
                 },
                 "middleName": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.Goods": {
-            "type": "object",
-            "properties": {
-                "brand": {
-                    "type": "string"
-                },
-                "category": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "model": {
-                    "type": "string"
-                },
-                "price": {
                     "type": "string"
                 }
             }
@@ -1220,6 +1354,40 @@ var doc = `{
                 }
             }
         },
+        "dto.OfferRequest": {
+            "type": "object",
+            "properties": {
+                "max_order_sum": {
+                    "type": "integer"
+                },
+                "min_order_sum": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "partner_code": {
+                    "type": "string"
+                },
+                "payment_type_group_code": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.OfferSpecs": {
+            "type": "object",
+            "properties": {
+                "offers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Offer"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
         "dto.Offers": {
             "type": "object",
             "properties": {
@@ -1252,7 +1420,7 @@ var doc = `{
                 "offers": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dto.Offers"
+                        "$ref": "#/definitions/models.Offers"
                     }
                 },
                 "referenceId": {
@@ -1270,7 +1438,7 @@ var doc = `{
             "type": "object",
             "properties": {
                 "address": {
-                    "$ref": "#/definitions/dto.Address"
+                    "$ref": "#/definitions/models.Address"
                 },
                 "amount": {
                     "type": "string"
@@ -1278,29 +1446,23 @@ var doc = `{
                 "channel": {
                     "type": "string"
                 },
+                "cityId": {
+                    "type": "string"
+                },
                 "customer": {
-                    "$ref": "#/definitions/dto.Customer"
+                    "$ref": "#/definitions/models.Customer"
                 },
                 "goods": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dto.Goods"
+                        "$ref": "#/definitions/models.Goods"
                     }
                 },
-                "id": {
-                    "type": "string"
-                },
-                "installment": {
-                    "type": "string"
-                },
-                "is_delivery": {
+                "isDelivery": {
                     "type": "boolean"
                 },
                 "loanLength": {
-                    "type": "string"
-                },
-                "order_id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "paymentMethod": {
                     "type": "string"
@@ -1308,13 +1470,19 @@ var doc = `{
                 "paymentPartners": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dto.PaymentPartners"
+                        "$ref": "#/definitions/models.PaymentPartners"
                     }
                 },
-                "redirect_url": {
+                "productType": {
                     "type": "string"
                 },
-                "system_code": {
+                "redirectUrl": {
+                    "type": "string"
+                },
+                "systemCode": {
+                    "type": "string"
+                },
+                "verificationId": {
                     "type": "string"
                 },
                 "verificationSmsCode": {
@@ -1363,7 +1531,7 @@ var doc = `{
                 "orders": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dto.OrderRequest"
+                        "$ref": "#/definitions/models.Order"
                     }
                 },
                 "total": {
@@ -1385,14 +1553,6 @@ var doc = `{
                 }
             }
         },
-        "dto.PaymentPartners": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "string"
-                }
-            }
-        },
         "dto.TokenResponse": {
             "type": "object",
             "properties": {
@@ -1400,29 +1560,6 @@ var doc = `{
                     "type": "string"
                 },
                 "response_token": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.UpdateMarketOrderRequest": {
-            "type": "object",
-            "properties": {
-                "loanLength": {
-                    "type": "string"
-                },
-                "productCode": {
-                    "type": "string"
-                },
-                "reason": {
-                    "type": "string"
-                },
-                "referenceId": {
-                    "type": "string"
-                },
-                "state": {
-                    "type": "string"
-                },
-                "stateTitle": {
                     "type": "string"
                 }
             }
@@ -1459,6 +1596,28 @@ var doc = `{
                 }
             }
         },
+        "models.Address": {
+            "type": "object",
+            "properties": {
+                "delivery": {
+                    "type": "string"
+                },
+                "pickupPoint": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Contact": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "mobileNumber": {
+                    "type": "string"
+                }
+            }
+        },
         "models.ContactInfo": {
             "type": "object",
             "properties": {
@@ -1472,6 +1631,46 @@ var doc = `{
                     "type": "string"
                 },
                 "phone": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Customer": {
+            "type": "object",
+            "properties": {
+                "contact": {
+                    "$ref": "#/definitions/models.Contact"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "middleName": {
+                    "type": "string"
+                },
+                "taxCode": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Goods": {
+            "type": "object",
+            "properties": {
+                "brand": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "price": {
                     "type": "string"
                 }
             }
@@ -1523,6 +1722,132 @@ var doc = `{
                 }
             }
         },
+        "models.Offer": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "max_order_sum": {
+                    "type": "integer"
+                },
+                "min_order_sum": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "partner_code": {
+                    "type": "string"
+                },
+                "payment_type_group_code": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Offers": {
+            "type": "object",
+            "properties": {
+                "contractNumber": {
+                    "type": "string"
+                },
+                "loanAmount": {
+                    "type": "string"
+                },
+                "loanLength": {
+                    "type": "string"
+                },
+                "monthlyPayment": {
+                    "type": "integer"
+                },
+                "product": {
+                    "type": "string"
+                },
+                "productType": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Order": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/models.Address"
+                },
+                "channel": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "customer": {
+                    "$ref": "#/definitions/models.Customer"
+                },
+                "goods": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Goods"
+                    }
+                },
+                "id": {
+                    "type": "string"
+                },
+                "isDelivery": {
+                    "type": "boolean"
+                },
+                "loanLength": {
+                    "type": "string"
+                },
+                "orderState": {
+                    "type": "string"
+                },
+                "paymentMethod": {
+                    "type": "string"
+                },
+                "paymentPartners": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.PaymentPartners"
+                    }
+                },
+                "productType": {
+                    "type": "string"
+                },
+                "redirectUrl": {
+                    "type": "string"
+                },
+                "referenceId": {
+                    "type": "string"
+                },
+                "salesPlace": {
+                    "type": "string"
+                },
+                "system_code": {
+                    "type": "string"
+                },
+                "totalCost": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "verificationId": {
+                    "type": "string"
+                },
+                "verificationSmsCode": {
+                    "type": "string"
+                },
+                "verificationSmsDateTime": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Partner": {
             "type": "object",
             "properties": {
@@ -1563,6 +1888,14 @@ var doc = `{
                     "$ref": "#/definitions/models.URL"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.PaymentPartners": {
+            "type": "object",
+            "properties": {
+                "code": {
                     "type": "string"
                 }
             }

@@ -13,6 +13,7 @@ require (
 	github.com/jessevdk/go-flags v1.5.0
 	github.com/kr/pretty v0.3.0 // indirect
 	github.com/lestrrat-go/jwx v1.2.6
+	github.com/pkg/errors v0.9.1
 	github.com/rogpeppe/go-internal v1.8.0 // indirect
 	github.com/rs/cors v1.8.0
 	github.com/swaggo/http-swagger v1.1.1

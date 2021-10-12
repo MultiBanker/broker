@@ -15,4 +15,3 @@ func TestNameBuilder(t *testing.T) {
 		t.Error("not equal")
 	}
 }
-

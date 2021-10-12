@@ -1,6 +1,5 @@
 package resources
 
-
 type Broker struct {
 }
 

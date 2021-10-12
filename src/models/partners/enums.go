@@ -8,7 +8,7 @@ const (
 
 var (
 	partner = map[Partner]string{
-		AIRBA:       "AIRBA",
+		AIRBA: "AIRBA",
 	}
 )
 

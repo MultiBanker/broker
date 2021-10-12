@@ -141,23 +141,7 @@ func (o Order) BankOrder(ctx context.Context, id string, partnerCode string, ord
 	}
 
 	bankCli := clients.NewClient(partner.URL.Create, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW1fY29kZSI6IlREX0JST0tFUiJ9.Fa4wL9KID3A_-8fYmvhZKXi68K5GRMlLsYK0y6PASI4")
-	b, err := bankCli.RequestOrder(ctx, dto.PartnerOrderRequest{
-		ReferenceId:             order.ReferenceID,
-		IsDelivery:              order.IsDelivery,
-		Channel:                 order.Channel,
-		PaymentMethod:           order.PaymentMethod,
-		ProductType:             order.ProductType,
-		RedirectUrl:             order.RedirectURL,
-		OrderState:              order.OrderState,
-		SalesPlace:              order.SalesPlace,
-		VerificationSmsCode:     order.VerificationSMSCode,
-		VerificationSmsDateTime: order.VerificationSMSDatetime,
-		LoanLength:              order.LoanLength,
-		Customer:                order.Customer,
-		Address:                 order.Address,
-		Goods:                   order.Goods,
-		TotalCost:               order.TotalCost,
-	}, 3, nil)
+	b, err := bankCli.RequestOrder(ctx, OrderToDTO(order), 3, nil)
 	if err != nil {
 		return fmt.Errorf("[ERROR] requesting order to partner from url %v", err)
 	}
@@ -187,4 +171,24 @@ func (o Order) BankOrder(ctx context.Context, id string, partnerCode string, ord
 		Offers:      []models.Offers{},
 	})
 	return err
+}
+
+func OrderToDTO(order models.Order) dto.PartnerOrderRequest {
+	return dto.PartnerOrderRequest{
+		ReferenceId:             order.ReferenceID,
+		IsDelivery:              order.IsDelivery,
+		Channel:                 order.Channel,
+		PaymentMethod:           order.PaymentMethod,
+		ProductType:             order.ProductType,
+		RedirectUrl:             order.RedirectURL,
+		OrderState:              order.OrderState,
+		SalesPlace:              order.SalesPlace,
+		VerificationSmsCode:     order.VerificationSMSCode,
+		VerificationSmsDateTime: order.VerificationSMSDatetime,
+		LoanLength:              order.LoanLength,
+		Customer:                order.Customer,
+		Address:                 order.Address,
+		Goods:                   order.Goods,
+		TotalCost:               order.TotalCost,
+	}
 }

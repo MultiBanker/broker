@@ -13,7 +13,7 @@ type Auth struct {
 	partnerMan partner.Partnerer
 }
 
-func NewAuth(partnerMan partner.Partnerer, authMan auth.Authenticator) Auth {
+func NewAuth(authMan auth.Authenticator, partnerMan partner.Partnerer) Auth {
 	return Auth{
 		partnerMan: partnerMan,
 		authMan:    authMan,

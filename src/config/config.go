@@ -61,7 +61,6 @@ type Token struct {
 	RefreshToken int `long:"refresh-token" env:"REFRESH_TOKEN_DURATION_MONTH" description:"Refresh Token Duration" required:"true" default:"1"`
 }
 
-
 func (d Database) ToDataStore() drivers.DataStoreConfig {
 	return drivers.DataStoreConfig{
 		Engine: d.DSName,

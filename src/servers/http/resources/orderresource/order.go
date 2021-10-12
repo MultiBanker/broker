@@ -49,5 +49,3 @@ func (o Order) order() http.HandlerFunc {
 
 	}
 }
-
-

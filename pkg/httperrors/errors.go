@@ -235,7 +235,6 @@ func Custom(err error, code int, opts ...ResponseOption) render.Renderer {
 	return renderer
 }
 
-
 type ResponseOption func(r *Response)
 
 func WithValidationErrors(validationErrors map[string]string) ResponseOption {
@@ -243,4 +242,3 @@ func WithValidationErrors(validationErrors map[string]string) ResponseOption {
 		r.Validation = validationErrors
 	}
 }
-

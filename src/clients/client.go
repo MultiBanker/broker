@@ -81,5 +81,3 @@ func (p Client) RequestOrder(ctx context.Context, order interface{}, count int, 
 
 	return body, nil
 }
-
-

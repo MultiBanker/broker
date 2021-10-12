@@ -68,4 +68,3 @@ func (m *Metricware) All(path string) []func(handler http.Handler) http.Handler 
 		m.Latency(path),
 	}
 }
-

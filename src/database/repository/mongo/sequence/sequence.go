@@ -62,5 +62,3 @@ func (sr Repository) NewSequence(ctx context.Context, sequenceName string) error
 
 	return nil
 }
-
-

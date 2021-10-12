@@ -12,7 +12,3 @@ type Token struct {
 type Validate struct {
 	Status string `json:"status"`
 }
-
-
-
-

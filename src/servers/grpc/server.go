@@ -59,4 +59,3 @@ func NewGRPC(config *config.Config, man manager.Abstractor, handler func(server 
 		handler: handler,
 	}
 }
-
