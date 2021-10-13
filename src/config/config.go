@@ -19,9 +19,9 @@ type Config struct {
 }
 
 type Servers struct {
-	HTTP       *HTTPServer
-	GRPC       *GRPCServer
-	Prometheus *PrometheusServer
+	HTTP            *HTTPServer
+	GRPC            *GRPCServer
+	VictoriaMetrics *VictoriaServer
 
 	Dbg    bool   `long:"dbg" env:"DEBUG" description:"debug mode"`
 	JWTKey string `long:"jwt-key" env:"JWT_KEY" description:"JWT secret key" required:"false" default:"airba-secret"`
@@ -46,7 +46,7 @@ type GRPCServer struct {
 	ListenAddr string `long:"grpc-listen" env:"GRPC_LISTEN" description:"Grpc Listen Address (format: :4000|127.0.0.1:4000)" required:"false" default:":4000"`
 }
 
-type PrometheusServer struct {
+type VictoriaServer struct {
 	ListenAddr string `long:"prom-listen" env:"PROM_LISTEN" description:"Listen Address (format: :9090|127.0.0.1:9090)" required:"false" default:":9090"`
 }
 

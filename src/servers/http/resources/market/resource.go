@@ -3,18 +3,21 @@ package market
 import (
 	"github.com/MultiBanker/broker/src/manager/auth"
 	"github.com/MultiBanker/broker/src/manager/market"
+	"github.com/VictoriaMetrics/metrics"
 	"github.com/go-chi/chi/v5"
 )
 
 type Resource struct {
 	auther auth.Authenticator
 	market market.Marketer
+	set    *metrics.Set
 }
 
-func NewResource(auth auth.Authenticator, market market.Marketer) Resource {
+func NewResource(auth auth.Authenticator, market market.Marketer, set *metrics.Set) Resource {
 	return Resource{
 		auther: auth,
 		market: market,
+		set:    set,
 	}
 }
 

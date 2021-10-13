@@ -7,7 +7,8 @@ import (
 	"strconv"
 
 	"github.com/MultiBanker/broker/pkg/httperrors"
-	"github.com/MultiBanker/broker/src/models/dto"
+	"github.com/MultiBanker/broker/src/servers/http/dto"
+
 	"github.com/MultiBanker/broker/src/models/selector"
 
 	"github.com/go-chi/chi/v5"
@@ -34,7 +35,7 @@ func (a Auth) newpartner() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
-		var req models.Partner
+		var req dto.PartnerRequest
 
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 			_ = render.Render(w, r, httperrors.BadRequest(err))
@@ -46,7 +47,9 @@ func (a Auth) newpartner() http.HandlerFunc {
 			return
 		}
 
-		id, err := a.partnerMan.NewPartner(ctx, &req)
+		partner := DTOToModelPartner(req)
+
+		id, err := a.partnerMan.NewPartner(ctx, &partner)
 		if err != nil {
 			_ = render.Render(w, r, httperrors.Internal(err))
 			return
@@ -63,7 +66,7 @@ func (a Auth) newpartner() http.HandlerFunc {
 // @Accept  json
 // @Produce  json
 // @Security ApiKeyAuth
-// @Param partner body models.Partner true "body"
+// @Param partner body dto.PartnerRequest true "body"
 // @Param id path string true "id of the market"
 // @Param Authorization header string true "Authorization"
 // @Success 200 {object} models.Response
@@ -81,7 +84,7 @@ func (a Auth) update() http.HandlerFunc {
 			return
 		}
 
-		var req models.Partner
+		var req dto.PartnerRequest
 
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 			_ = render.Render(w, r, httperrors.BadRequest(err))
@@ -93,9 +96,10 @@ func (a Auth) update() http.HandlerFunc {
 			return
 		}
 
-		req.ID = id
+		partner := DTOToModelPartner(req)
+		partner.ID = id
 
-		id, err := a.partnerMan.UpdatePartner(ctx, &req)
+		id, err := a.partnerMan.UpdatePartner(ctx, &partner)
 		switch err {
 		case drivers.ErrDoesNotExist:
 			_ = render.Render(w, r, httperrors.ResourceNotFound(err))

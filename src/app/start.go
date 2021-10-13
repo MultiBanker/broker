@@ -15,6 +15,7 @@ import (
 	"github.com/MultiBanker/broker/src/database/repository"
 	"github.com/MultiBanker/broker/src/manager"
 	"github.com/MultiBanker/broker/src/servers"
+	"github.com/VictoriaMetrics/metrics"
 )
 
 type application struct {
@@ -26,12 +27,14 @@ type application struct {
 	ds      drivers.Datastore
 	repo    repository.Repositories
 	man     manager.Abstractor
+	metric  *metrics.Set
 }
 
 func initApp(version string) *application {
 	return &application{
 		version: version,
 		opts:    config.ParseConfig(),
+		metric:  metrics.NewSet(),
 	}
 }
 

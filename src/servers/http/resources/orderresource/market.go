@@ -10,7 +10,7 @@ import (
 	"github.com/MultiBanker/broker/pkg/httperrors"
 	"github.com/MultiBanker/broker/src/database/drivers"
 	"github.com/MultiBanker/broker/src/models"
-	"github.com/MultiBanker/broker/src/models/dto"
+	"github.com/MultiBanker/broker/src/servers/http/dto"
 	"github.com/MultiBanker/broker/src/servers/http/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"

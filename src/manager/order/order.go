@@ -11,8 +11,8 @@ import (
 	"github.com/MultiBanker/broker/src/clients"
 	"github.com/MultiBanker/broker/src/database/repository"
 	"github.com/MultiBanker/broker/src/models"
-	"github.com/MultiBanker/broker/src/models/dto"
 	"github.com/MultiBanker/broker/src/models/selector"
+	"github.com/MultiBanker/broker/src/servers/http/dto"
 )
 
 type Order struct {

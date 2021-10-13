@@ -38,7 +38,6 @@ func (p Repository) UpdatePartner(ctx context.Context, partner *models.Partner) 
 			{"username", partner.Username},
 			{"password", partner.Password},
 			{"url", partner.URL},
-			{"bin", partner.BIN},
 			{"commission", partner.Commission},
 			{"logo_url", partner.LogoURL},
 			{"contact", partner.Contact},

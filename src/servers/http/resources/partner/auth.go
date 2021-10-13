@@ -7,11 +7,11 @@ import (
 
 	"github.com/MultiBanker/broker/pkg/httperrors"
 	"github.com/MultiBanker/broker/src/models"
+	"github.com/MultiBanker/broker/src/servers/http/dto"
 
 	"github.com/go-chi/render"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
-	"github.com/MultiBanker/broker/src/models/dto"
 )
 
 const (

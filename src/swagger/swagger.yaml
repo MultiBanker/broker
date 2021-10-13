@@ -1,5 +1,36 @@
 basePath: /broker/api/v1/broker
 definitions:
+  dto.ContactInfo:
+    properties:
+      bin:
+        description: БИН организации
+        example: "5189011425"
+        type: string
+      email:
+        description: Имейл
+        example: oleg@tinkoff.ru
+        type: string
+      first_name:
+        description: Имя
+        example: Oleg
+        type: string
+      last_name:
+        description: Фамилия
+        example: Tinkoff
+        type: string
+      location:
+        description: Адрес организации
+        example: Bldg. 26, 38A, 2 Khutorskaya str., Moscow, Russia.
+        type: string
+      phone:
+        description: Телефон
+        example: "87777777777"
+        type: string
+      web_address:
+        description: Веб адрес организации
+        example: https://www.tinkoff.ru
+        type: string
+    type: object
   dto.FIO:
     properties:
       firstName:
@@ -21,6 +52,39 @@ definitions:
       password:
         type: string
       username:
+        type: string
+    type: object
+  dto.MarketRequest:
+    properties:
+      code:
+        description: Код картинки
+        example: tinkoff
+        type: string
+      company_name:
+        description: Название компании
+        type: string
+      contact:
+        $ref: '#/definitions/dto.ContactInfo'
+        description: Контакт
+      enabled:
+        description: Включение
+        example: true
+        type: boolean
+      logo_url:
+        description: Веб адрес картинки
+        example: https://plusworld.ru/wp-content/uploads/2021/09/759950f2eafdab128b887f1296316ea6f1af5152.jpg
+        type: string
+      password:
+        description: Пароль
+        example: Password123
+        type: string
+      update_order_url:
+        description: Обновление заказов
+        example: https://google.com
+        type: string
+      username:
+        description: Имя пользователя
+        example: Olejka
         type: string
     type: object
   dto.Markets:
@@ -153,6 +217,43 @@ definitions:
       total:
         type: integer
     type: object
+  dto.PartnerRequest:
+    properties:
+      code:
+        description: Код партнера
+        example: airba_pay
+        type: string
+      commission:
+        description: Коммиссия
+        example: 5
+        type: integer
+      company_name:
+        description: Название компании
+        example: Airba Pay
+        type: string
+      contact:
+        $ref: '#/definitions/dto.ContactInfo'
+        description: Контактные данные
+      enabled:
+        description: Включен
+        example: true
+        type: boolean
+      logo_url:
+        description: Веб адрес компании
+        example: https://emotionsgroup.kz/uploads/7f47072c77ad20f58acb9e7114cfeb5c.jpg
+        type: string
+      password:
+        description: Пароль
+        example: Password123
+        type: string
+      url:
+        $ref: '#/definitions/dto.URL'
+        description: Адреса на обновления АПИ
+      username:
+        description: Имя пользователя
+        example: SuperRinat
+        type: string
+    type: object
   dto.Partners:
     properties:
       partners:
@@ -167,6 +268,17 @@ definitions:
       access_token:
         type: string
       response_token:
+        type: string
+    type: object
+  dto.URL:
+    properties:
+      create:
+        description: Урл который создает заказ на стороне партнера
+        example: https://
+        type: string
+      update:
+        description: Урл который обновляет заказ на стороне партнера
+        example: https://
         type: string
     type: object
   httperrors.Details:
@@ -207,13 +319,33 @@ definitions:
     type: object
   models.ContactInfo:
     properties:
+      bin:
+        description: БИН организации
+        example: "5189011425"
+        type: string
       email:
+        description: Имейл
+        example: oleg@tinkoff.ru
         type: string
       first_name:
+        description: Имя
+        example: Oleg
         type: string
       last_name:
+        description: Фамилия
+        example: Tinkoff
+        type: string
+      location:
+        description: Адрес организации
+        example: Bldg. 26, 38A, 2 Khutorskaya str., Moscow, Russia.
         type: string
       phone:
+        description: Телефон
+        example: "87777777777"
+        type: string
+      web_address:
+        description: Веб адрес организации
+        example: https://www.tinkoff.ru
         type: string
     type: object
   models.Customer:
@@ -244,8 +376,6 @@ definitions:
     type: object
   models.Market:
     properties:
-      bin:
-        type: string
       code:
         type: string
       contact:
@@ -255,8 +385,6 @@ definitions:
       enabled:
         type: boolean
       id:
-        type: string
-      location:
         type: string
       logo_url:
         type: string
@@ -269,8 +397,6 @@ definitions:
       updated_at:
         type: string
       username:
-        type: string
-      web_address:
         type: string
     type: object
   models.Offer:
@@ -358,8 +484,6 @@ definitions:
     type: object
   models.Partner:
     properties:
-      bin:
-        type: string
       code:
         type: string
       commission:
@@ -460,7 +584,7 @@ paths:
         name: market
         required: true
         schema:
-          $ref: '#/definitions/models.Market'
+          $ref: '#/definitions/dto.MarketRequest'
       - description: Authorization
         in: header
         name: Authorization
@@ -543,7 +667,7 @@ paths:
         name: market
         required: true
         schema:
-          $ref: '#/definitions/models.Market'
+          $ref: '#/definitions/dto.MarketRequest'
       - description: id of the partner
         in: path
         name: id
@@ -1159,7 +1283,7 @@ paths:
         name: partner
         required: true
         schema:
-          $ref: '#/definitions/models.Partner'
+          $ref: '#/definitions/dto.PartnerRequest'
       - description: id of the market
         in: path
         name: id

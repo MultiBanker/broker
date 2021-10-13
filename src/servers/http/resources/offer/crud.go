@@ -7,9 +7,8 @@ import (
 
 	"github.com/MultiBanker/broker/pkg/httperrors"
 	"github.com/MultiBanker/broker/src/database/drivers"
-	"github.com/MultiBanker/broker/src/models"
-	"github.com/MultiBanker/broker/src/models/dto"
 	"github.com/MultiBanker/broker/src/models/selector"
+	"github.com/MultiBanker/broker/src/servers/http/dto"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
 	"github.com/pkg/errors"
@@ -45,13 +44,7 @@ func (res Resource) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := res.offerMan.CreateOffer(ctx, models.Offer{
-		Name:                 req.Name,
-		PartnerCode:          req.PartnerCode,
-		PaymentTypeGroupCode: req.PaymentTypeGroupCode,
-		MinOrderSum:          req.MinOrderSum,
-		MaxOrderSum:          req.MaxOrderSum,
-	})
+	id, err := res.offerMan.CreateOffer(ctx, DtoToModelOffer(req))
 	switch {
 	case errors.Is(err, drivers.ErrDoesNotExist):
 		_ = render.Render(w, r, httperrors.ResourceNotFound(err))
@@ -88,7 +81,7 @@ func (res Resource) update(w http.ResponseWriter, r *http.Request) {
 
 	id := chi.URLParam(r, "id")
 	if id == "" {
-		_ = render.Render(w, r, httperrors.BadRequest(errors.Wrap(dto.IsEmpty, "id")))
+		_ = render.Render(w, r, httperrors.BadRequest(errors.Wrap(dto.ErrIsEmpty, "id")))
 		return
 	}
 	var req dto.OfferRequest
@@ -103,13 +96,10 @@ func (res Resource) update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	offer, err := res.offerMan.UpdateOffer(ctx, models.Offer{
-		Name:                 req.Name,
-		PartnerCode:          req.PartnerCode,
-		PaymentTypeGroupCode: req.PaymentTypeGroupCode,
-		MinOrderSum:          req.MinOrderSum,
-		MaxOrderSum:          req.MaxOrderSum,
-	})
+	offer := DtoToModelOffer(req)
+	offer.ID = id
+
+	offer, err := res.offerMan.UpdateOffer(ctx, offer)
 	switch {
 	case errors.Is(err, drivers.ErrDoesNotExist):
 		_ = render.Render(w, r, httperrors.ResourceNotFound(err))
@@ -142,7 +132,7 @@ func (res Resource) get(w http.ResponseWriter, r *http.Request) {
 
 	code := chi.URLParam(r, "code")
 	if code == "" {
-		_ = render.Render(w, r, httperrors.BadRequest(errors.Wrap(dto.IsEmpty, "code")))
+		_ = render.Render(w, r, httperrors.BadRequest(errors.Wrap(dto.ErrIsEmpty, "code")))
 		return
 	}
 

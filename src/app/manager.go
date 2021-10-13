@@ -6,7 +6,7 @@ import (
 
 func (a *application) managers() {
 	a.clients()
-	a.man = manager.NewAbstract(a.ds, a.repo, a.opts)
+	a.man = manager.NewAbstract(a.ds, a.repo, a.opts, a.metric)
 }
 
 func (a *application) clients() {

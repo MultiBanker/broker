@@ -3,6 +3,7 @@ package partner
 import (
 	"github.com/MultiBanker/broker/src/manager/auth"
 	"github.com/MultiBanker/broker/src/manager/partner"
+	"github.com/VictoriaMetrics/metrics"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -11,12 +12,14 @@ const maxOrderHistoryLimit = 100
 type Auth struct {
 	authMan    auth.Authenticator
 	partnerMan partner.Partnerer
+	set        *metrics.Set
 }
 
-func NewAuth(authMan auth.Authenticator, partnerMan partner.Partnerer) Auth {
+func NewAuth(authMan auth.Authenticator, partnerMan partner.Partnerer, set *metrics.Set) Auth {
 	return Auth{
 		partnerMan: partnerMan,
 		authMan:    authMan,
+		set:        set,
 	}
 }
 

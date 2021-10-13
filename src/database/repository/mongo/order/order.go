@@ -7,7 +7,6 @@ import (
 
 	"github.com/MultiBanker/broker/src/database/drivers"
 	"github.com/MultiBanker/broker/src/models"
-	"github.com/MultiBanker/broker/src/models/dto"
 	"github.com/MultiBanker/broker/src/models/selector"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -61,25 +60,25 @@ func (or Repository) UpdateOrder(ctx context.Context, order *models.Order) (stri
 	return "", err
 }
 
-func (or Repository) UpdateOrderState(ctx context.Context, request dto.UpdateMarketOrderRequest) error {
-	filter := bson.D{
-		{"reference_id", request.ReferenceId},
-	}
-	update := bson.D{
-		{"state", request.State},
-		{"state_title", request.StateTitle},
-		{"reason", request.Reason},
-	}
-
-	err := or.collection.FindOneAndUpdate(ctx, filter, update).Err()
-	switch {
-	case errors.Is(err, mongo.ErrNoDocuments):
-		return drivers.ErrDoesNotExist
-	case errors.Is(err, nil):
-		return nil
-	}
-	return err
-}
+//func (or Repository) UpdateOrderState(ctx context.Context, request dto.UpdateMarketOrderRequest) error {
+//	filter := bson.D{
+//		{"reference_id", request.ReferenceId},
+//	}
+//	update := bson.D{
+//		{"state", request.State},
+//		{"state_title", request.StateTitle},
+//		{"reason", request.Reason},
+//	}
+//
+//	err := or.collection.FindOneAndUpdate(ctx, filter, update).Err()
+//	switch {
+//	case errors.Is(err, mongo.ErrNoDocuments):
+//		return drivers.ErrDoesNotExist
+//	case errors.Is(err, nil):
+//		return nil
+//	}
+//	return err
+//}
 
 func (or Repository) OrderByID(ctx context.Context, id string) (models.Order, error) {
 	var order models.Order

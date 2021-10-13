@@ -10,8 +10,8 @@ import (
 	"github.com/MultiBanker/broker/pkg/httperrors"
 	"github.com/MultiBanker/broker/src/database/drivers"
 	"github.com/MultiBanker/broker/src/models"
-	"github.com/MultiBanker/broker/src/models/dto"
 	"github.com/MultiBanker/broker/src/models/selector"
+	"github.com/MultiBanker/broker/src/servers/http/dto"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 )
@@ -23,7 +23,7 @@ const maxOrderHistoryLimit = 100
 // @Description Создание нового маркета
 // @Accept  json
 // @Produce  json
-// @Param market body models.Market true "body"
+// @Param market body dto.MarketRequest true "body"
 // @Security ApiKeyAuth
 // @Param Authorization header string true "Authorization"
 // @Success 200 {object} models.Response
@@ -34,14 +34,14 @@ const maxOrderHistoryLimit = 100
 func (res Resource) create(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	var req models.Market
+	var req dto.MarketRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		_ = render.Render(w, r, httperrors.BadRequest(err))
 		return
 	}
 
-	id, err := res.market.CreateMarket(ctx, req)
+	id, err := res.market.CreateMarket(ctx, DtoToModelMarket(req))
 	if err != nil {
 		_ = render.Render(w, r, httperrors.Internal(err))
 		return
@@ -154,7 +154,7 @@ func (res Resource) list(w http.ResponseWriter, r *http.Request) {
 // @Tags Market
 // @Security ApiKeyAuth
 // @Param Authorization header string true "Authorization"
-// @Param market body models.Market true "body"
+// @Param market body dto.MarketRequest true "body"
 // @Param id path string true "id of the partner"
 // @Success 200 {object} models.Response
 // @Failure 400 {object} httperrors.Response
@@ -164,7 +164,7 @@ func (res Resource) list(w http.ResponseWriter, r *http.Request) {
 func (res Resource) update(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	var req models.Market
+	var req dto.MarketRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		_ = render.Render(w, r, httperrors.BadRequest(err))
@@ -177,9 +177,10 @@ func (res Resource) update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	req.ID = id
+	market := DtoToModelMarket(req)
+	market.ID = id
 
-	id, err := res.market.UpdateMarket(ctx, req)
+	id, err := res.market.UpdateMarket(ctx, market)
 	switch {
 	case errors.Is(err, drivers.ErrDoesNotExist):
 		_ = render.Render(w, r, httperrors.ResourceNotFound(err))

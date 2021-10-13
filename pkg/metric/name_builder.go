@@ -2,7 +2,7 @@ package metric
 
 import "strings"
 
-// NameBuilder - build metrics name in prometheus format
+// NameBuilder - build metrics name in victoriaMetrics format
 // for instance -
 //     * foo
 //     * foo{bar="baz"}

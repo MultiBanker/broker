@@ -7,7 +7,6 @@ import (
 
 	"github.com/MultiBanker/broker/src/database/drivers"
 	"github.com/MultiBanker/broker/src/models"
-	"github.com/MultiBanker/broker/src/models/dto"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -29,7 +28,7 @@ func (p PartnerOrderRepository) NewOrder(ctx context.Context, order models.Partn
 }
 
 func (p PartnerOrderRepository) UpdateOrder(ctx context.Context, porder models.PartnerOrder) (string, error) {
-	var order dto.OrderResponse
+	var order models.PartnerOrder
 
 	filter := bson.D{
 		{"partner_code", porder.PartnerCode},

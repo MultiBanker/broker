@@ -5,9 +5,11 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/MultiBanker/broker/pkg/metric"
 	"github.com/MultiBanker/broker/src/servers/http/resources/health"
 	"github.com/MultiBanker/broker/src/servers/http/resources/market"
 	"github.com/MultiBanker/broker/src/servers/http/resources/offer"
+	"github.com/VictoriaMetrics/metrics"
 
 	"github.com/go-chi/chi/v5"
 
@@ -29,14 +31,16 @@ func Routing(opts *config.Config, man manager.Abstractor) chi.Router {
 	go readyzProbe(isReady)
 
 	r := middleware.Mount(opts.Version, opts.HTTP.FilesDir, opts.HTTP.BasePath)
+	mware := metric.NewMetricware(metrics.NewSet())
 
 	// основные роутеры
 	r.Route(ApiPath, func(r chi.Router) {
+		r.Use(mware.All("/broker")...)
 		r.Route("/broker", func(r chi.Router) {
-			r.Mount("/partners", partner.NewAuth(man.Auther(), man.Partnerer()).Route())
-			r.Mount("/orders", orderresource.NewOrder(man.Auther(), man.Orderer()).Route())
-			r.Mount("/markets", market.NewResource(man.Auther(), man.Marketer()).Route())
-			r.Mount("/offers", offer.NewResource(man.Auther(), man.Offer()).Route())
+			r.Mount("/partners", partner.NewAuth(man.Auther(), man.Partnerer(), man.Metric()).Route())
+			r.Mount("/orders", orderresource.NewOrder(man.Auther(), man.Orderer(), man.Metric()).Route())
+			r.Mount("/markets", market.NewResource(man.Auther(), man.Marketer(), man.Metric()).Route())
+			r.Mount("/offers", offer.NewResource(man.Auther(), man.Offer(), man.Metric()).Route())
 		})
 	})
 

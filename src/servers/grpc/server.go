@@ -4,13 +4,11 @@ import (
 	"context"
 	"log"
 	"net"
-	"time"
-
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/keepalive"
 
 	"github.com/MultiBanker/broker/src/config"
 	"github.com/MultiBanker/broker/src/manager"
+	"github.com/MultiBanker/broker/src/servers/grpc/middleware"
+	"google.golang.org/grpc"
 )
 
 type grpcServer struct {
@@ -33,12 +31,7 @@ func (g *grpcServer) Start(ctx context.Context, cancel context.CancelFunc) error
 		return err
 	}
 
-	opts := []grpc.ServerOption{
-		grpc.KeepaliveParams(keepalive.ServerParameters{
-			MaxConnectionIdle: 5 * time.Second,
-		}),
-	}
-	g.server = grpc.NewServer(opts...)
+	g.server = grpc.NewServer(middleware.Options()...)
 
 	g.handler(g.server, g.manager)
 

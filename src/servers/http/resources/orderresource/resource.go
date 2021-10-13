@@ -3,6 +3,7 @@ package orderresource
 import (
 	"github.com/MultiBanker/broker/src/manager/auth"
 	"github.com/MultiBanker/broker/src/servers/http/middleware"
+	"github.com/VictoriaMetrics/metrics"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/jwtauth/v5"
 
@@ -14,12 +15,14 @@ const maxOrderHistoryLimit = 100
 type Order struct {
 	authMan  auth.Authenticator
 	orderMan order.Orderer
+	set      *metrics.Set
 }
 
-func NewOrder(authMan auth.Authenticator, orderMan order.Orderer) Order {
+func NewOrder(authMan auth.Authenticator, orderMan order.Orderer, set *metrics.Set) Order {
 	return Order{
 		authMan:  authMan,
 		orderMan: orderMan,
+		set:      set,
 	}
 }
 

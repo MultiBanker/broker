@@ -12,45 +12,20 @@ type Partner struct {
 	ID          string      `json:"id" bson:"_id"`
 	Code        string      `json:"code" bson:"code"`
 	CompanyName string      `json:"company_name" bson:"company_name"`
-	BIN         string      `json:"bin" bson:"bin"`
 	Commission  int         `json:"commission" bson:"commission"`
 	LogoURL     string      `json:"logo_url" bson:"logo_url"`
 	URL         *URL        `json:"url" bson:"url"`
 	Contact     ContactInfo `json:"contact" bson:"contact"`
 	Enabled     bool        `json:"enabled" bson:"enabled"`
-
-	Username string `json:"username" bson:"username"`
-	Password string `json:"password" bson:"password"`
-
-	CreatedAt time.Time `json:"created_at" bson:"created_at"`
-	UpdatedAt time.Time `json:"updated_at" bson:"updated_at"`
+	Username    string      `json:"username" bson:"username"`
+	Password    string      `json:"password" bson:"password"`
+	CreatedAt   time.Time   `json:"created_at" bson:"created_at"`
+	UpdatedAt   time.Time   `json:"updated_at" bson:"updated_at"`
 }
 
 type URL struct {
 	Create string `json:"create" bson:"create"`
 	Update string `json:"update" bson:"update"`
-}
-
-func (p Partner) Validate() error {
-	if p.CompanyName == "" {
-		return ErrCustomValidate("Company Name")
-	}
-	if p.BIN == "" {
-		return ErrCustomValidate("BIN")
-	}
-	if p.Commission == 0 {
-		return ErrCustomValidate("Commission")
-	}
-	if p.LogoURL == "" {
-		return ErrCustomValidate("LogoURL")
-	}
-	if p.Username == "" {
-		return ErrCustomValidate("Username")
-	}
-	if p.Password == "" {
-		return ErrCustomValidate("Password")
-	}
-	return nil
 }
 
 func (p Partner) ValidatePhone(phone string) error {

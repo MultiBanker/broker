@@ -107,7 +107,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Market"
+                            "$ref": "#/definitions/dto.MarketRequest"
                         }
                     },
                     {
@@ -299,7 +299,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Market"
+                            "$ref": "#/definitions/dto.MarketRequest"
                         }
                     },
                     {
@@ -1256,7 +1256,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Partner"
+                            "$ref": "#/definitions/dto.PartnerRequest"
                         }
                     },
                     {
@@ -1304,6 +1304,46 @@ var doc = `{
         }
     },
     "definitions": {
+        "dto.ContactInfo": {
+            "type": "object",
+            "properties": {
+                "bin": {
+                    "description": "БИН организации",
+                    "type": "string",
+                    "example": "5189011425"
+                },
+                "email": {
+                    "description": "Имейл",
+                    "type": "string",
+                    "example": "oleg@tinkoff.ru"
+                },
+                "first_name": {
+                    "description": "Имя",
+                    "type": "string",
+                    "example": "Oleg"
+                },
+                "last_name": {
+                    "description": "Фамилия",
+                    "type": "string",
+                    "example": "Tinkoff"
+                },
+                "location": {
+                    "description": "Адрес организации",
+                    "type": "string",
+                    "example": "Bldg. 26, 38A, 2 Khutorskaya str., Moscow, Russia."
+                },
+                "phone": {
+                    "description": "Телефон",
+                    "type": "string",
+                    "example": "87777777777"
+                },
+                "web_address": {
+                    "description": "Веб адрес организации",
+                    "type": "string",
+                    "example": "https://www.tinkoff.ru"
+                }
+            }
+        },
         "dto.FIO": {
             "type": "object",
             "properties": {
@@ -1337,6 +1377,49 @@ var doc = `{
                 },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.MarketRequest": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "Код картинки",
+                    "type": "string",
+                    "example": "tinkoff"
+                },
+                "company_name": {
+                    "description": "Название компании",
+                    "type": "string"
+                },
+                "contact": {
+                    "description": "Контакт",
+                    "$ref": "#/definitions/dto.ContactInfo"
+                },
+                "enabled": {
+                    "description": "Включение",
+                    "type": "boolean",
+                    "example": true
+                },
+                "logo_url": {
+                    "description": "Веб адрес картинки",
+                    "type": "string",
+                    "example": "https://plusworld.ru/wp-content/uploads/2021/09/759950f2eafdab128b887f1296316ea6f1af5152.jpg"
+                },
+                "password": {
+                    "description": "Пароль",
+                    "type": "string",
+                    "example": "Password123"
+                },
+                "update_order_url": {
+                    "description": "Обновление заказов",
+                    "type": "string",
+                    "example": "https://google.com"
+                },
+                "username": {
+                    "description": "Имя пользователя",
+                    "type": "string",
+                    "example": "Olejka"
                 }
             }
         },
@@ -1539,6 +1622,54 @@ var doc = `{
                 }
             }
         },
+        "dto.PartnerRequest": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "Код партнера",
+                    "type": "string",
+                    "example": "airba_pay"
+                },
+                "commission": {
+                    "description": "Коммиссия",
+                    "type": "integer",
+                    "example": 5
+                },
+                "company_name": {
+                    "description": "Название компании",
+                    "type": "string",
+                    "example": "Airba Pay"
+                },
+                "contact": {
+                    "description": "Контактные данные",
+                    "$ref": "#/definitions/dto.ContactInfo"
+                },
+                "enabled": {
+                    "description": "Включен",
+                    "type": "boolean",
+                    "example": true
+                },
+                "logo_url": {
+                    "description": "Веб адрес компании",
+                    "type": "string",
+                    "example": "https://emotionsgroup.kz/uploads/7f47072c77ad20f58acb9e7114cfeb5c.jpg"
+                },
+                "password": {
+                    "description": "Пароль",
+                    "type": "string",
+                    "example": "Password123"
+                },
+                "url": {
+                    "description": "Адреса на обновления АПИ",
+                    "$ref": "#/definitions/dto.URL"
+                },
+                "username": {
+                    "description": "Имя пользователя",
+                    "type": "string",
+                    "example": "SuperRinat"
+                }
+            }
+        },
         "dto.Partners": {
             "type": "object",
             "properties": {
@@ -1561,6 +1692,21 @@ var doc = `{
                 },
                 "response_token": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.URL": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "description": "Урл который создает заказ на стороне партнера",
+                    "type": "string",
+                    "example": "https://"
+                },
+                "update": {
+                    "description": "Урл который обновляет заказ на стороне партнера",
+                    "type": "string",
+                    "example": "https://"
                 }
             }
         },
@@ -1621,17 +1767,40 @@ var doc = `{
         "models.ContactInfo": {
             "type": "object",
             "properties": {
+                "bin": {
+                    "description": "БИН организации",
+                    "type": "string",
+                    "example": "5189011425"
+                },
                 "email": {
-                    "type": "string"
+                    "description": "Имейл",
+                    "type": "string",
+                    "example": "oleg@tinkoff.ru"
                 },
                 "first_name": {
-                    "type": "string"
+                    "description": "Имя",
+                    "type": "string",
+                    "example": "Oleg"
                 },
                 "last_name": {
-                    "type": "string"
+                    "description": "Фамилия",
+                    "type": "string",
+                    "example": "Tinkoff"
+                },
+                "location": {
+                    "description": "Адрес организации",
+                    "type": "string",
+                    "example": "Bldg. 26, 38A, 2 Khutorskaya str., Moscow, Russia."
                 },
                 "phone": {
-                    "type": "string"
+                    "description": "Телефон",
+                    "type": "string",
+                    "example": "87777777777"
+                },
+                "web_address": {
+                    "description": "Веб адрес организации",
+                    "type": "string",
+                    "example": "https://www.tinkoff.ru"
                 }
             }
         },
@@ -1678,9 +1847,6 @@ var doc = `{
         "models.Market": {
             "type": "object",
             "properties": {
-                "bin": {
-                    "type": "string"
-                },
                 "code": {
                     "type": "string"
                 },
@@ -1694,9 +1860,6 @@ var doc = `{
                     "type": "boolean"
                 },
                 "id": {
-                    "type": "string"
-                },
-                "location": {
                     "type": "string"
                 },
                 "logo_url": {
@@ -1715,9 +1878,6 @@ var doc = `{
                     "type": "string"
                 },
                 "username": {
-                    "type": "string"
-                },
-                "web_address": {
                     "type": "string"
                 }
             }
@@ -1851,9 +2011,6 @@ var doc = `{
         "models.Partner": {
             "type": "object",
             "properties": {
-                "bin": {
-                    "type": "string"
-                },
                 "code": {
                     "type": "string"
                 },

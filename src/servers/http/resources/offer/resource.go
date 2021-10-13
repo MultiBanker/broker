@@ -3,16 +3,22 @@ package offer
 import (
 	"github.com/MultiBanker/broker/src/manager/auth"
 	"github.com/MultiBanker/broker/src/manager/offer"
+	"github.com/VictoriaMetrics/metrics"
 	"github.com/go-chi/chi/v5"
 )
 
 type Resource struct {
 	authMan  auth.Authenticator
 	offerMan offer.Manager
+	set      *metrics.Set
 }
 
-func NewResource(authMan auth.Authenticator, offerMan offer.Manager) *Resource {
-	return &Resource{authMan: authMan, offerMan: offerMan}
+func NewResource(authMan auth.Authenticator, offerMan offer.Manager, set *metrics.Set) *Resource {
+	return &Resource{
+		authMan:  authMan,
+		offerMan: offerMan,
+		set:      set,
+	}
 }
 
 func (res Resource) Route() chi.Router {

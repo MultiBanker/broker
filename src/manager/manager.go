@@ -9,6 +9,7 @@ import (
 	"github.com/MultiBanker/broker/src/manager/offer"
 	"github.com/MultiBanker/broker/src/manager/order"
 	"github.com/MultiBanker/broker/src/manager/partner"
+	"github.com/VictoriaMetrics/metrics"
 )
 
 type Abstractor interface {
@@ -18,6 +19,7 @@ type Abstractor interface {
 	Marketer() market.Marketer
 	Offer() offer.Manager
 	Pinger() error
+	Metric() *metrics.Set
 }
 
 type Abstract struct {
@@ -27,6 +29,7 @@ type Abstract struct {
 	orderMan   order.Orderer
 	marketMan  market.Marketer
 	offerMan   offer.Manager
+	metricMan  *metrics.Set
 }
 
 func (a Abstract) Pinger() error {
@@ -53,13 +56,18 @@ func (a Abstract) Offer() offer.Manager {
 	return a.offerMan
 }
 
-func NewAbstract(db drivers.Datastore, repo repository.Repositories, opts *config.Config) Abstractor {
+func (a Abstract) Metric() *metrics.Set {
+	return a.metricMan
+}
+
+func NewAbstract(db drivers.Datastore, repo repository.Repositories, opts *config.Config, metric *metrics.Set) Abstractor {
 	return &Abstract{
 		db:         db,
 		partnerMan: partner.NewPartner(repo),
 		authMan:    auth.NewAuthenticator(opts),
 		orderMan:   order.NewOrder(repo),
 		marketMan:  market.NewMarket(repo),
-		offerMan: offer.NewOffer(repo),
+		offerMan:   offer.NewOffer(repo),
+		metricMan:  metric,
 	}
 }
