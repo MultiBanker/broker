@@ -4,11 +4,13 @@ import (
 	"github.com/MultiBanker/broker/src/config"
 	"github.com/MultiBanker/broker/src/database/drivers"
 	"github.com/MultiBanker/broker/src/database/repository"
+	"github.com/MultiBanker/broker/src/manager/agree"
 	"github.com/MultiBanker/broker/src/manager/auth"
 	"github.com/MultiBanker/broker/src/manager/market"
 	"github.com/MultiBanker/broker/src/manager/offer"
 	"github.com/MultiBanker/broker/src/manager/order"
 	"github.com/MultiBanker/broker/src/manager/partner"
+	"github.com/MultiBanker/broker/src/manager/signature"
 )
 
 type Abstractor interface {
@@ -18,6 +20,8 @@ type Abstractor interface {
 	Marketer() market.Marketer
 	Offer() offer.Manager
 	Pinger() error
+	Agree() agree.Specification
+	Signature() signature.Signature
 }
 
 type Abstract struct {
@@ -27,6 +31,16 @@ type Abstract struct {
 	orderMan   order.Orderer
 	marketMan  market.Marketer
 	offerMan   offer.Manager
+	agreeMan   agree.Specification
+	signMan    signature.Signature
+}
+
+func (a Abstract) Agree() agree.Specification {
+	return a.agreeMan
+}
+
+func (a Abstract) Signature() signature.Signature {
+	return a.signMan
 }
 
 func (a Abstract) Pinger() error {
@@ -60,6 +74,6 @@ func NewAbstract(db drivers.Datastore, repo repository.Repositories, opts *confi
 		authMan:    auth.NewAuthenticator(opts),
 		orderMan:   order.NewOrder(repo),
 		marketMan:  market.NewMarket(repo),
-		offerMan: offer.NewOffer(repo),
+		offerMan:   offer.NewOffer(repo),
 	}
 }

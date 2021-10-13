@@ -1,5 +1,23 @@
 basePath: /broker/api/v1/broker
 definitions:
+  dto.CheckVerificationReq:
+    properties:
+      token:
+        type: string
+    type: object
+  dto.CreateSignatureReq:
+    properties:
+      additional_codes:
+        items:
+          type: string
+        type: array
+      code:
+        type: string
+      iin:
+        type: string
+      phone:
+        type: string
+    type: object
   dto.FIO:
     properties:
       firstName:
@@ -162,6 +180,15 @@ definitions:
       total:
         type: integer
     type: object
+  dto.Signature:
+    properties:
+      signature:
+        items:
+          $ref: '#/definitions/models.Signature'
+        type: array
+      total:
+        type: integer
+    type: object
   dto.TokenResponse:
     properties:
       access_token:
@@ -197,6 +224,15 @@ definitions:
         type: string
       pickupPoint:
         type: string
+    type: object
+  models.Agreement:
+    properties:
+      code:
+        type: string
+      description:
+        $ref: '#/definitions/models.LangOptions'
+      title:
+        $ref: '#/definitions/models.LangOptions'
     type: object
   models.Contact:
     properties:
@@ -240,6 +276,15 @@ definitions:
       model:
         type: string
       price:
+        type: string
+    type: object
+  models.LangOptions:
+    properties:
+      en:
+        type: string
+      kz:
+        type: string
+      ru:
         type: string
     type: object
   models.Market:
@@ -397,11 +442,69 @@ definitions:
       status:
         type: string
     type: object
+  models.Signature:
+    properties:
+      additional_codes:
+        items:
+          type: string
+        type: array
+      agree:
+        $ref: '#/definitions/models.Specification'
+      created_at:
+        type: string
+      id:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+      verification:
+        $ref: '#/definitions/models.Verification'
+      verification_id:
+        type: string
+    type: object
+  models.Specification:
+    properties:
+      additional_agreements:
+        items:
+          $ref: '#/definitions/models.Agreement'
+        type: array
+      agreement:
+        $ref: '#/definitions/models.Agreement'
+      created_at:
+        type: string
+      id:
+        type: string
+      updated_at:
+        description: |-
+          VerificationRequired bool        `json:"verification_required" bson:"verification_required"`
+          ValidDaysCount       *int        `json:"valid_days_count" bson:"valid_days_count"`
+        type: string
+    type: object
   models.URL:
     properties:
       create:
         type: string
       update:
+        type: string
+    type: object
+  models.Verification:
+    properties:
+      id:
+        type: string
+      next_attempt_at:
+        type: string
+      notification_id:
+        type: string
+      phone:
+        type: string
+      status:
+        type: string
+      token:
+        type: string
+      tries:
+        type: integer
+      user_id:
         type: string
     type: object
 host: api.test.airba.dev
@@ -411,6 +514,356 @@ info:
   title: Broker API
   version: "1.0"
 paths:
+  /agreements:
+    get:
+      description: Вернуть все соглашения
+      operationId: specification-root
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: pagination limit
+        in: query
+        name: limit
+        type: integer
+      - description: pagination skip
+        in: query
+        name: skip
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Specification'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Вернуть все соглашения
+      tags:
+      - Agreements
+    post:
+      consumes:
+      - application/json
+      description: Создание новой спецификации для соглашения
+      operationId: specification-create
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: specification
+        in: body
+        name: specification
+        required: true
+        schema:
+          $ref: '#/definitions/models.Specification'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.IDResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "412":
+          description: Precondition Failed
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Создание новой спецификации для соглашения
+      tags:
+      - Agreements
+  /agreements/{code}:
+    get:
+      consumes:
+      - application/json
+      description: Получить соглашение по коду
+      operationId: specification-get-by-code
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: code of the specification
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Specification'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "412":
+          description: Precondition Failed
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получить соглашение по коду
+      tags:
+      - Agreements
+  /agreements/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Получение соглашений
+      operationId: specification-get
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id of the specification
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Specification'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "412":
+          description: Precondition Failed
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение соглашений
+      tags:
+      - Agreements
+    put:
+      consumes:
+      - application/json
+      description: Обновление соглашений
+      operationId: specification-update
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id of the specification
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: specification
+        in: body
+        name: specifications
+        required: true
+        schema:
+          $ref: '#/definitions/models.Specification'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "412":
+          description: Precondition Failed
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление соглашений
+      tags:
+      - Agreements
+  /agreements/signatures:
+    get:
+      description: Получение подписей
+      operationId: signature-list
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: pagination limit
+        in: query
+        name: limit
+        type: integer
+      - description: pagination skip
+        in: query
+        name: skip
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Signature'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение подписей
+      tags:
+      - Signature
+    post:
+      consumes:
+      - application/json
+      description: Создание новой подписи
+      parameters:
+      - description: body
+        in: body
+        name: signature
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateSignatureReq'
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.IDResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Создание новой подписи
+      tags:
+      - Signature
+  /agreements/signatures/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Получение подписи
+      operationId: signature-get
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id of the signature
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Signature'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "412":
+          description: Precondition Failed
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение подписи
+      tags:
+      - Signature
   /markets:
     get:
       description: Получение маркетов
@@ -1238,6 +1691,96 @@ paths:
       summary: выход авторизации партнера
       tags:
       - Partner
+  /signatures/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Валидация токена
+      parameters:
+      - description: body
+        in: body
+        name: token
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CheckVerificationReq'
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id of the signature
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Валидация токена
+      tags:
+      - Signature
+  /signatures/{id}/resend:
+    patch:
+      consumes:
+      - application/json
+      description: Переотправка токена
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id of the signature
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Переотправка токена
+      tags:
+      - Signature
 schemes:
 - https
 securityDefinitions:

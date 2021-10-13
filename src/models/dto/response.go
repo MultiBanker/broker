@@ -31,6 +31,17 @@ type Partners struct {
 	Partners []models.Partner `json:"partners"`
 }
 
+type Specifications struct {
+	Total          int64                  `json:"total"`
+	Specifications []models.Specification `json:"specifications" bson:"specifications"`
+}
+
+type Signature struct {
+	Total     int64              `json:"total"`
+	Signature []models.Signature `json:"signature"`
+}
+
+
 func RespondJSON(w http.ResponseWriter, r *http.Request, status int, data interface{}) {
 	render.Status(r, status)
 	render.JSON(w, r, data)

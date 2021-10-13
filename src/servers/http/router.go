@@ -5,6 +5,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/MultiBanker/broker/src/servers/http/resources/agree"
 	"github.com/MultiBanker/broker/src/servers/http/resources/health"
 	"github.com/MultiBanker/broker/src/servers/http/resources/market"
 	"github.com/MultiBanker/broker/src/servers/http/resources/offer"
@@ -37,6 +38,7 @@ func Routing(opts *config.Config, man manager.Abstractor) chi.Router {
 			r.Mount("/orders", orderresource.NewOrder(man.Auther(), man.Orderer()).Route())
 			r.Mount("/markets", market.NewResource(man.Auther(), man.Marketer()).Route())
 			r.Mount("/offers", offer.NewResource(man.Auther(), man.Offer()).Route())
+			r.Mount("/agreements", agree.NewResource(man.Auther(), man.Agree(), man.Signature()).Routes())
 		})
 	})
 
