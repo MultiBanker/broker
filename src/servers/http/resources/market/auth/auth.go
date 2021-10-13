@@ -1,4 +1,4 @@
-package market
+package auth
 
 import (
 	"encoding/json"
@@ -37,7 +37,7 @@ func (res Resource) auth() http.HandlerFunc {
 			_ = render.Render(w, r, httperrors.BadRequest(err))
 			return
 		}
-		market, err := res.market.MarketByUsername(ctx, req.Username, req.Password)
+		market, err := res.makretMan.MarketByUsername(ctx, req.Username, req.Password)
 		switch err {
 		case drivers.ErrDoesNotExist:
 			_ = render.Render(w, r, httperrors.ResourceNotFound(err))
@@ -47,7 +47,7 @@ func (res Resource) auth() http.HandlerFunc {
 			_ = render.Render(w, r, httperrors.Internal(err))
 		}
 
-		access, refresh, err := res.auther.Tokens(market.ID, market.Code, models.MARKET)
+		access, refresh, err := res.authMan.Tokens(market.ID, market.Code, models.MARKET)
 		if err != nil {
 			_ = render.Render(w, r, httperrors.BadRequest(err))
 			return

@@ -30,8 +30,8 @@ import (
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /partners [post]
-func (a Auth) newpartner() http.HandlerFunc {
+// @Router /admins/partners [post]
+func (a AdminResource) newpartner() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
@@ -73,8 +73,8 @@ func (a Auth) newpartner() http.HandlerFunc {
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /partners/{id} [put]
-func (a Auth) update() http.HandlerFunc {
+// @Router /admins/partners/{id} [put]
+func (a AdminResource) update() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
@@ -126,8 +126,8 @@ func (a Auth) update() http.HandlerFunc {
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /partners/{id} [get]
-func (a Auth) partner() http.HandlerFunc {
+// @Router /admins/partners/{id} [get]
+func (a AdminResource) partner() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
@@ -166,8 +166,8 @@ func (a Auth) partner() http.HandlerFunc {
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /partners [get]
-func (a Auth) partners() http.HandlerFunc {
+// @Router /admins/partners [get]
+func (a AdminResource) partners() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		// строим пагинацию

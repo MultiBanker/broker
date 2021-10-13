@@ -1,0 +1,172 @@
+definitions:
+  dto.FIO:
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      middleName:
+        type: string
+    type: object
+  dto.Login:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  dto.OrderPartnerUpdateRequest:
+    properties:
+      customer:
+        $ref: '#/definitions/dto.FIO'
+      offers:
+        items:
+          $ref: '#/definitions/models.Offers'
+        type: array
+      referenceId:
+        type: string
+      state:
+        type: string
+      stateTitle:
+        type: string
+    type: object
+  dto.TokenResponse:
+    properties:
+      access_token:
+        type: string
+      response_token:
+        type: string
+    type: object
+  httperrors.Details:
+    properties:
+      code:
+        description: application-определенный код ошибки
+        type: integer
+      message:
+        description: application-level сообщение, для дебага
+        type: string
+      status:
+        description: сообщение пользовательского уровня
+        type: string
+    type: object
+  httperrors.Response:
+    properties:
+      error:
+        $ref: '#/definitions/httperrors.Details'
+      validation:
+        additionalProperties:
+          type: string
+        description: ошибки валидации
+        type: object
+    type: object
+  models.Offers:
+    properties:
+      contractNumber:
+        type: string
+      loanAmount:
+        type: string
+      loanLength:
+        type: string
+      monthlyPayment:
+        type: integer
+      product:
+        type: string
+      productType:
+        type: string
+    type: object
+  models.Response:
+    properties:
+      id:
+        type: string
+      status:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /partners/login:
+    post:
+      consumes:
+      - application/json
+      description: Авторизация партнера
+      parameters:
+      - description: body
+        in: body
+        name: auth
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Login'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      summary: Авторизация партнера
+      tags:
+      - Partner
+  /partners/logout:
+    get:
+      consumes:
+      - application/json
+      description: выход авторизации партнера
+      produces:
+      - application/json
+      summary: выход авторизации партнера
+      tags:
+      - Partner
+  /partners/orders/:
+    post:
+      consumes:
+      - application/json
+      description: Обновление заказа по решению партнера
+      parameters:
+      - description: body
+        in: body
+        name: market
+        required: true
+        schema:
+          $ref: '#/definitions/dto.OrderPartnerUpdateRequest'
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление заказа по решению партнера
+      tags:
+      - Orders
+swagger: "2.0"

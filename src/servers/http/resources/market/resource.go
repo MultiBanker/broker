@@ -1,44 +1,29 @@
 package market
 
 import (
-	"github.com/MultiBanker/broker/src/manager/auth"
-	"github.com/MultiBanker/broker/src/manager/market"
-	"github.com/VictoriaMetrics/metrics"
+	"github.com/MultiBanker/broker/src/manager"
+	"github.com/MultiBanker/broker/src/servers/http/resources/market/auth"
+	"github.com/MultiBanker/broker/src/servers/http/resources/market/offer"
+	"github.com/MultiBanker/broker/src/servers/http/resources/market/orders"
 	"github.com/go-chi/chi/v5"
 )
 
 type Resource struct {
-	auther auth.Authenticator
-	market market.Marketer
-	set    *metrics.Set
+	man manager.Abstractor
 }
 
-func NewResource(auth auth.Authenticator, market market.Marketer, set *metrics.Set) Resource {
+func NewResource(man manager.Abstractor) Resource {
 	return Resource{
-		auther: auth,
-		market: market,
-		set:    set,
+		man: man,
 	}
 }
 
 func (res Resource) Route() chi.Router {
 	r := chi.NewRouter()
 
-	r.Group(func(r chi.Router) {
-		r.Post("/login", res.auth())
-		r.Get("/logout", res.out())
-	})
-
-	r.Group(func(r chi.Router) {
-		//r.Use(jwtauth.Verifier(a.authMan.TokenAuth()))
-		//r.Use(middleware.NewUserAccessCtx(a.authMan.JWTKey()).ChiMiddleware)
-		r.Post("/", res.create)
-		r.Get("/", res.list)
-		r.Route("/{id}", func(r chi.Router) {
-			r.Get("/", res.get)
-			r.Put("/", res.update)
-		})
-	})
+	r.Mount("/", auth.NewResource(res.man).Route())
+	r.Mount("/orders", orders.NewResource(res.man).Route())
+	r.Mount("/offers", offer.NewResource(res.man).Route())
 
 	return r
 }

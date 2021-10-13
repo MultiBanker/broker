@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"net/http"
 	"path/filepath"
 
 	"github.com/go-chi/chi/v5"
@@ -20,5 +21,18 @@ func (sr SwaggerResource) Routes() chi.Router {
 	r.Get("/*", httpSwagger.Handler(
 		httpSwagger.URL(filepath.Join(sr.BasePath, sr.FilesPath, "swagger.json")),
 	))
+
+	r.Group(func(r chi.Router) {
+		r.Get("/admin/*", sr.Indexer("admin"))
+		r.Get("/partner/*", sr.Indexer("partner"))
+		r.Get("/market/*", sr.Indexer("market"))
+	})
+
 	return r
+}
+
+func (sr SwaggerResource) Indexer(role string) http.HandlerFunc {
+	return httpSwagger.Handler(
+		httpSwagger.URL(filepath.Join(sr.BasePath, sr.FilesPath, role, "swagger.json")),
+	)
 }

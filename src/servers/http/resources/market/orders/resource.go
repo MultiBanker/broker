@@ -1,6 +1,7 @@
-package orderresource
+package orders
 
 import (
+	"github.com/MultiBanker/broker/src/manager"
 	"github.com/MultiBanker/broker/src/manager/auth"
 	"github.com/MultiBanker/broker/src/servers/http/middleware"
 	"github.com/VictoriaMetrics/metrics"
@@ -12,21 +13,21 @@ import (
 
 const maxOrderHistoryLimit = 100
 
-type Order struct {
+type Resource struct {
 	authMan  auth.Authenticator
 	orderMan order.Orderer
 	set      *metrics.Set
 }
 
-func NewOrder(authMan auth.Authenticator, orderMan order.Orderer, set *metrics.Set) Order {
-	return Order{
-		authMan:  authMan,
-		orderMan: orderMan,
-		set:      set,
+func NewResource(man manager.Abstractor) Resource {
+	return Resource{
+		authMan:  man.Auther(),
+		orderMan: man.Orderer(),
+		set:      man.Metric(),
 	}
 }
 
-func (o Order) Route() chi.Router {
+func (o Resource) Route() chi.Router {
 	r := chi.NewRouter()
 
 	r.Group(func(r chi.Router) {
@@ -35,17 +36,6 @@ func (o Order) Route() chi.Router {
 		r.Post("/", o.neworder())
 		//r.Post("/markets/", o.marketOrderUpdate)
 		r.Get("/{reference_id}/partners", o.ordersByReference)
-	})
-
-	r.Group(func(r chi.Router) {
-		// Admin Api
-		r.Get("/{id}", o.order())
-		r.Put("/{id}", o.updateorder())
-	})
-
-	r.Group(func(r chi.Router) {
-		// Partner API
-		r.Post("/partners", o.updateorderpartner())
 	})
 
 	return r

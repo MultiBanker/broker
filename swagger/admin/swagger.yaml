@@ -1,4 +1,3 @@
-basePath: /broker/api/v1/broker
 definitions:
   dto.ContactInfo:
     properties:
@@ -31,27 +30,11 @@ definitions:
         example: https://www.tinkoff.ru
         type: string
     type: object
-  dto.FIO:
-    properties:
-      firstName:
-        type: string
-      lastName:
-        type: string
-      middleName:
-        type: string
-    type: object
   dto.IDResponse:
     properties:
       id:
         type: string
       status:
-        type: string
-    type: object
-  dto.Login:
-    properties:
-      password:
-        type: string
-      username:
         type: string
     type: object
   dto.MarketRequest:
@@ -126,36 +109,6 @@ definitions:
       total:
         type: integer
     type: object
-  dto.Offers:
-    properties:
-      contractNumber:
-        type: string
-      loanAmount:
-        type: string
-      loanLength:
-        type: string
-      monthlyPayment:
-        type: integer
-      product:
-        type: string
-      productType:
-        type: string
-    type: object
-  dto.OrderPartnerUpdateRequest:
-    properties:
-      customer:
-        $ref: '#/definitions/dto.FIO'
-      offers:
-        items:
-          $ref: '#/definitions/models.Offers'
-        type: array
-      referenceId:
-        type: string
-      state:
-        type: string
-      stateTitle:
-        type: string
-    type: object
   dto.OrderRequest:
     properties:
       address:
@@ -193,27 +146,6 @@ definitions:
       verificationSmsCode:
         type: string
       verificationSmsDateTime:
-        type: string
-    type: object
-  dto.OrderResponse:
-    properties:
-      code:
-        type: string
-      message:
-        type: string
-      offers:
-        items:
-          $ref: '#/definitions/dto.Offers'
-        type: array
-      redirectUrl:
-        type: string
-      requestUuid:
-        type: string
-      state:
-        type: string
-      state_title:
-        type: string
-      status:
         type: string
     type: object
   dto.Orders:
@@ -270,13 +202,6 @@ definitions:
         type: array
       total:
         type: integer
-    type: object
-  dto.TokenResponse:
-    properties:
-      access_token:
-        type: string
-      response_token:
-        type: string
     type: object
   dto.URL:
     properties:
@@ -426,21 +351,6 @@ definitions:
       updated_at:
         type: string
     type: object
-  models.Offers:
-    properties:
-      contractNumber:
-        type: string
-      loanAmount:
-        type: string
-      loanLength:
-        type: string
-      monthlyPayment:
-        type: integer
-      product:
-        type: string
-      productType:
-        type: string
-    type: object
   models.Order:
     properties:
       address:
@@ -536,12 +446,8 @@ definitions:
       update:
         type: string
     type: object
-host: api.test.airba.dev
 info:
   contact: {}
-  description: Broker banker requester
-  title: Broker API
-  version: "1.0"
 paths:
   /admins/markets:
     get:
@@ -909,7 +815,7 @@ paths:
       - ApiKeyAuth: []
       summary: Получение заказов
       tags:
-      - Resource
+      - Orders
   /admins/orders/{id}:
     get:
       consumes:
@@ -949,7 +855,7 @@ paths:
       - ApiKeyAuth: []
       summary: Получение заказа
       tags:
-      - Resource
+      - Orders
     put:
       consumes:
       - application/json
@@ -994,7 +900,7 @@ paths:
       - ApiKeyAuth: []
       summary: Обновление заказа
       tags:
-      - Resource
+      - Orders
   /admins/partners:
     get:
       consumes:
@@ -1163,262 +1069,4 @@ paths:
       summary: Обновление партнера
       tags:
       - Partner
-  /markets/login:
-    post:
-      consumes:
-      - application/json
-      description: Авторизация маркета
-      parameters:
-      - description: body
-        in: body
-        name: auth
-        required: true
-        schema:
-          $ref: '#/definitions/dto.Login'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dto.TokenResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "429":
-          description: Too Many Requests
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      summary: Авторизация маркета
-      tags:
-      - Market
-  /markets/logout:
-    get:
-      consumes:
-      - application/json
-      description: выход с авторизации маркета
-      produces:
-      - application/json
-      summary: выход с авторизации маркета
-      tags:
-      - Market
-  /offers:
-    get:
-      consumes:
-      - application/json
-      description: Получение офферов
-      parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: pagination limit
-        in: query
-        name: limit
-        type: integer
-      - description: pagination skip
-        in: query
-        name: skip
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dto.OfferSpecs'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "429":
-          description: Too Many Requests
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Получение офферов
-      tags:
-      - Offers
-  /orders:
-    post:
-      consumes:
-      - application/json
-      description: Создание нового заказа
-      parameters:
-      - description: body
-        in: body
-        name: market
-        required: true
-        schema:
-          $ref: '#/definitions/dto.OrderRequest'
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dto.IDResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "429":
-          description: Too Many Requests
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Создание нового заказа
-      tags:
-      - Market-Resource
-  /orders/{reference_id}/partners:
-    get:
-      description: Получение заказов по reference_id
-      parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: reference id of the order
-        in: path
-        name: reference_id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/dto.OrderResponse'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Получение заказов по reference_id
-      tags:
-      - Market-Resource
-  /partners/login:
-    post:
-      consumes:
-      - application/json
-      description: Авторизация партнера
-      parameters:
-      - description: body
-        in: body
-        name: auth
-        required: true
-        schema:
-          $ref: '#/definitions/dto.Login'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dto.TokenResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "429":
-          description: Too Many Requests
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      summary: Авторизация партнера
-      tags:
-      - Partner
-  /partners/logout:
-    get:
-      consumes:
-      - application/json
-      description: выход авторизации партнера
-      produces:
-      - application/json
-      summary: выход авторизации партнера
-      tags:
-      - Partner
-  /partners/orders/:
-    post:
-      consumes:
-      - application/json
-      description: Обновление заказа по решению партнера
-      parameters:
-      - description: body
-        in: body
-        name: market
-        required: true
-        schema:
-          $ref: '#/definitions/dto.OrderPartnerUpdateRequest'
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "429":
-          description: Too Many Requests
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Обновление заказа по решению партнера
-      tags:
-      - Partner-Resource
-schemes:
-- https
-securityDefinitions:
-  ApiKeyAuth:
-    in: header
-    name: Authorization
-    type: apiKey
 swagger: "2.0"

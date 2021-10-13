@@ -1,4 +1,4 @@
-package orderresource
+package orders
 
 import (
 	"encoding/json"
@@ -16,7 +16,7 @@ import (
 	"github.com/go-chi/render"
 )
 
-// @Tags Market-Order
+// @Tags Orders
 // @Summary Создание нового заказа
 // @Description Создание нового заказа
 // @Accept  json
@@ -29,7 +29,7 @@ import (
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
 // @Router /orders [post]
-func (o Order) neworder() http.HandlerFunc {
+func (o Resource) neworder() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
@@ -78,7 +78,7 @@ func (o Order) neworder() http.HandlerFunc {
 	}
 }
 
-// @Tags Market-Order
+// @Tags Orders
 // @Summary Обновление заказа по решению клиента
 // @Description Обновление заказа по решению клиента
 // @Accept  json
@@ -91,7 +91,7 @@ func (o Order) neworder() http.HandlerFunc {
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
 // @Router /orders/markets [post]
-//func (o Order) marketOrderUpdate(w http.ResponseWriter, r *http.Request) {
+//func (o Resource) marketOrderUpdate(w http.ResponseWriter, r *http.Request) {
 //	ctx := r.Context()
 //
 //	var req dto.UpdateMarketOrderRequest
@@ -118,7 +118,7 @@ func (o Order) neworder() http.HandlerFunc {
 // list godoc
 // @Summary Получение заказов по reference_id
 // @Description Получение заказов по reference_id
-// @Tags Market-Order
+// @Tags Orders
 // @Security ApiKeyAuth
 // @Param Authorization header string true "Authorization"
 // @Param reference_id path string true "reference id of the order"
@@ -127,7 +127,7 @@ func (o Order) neworder() http.HandlerFunc {
 // @Failure 404 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
 // @Router /orders/{reference_id}/partners [get]
-func (o Order) ordersByReference(w http.ResponseWriter, r *http.Request) {
+func (o Resource) ordersByReference(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	referID := chi.URLParam(r, "reference_id")

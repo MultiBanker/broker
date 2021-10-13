@@ -6,9 +6,10 @@ import (
 	"time"
 
 	"github.com/MultiBanker/broker/pkg/metric"
+	"github.com/MultiBanker/broker/src/servers/http/resources/admin"
 	"github.com/MultiBanker/broker/src/servers/http/resources/health"
 	"github.com/MultiBanker/broker/src/servers/http/resources/market"
-	"github.com/MultiBanker/broker/src/servers/http/resources/offer"
+	"github.com/MultiBanker/broker/src/servers/http/resources/partner"
 	"github.com/VictoriaMetrics/metrics"
 
 	"github.com/go-chi/chi/v5"
@@ -16,8 +17,6 @@ import (
 	"github.com/MultiBanker/broker/src/config"
 	"github.com/MultiBanker/broker/src/manager"
 	"github.com/MultiBanker/broker/src/servers/http/middleware"
-	"github.com/MultiBanker/broker/src/servers/http/resources/orderresource"
-	"github.com/MultiBanker/broker/src/servers/http/resources/partner"
 )
 
 const (
@@ -37,10 +36,9 @@ func Routing(opts *config.Config, man manager.Abstractor) chi.Router {
 	r.Route(ApiPath, func(r chi.Router) {
 		r.Use(mware.All("/broker")...)
 		r.Route("/broker", func(r chi.Router) {
-			r.Mount("/partners", partner.NewAuth(man.Auther(), man.Partnerer(), man.Metric()).Route())
-			r.Mount("/orders", orderresource.NewOrder(man.Auther(), man.Orderer(), man.Metric()).Route())
-			r.Mount("/markets", market.NewResource(man.Auther(), man.Marketer(), man.Metric()).Route())
-			r.Mount("/offers", offer.NewResource(man.Auther(), man.Offer(), man.Metric()).Route())
+			r.Mount("/partners", partner.NewResource(man).Route())
+			r.Mount("/markets", market.NewResource(man).Route())
+			r.Mount("/admins", admin.NewResource(man).Route())
 		})
 	})
 

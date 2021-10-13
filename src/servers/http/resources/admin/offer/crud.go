@@ -9,7 +9,7 @@ import (
 	"github.com/MultiBanker/broker/src/database/drivers"
 	"github.com/MultiBanker/broker/src/models/selector"
 	"github.com/MultiBanker/broker/src/servers/http/dto"
-	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 	"github.com/pkg/errors"
 )
@@ -28,8 +28,8 @@ const maxOrderHistoryLimit = 100
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /offers [post]
-func (res Resource) create(w http.ResponseWriter, r *http.Request) {
+// @Router /admins/offers [post]
+func (res AdminResource) create(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	var req dto.OfferRequest
@@ -75,8 +75,8 @@ func (res Resource) create(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /offers/{id} [put]
-func (res Resource) update(w http.ResponseWriter, r *http.Request) {
+// @Router /admins/offers/{id} [put]
+func (res AdminResource) update(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	id := chi.URLParam(r, "id")
@@ -126,8 +126,8 @@ func (res Resource) update(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /offers/{id} [get]
-func (res Resource) get(w http.ResponseWriter, r *http.Request) {
+// @Router /admins/offers/{id} [get]
+func (res AdminResource) get(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	code := chi.URLParam(r, "code")
@@ -164,8 +164,8 @@ func (res Resource) get(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /offers [get]
-func (res Resource) list(w http.ResponseWriter, r *http.Request) {
+// @Router /admins/offers [get]
+func (res AdminResource) list(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	// строим пагинацию
 	paging := selector.Paging{

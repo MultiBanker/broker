@@ -1,4 +1,4 @@
-package orderresource
+package orders
 
 import (
 	"encoding/json"
@@ -12,7 +12,7 @@ import (
 	"github.com/go-chi/render"
 )
 
-// @Tags Partner-Order
+// @Tags Orders
 // @Summary Обновление заказа по решению партнера
 // @Description Обновление заказа по решению партнера
 // @Accept  json
@@ -24,8 +24,8 @@ import (
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /orders/partners [post]
-func (o Order) updateorderpartner() http.HandlerFunc {
+// @Router /partners/orders/ [post]
+func (o Resource) updateorderpartner() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 

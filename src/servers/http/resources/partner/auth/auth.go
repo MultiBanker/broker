@@ -1,4 +1,4 @@
-package partner
+package auth
 
 import (
 	"encoding/json"
@@ -6,12 +6,10 @@ import (
 	"time"
 
 	"github.com/MultiBanker/broker/pkg/httperrors"
+	"github.com/MultiBanker/broker/src/database/drivers"
 	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/servers/http/dto"
-
 	"github.com/go-chi/render"
-
-	"github.com/MultiBanker/broker/src/database/drivers"
 )
 
 const (
@@ -29,7 +27,7 @@ const (
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
 // @Router /partners/login [post]
-func (a Auth) auth() http.HandlerFunc {
+func (res Resource) auth() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
@@ -39,7 +37,7 @@ func (a Auth) auth() http.HandlerFunc {
 			_ = render.Render(w, r, httperrors.BadRequest(err))
 			return
 		}
-		partner, err := a.partnerMan.PartnerByUsername(ctx, req.Username, req.Password)
+		partner, err := res.partnerMan.PartnerByUsername(ctx, req.Username, req.Password)
 		switch err {
 		case drivers.ErrDoesNotExist:
 			_ = render.Render(w, r, httperrors.ResourceNotFound(err))
@@ -50,7 +48,7 @@ func (a Auth) auth() http.HandlerFunc {
 			return
 		}
 
-		access, refresh, err := a.authMan.Tokens(partner.ID, partner.Code, models.PARTNER)
+		access, refresh, err := res.authMan.Tokens(partner.ID, partner.Code, models.PARTNER)
 		if err != nil {
 			_ = render.Render(w, r, httperrors.BadRequest(err))
 			return
@@ -67,7 +65,7 @@ func (a Auth) auth() http.HandlerFunc {
 // @Accept  json
 // @Produce  json
 // @Router /partners/logout [get]
-func (a Auth) out() http.HandlerFunc {
+func (res Resource) out() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		http.SetCookie(w, &http.Cookie{
 			Name:     "Authorization",
@@ -79,3 +77,4 @@ func (a Auth) out() http.HandlerFunc {
 		render.Status(r, http.StatusOK)
 	}
 }
+

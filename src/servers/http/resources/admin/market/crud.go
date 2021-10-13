@@ -30,8 +30,8 @@ const maxOrderHistoryLimit = 100
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /markets [post]
-func (res Resource) create(w http.ResponseWriter, r *http.Request) {
+// @Router /admins/markets [post]
+func (res AdminResource) create(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	var req dto.MarketRequest
@@ -66,8 +66,8 @@ func (res Resource) create(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /markets/{id} [get]
-func (res Resource) get(w http.ResponseWriter, r *http.Request) {
+// @Router /admins/markets/{id} [get]
+func (res AdminResource) get(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	id := chi.URLParam(r, "id")
@@ -103,8 +103,8 @@ func (res Resource) get(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {object} httperrors.Response
 // @Failure 404 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /markets [get]
-func (res Resource) list(w http.ResponseWriter, r *http.Request) {
+// @Router /admins/markets [get]
+func (res AdminResource) list(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	paging := selector.Paging{
@@ -160,8 +160,8 @@ func (res Resource) list(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {object} httperrors.Response
 // @Failure 404 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /markets/{id} [put]
-func (res Resource) update(w http.ResponseWriter, r *http.Request) {
+// @Router /admins/markets/{id} [put]
+func (res AdminResource) update(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	var req dto.MarketRequest

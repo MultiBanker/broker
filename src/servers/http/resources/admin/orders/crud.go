@@ -1,4 +1,4 @@
-package orderresource
+package orders
 
 import (
 	"encoding/json"
@@ -15,10 +15,49 @@ import (
 	"github.com/go-chi/render"
 )
 
+// @Tags Orders
+// @Summary Получение заказа
+// @Description Получение заказа
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param id path string true "id of the order"
+// @Param Authorization header string true "Authorization"
+// @Success 200 {object} dto.OrderRequest
+// @Failure 400 {object} httperrors.Response
+// @Failure 429 {object} httperrors.Response
+// @Failure 500 {object} httperrors.Response
+// @Router /admins/orders/{id} [get]
+func (o AdminResource) order() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+
+		id := chi.URLParam(r, "id")
+		if id == "" {
+			_ = render.Render(w, r, httperrors.BadRequest(fmt.Errorf("[ERROR] empty ID")))
+			return
+		}
+
+		res, err := o.orderMan.OrderByID(ctx, id)
+		switch err {
+		case drivers.ErrDoesNotExist:
+			_ = render.Render(w, r, httperrors.ResourceNotFound(err))
+			return
+		case nil:
+		default:
+			_ = render.Render(w, r, httperrors.Internal(err))
+		}
+
+		render.JSON(w, r, res)
+		render.Status(r, http.StatusOK)
+
+	}
+}
+
 // list godoc
 // @Summary Получение заказов
 // @Description Получение заказов
-// @Tags Order
+// @Tags Orders
 // @Security ApiKeyAuth
 // @Param Authorization header string true "Authorization"
 // @Param limit query int false "pagination limit"
@@ -27,8 +66,8 @@ import (
 // @Failure 400 {object} httperrors.Response
 // @Failure 404 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /orders [get]
-func (o Order) orders() http.HandlerFunc {
+// @Router /admins/orders [get]
+func (o AdminResource) orders() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		// строим пагинацию
@@ -73,7 +112,7 @@ func (o Order) orders() http.HandlerFunc {
 	}
 }
 
-// @Tags Order
+// @Tags Orders
 // @Summary Обновление заказа
 // @Description Обновление заказа
 // @Accept  json
@@ -86,14 +125,14 @@ func (o Order) orders() http.HandlerFunc {
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /orders/{id} [put]
-func (o Order) updateorder() http.HandlerFunc {
+// @Router /admins/orders/{id} [put]
+func (o AdminResource) updateorder() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
 		id := chi.URLParam(r, "id")
 		if id == "" {
-			_ = render.Render(w, r, httperrors.BadRequest(fmt.Errorf("[ERROR] ID Order is empty")))
+			_ = render.Render(w, r, httperrors.BadRequest(fmt.Errorf("[ERROR] ID Resource is empty")))
 			return
 		}
 
