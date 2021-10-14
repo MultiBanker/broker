@@ -16,6 +16,8 @@ type Authenticator interface {
 	JWTKey() []byte
 }
 
+var _ Authenticator = (*Authenticate)(nil)
+
 type Authenticate struct {
 	jwtKey          []byte
 	AccessTokenTTL  time.Duration

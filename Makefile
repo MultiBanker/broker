@@ -18,3 +18,5 @@ swag-gen:
 
 docs:
 	swag init -d ./src/app -o ./src/swagger --parseDependency --parseInternal
+
+mocks:

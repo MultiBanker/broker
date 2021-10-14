@@ -24,6 +24,8 @@ type Partner struct {
 	partnerColl  repository.Partnerer
 }
 
+var _ Partnerer = (*Partner)(nil)
+
 func NewPartner(repos repository.Repositories) Partner {
 	return Partner{
 		sequenceColl: repos.SequenceRepo(),

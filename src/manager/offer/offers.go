@@ -23,6 +23,8 @@ func NewOffer(repo repository.Repositories) *Offer {
 	}
 }
 
+var _ Manager = (*Offer)(nil)
+
 type Manager interface {
 	CreateOffer(ctx context.Context, offer models.Offer) (string, error)
 	UpdateOffer(ctx context.Context, offer models.Offer) (models.Offer, error)

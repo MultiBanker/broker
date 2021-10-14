@@ -31,6 +31,8 @@ type Marketer interface {
 	MarketByUsername(ctx context.Context, username, password string) (models.Market, error)
 }
 
+var _ Marketer = (*Market)(nil)
+
 func (m Market) CreateMarket(ctx context.Context, market models.Market) (string, error) {
 	bytePass, err := auth.HashPassword(market.Password)
 	if err != nil {
