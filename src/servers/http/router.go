@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/MultiBanker/broker/pkg/metric"
-	"github.com/MultiBanker/broker/src/servers/http/resources/admin"
 	"github.com/MultiBanker/broker/src/servers/http/resources/health"
 	"github.com/MultiBanker/broker/src/servers/http/resources/market"
 	"github.com/MultiBanker/broker/src/servers/http/resources/partner"
@@ -29,7 +28,7 @@ func Routing(opts *config.Config, man manager.Abstractor) chi.Router {
 	isReady := &atomic.Value{}
 	go readyzProbe(isReady)
 
-	r := middleware.Mount(opts.Version, opts.HTTP.FilesDir, opts.HTTP.BasePath)
+	r := middleware.Mount(opts.Version, opts.HTTP.Client.FilesDir, opts.HTTP.Client.BasePath)
 	mware := metric.NewMetricware(metrics.NewSet())
 
 	// основные роутеры
@@ -38,7 +37,6 @@ func Routing(opts *config.Config, man manager.Abstractor) chi.Router {
 		r.Route("/broker", func(r chi.Router) {
 			r.Mount("/partners", partner.NewResource(man).Route())
 			r.Mount("/markets", market.NewResource(man).Route())
-			r.Mount("/admins", admin.NewResource(man).Route())
 		})
 	})
 

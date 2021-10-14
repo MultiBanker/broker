@@ -48,5 +48,8 @@ func (m MarketRequest) Validate() error {
 	if m.Contact.Validate() != nil {
 		errstrings = append(errstrings, m.Contact.Validate().Error())
 	}
-	return fmt.Errorf(strings.Join(errstrings, "\n"))
+	if errstrings != nil {
+		return fmt.Errorf(strings.Join(errstrings, "\n"))
+	}
+	return nil
 }

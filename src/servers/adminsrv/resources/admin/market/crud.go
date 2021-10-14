@@ -11,7 +11,7 @@ import (
 	"github.com/MultiBanker/broker/src/database/drivers"
 	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/models/selector"
-	"github.com/MultiBanker/broker/src/servers/http/dto"
+	"github.com/MultiBanker/broker/src/servers/adminsrv/dto"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 )

@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/MultiBanker/broker/pkg/httperrors"
-	"github.com/MultiBanker/broker/src/servers/http/dto"
+	"github.com/MultiBanker/broker/src/servers/adminsrv/dto"
 
 	"github.com/MultiBanker/broker/src/models/selector"
 

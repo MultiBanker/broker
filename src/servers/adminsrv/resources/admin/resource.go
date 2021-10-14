@@ -2,10 +2,10 @@ package admin
 
 import (
 	"github.com/MultiBanker/broker/src/manager"
-	"github.com/MultiBanker/broker/src/servers/http/resources/admin/market"
-	"github.com/MultiBanker/broker/src/servers/http/resources/admin/offer"
-	"github.com/MultiBanker/broker/src/servers/http/resources/admin/orders"
-	"github.com/MultiBanker/broker/src/servers/http/resources/admin/partner"
+	"github.com/MultiBanker/broker/src/servers/adminsrv/resources/admin/market"
+	"github.com/MultiBanker/broker/src/servers/adminsrv/resources/admin/offer"
+	"github.com/MultiBanker/broker/src/servers/adminsrv/resources/admin/orders"
+	"github.com/MultiBanker/broker/src/servers/adminsrv/resources/admin/partner"
 	"github.com/go-chi/chi/v5"
 )
 

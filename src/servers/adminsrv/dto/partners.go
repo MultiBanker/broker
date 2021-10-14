@@ -75,6 +75,9 @@ func (p PartnerRequest) Validate() error {
 		errstrings = append(errstrings, p.Contact.Validate().Error())
 	}
 
-	return fmt.Errorf(strings.Join(errstrings, "\n"))
-}
+	if errstrings != nil {
+		return fmt.Errorf(strings.Join(errstrings, "\n"))
+	}
 
+	return nil
+}

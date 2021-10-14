@@ -48,6 +48,8 @@ func (c OfferRequest) Validate() error {
 	if c.MinOrderSum > c.MaxOrderSum {
 		errstrings = append(errstrings, fmt.Errorf("min order sum higher than max order sum").Error())
 	}
-
-	return fmt.Errorf(strings.Join(errstrings, "\n"))
+	if errstrings != nil {
+		return fmt.Errorf(strings.Join(errstrings, "\n"))
+	}
+	return nil
 }

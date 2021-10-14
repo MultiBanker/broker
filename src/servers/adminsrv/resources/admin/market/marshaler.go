@@ -2,7 +2,7 @@ package market
 
 import (
 	"github.com/MultiBanker/broker/src/models"
-	"github.com/MultiBanker/broker/src/servers/http/dto"
+	"github.com/MultiBanker/broker/src/servers/adminsrv/dto"
 )
 
 func DtoToModelMarket(req dto.MarketRequest) models.Market {

@@ -2,7 +2,7 @@ package partner
 
 import (
 	"github.com/MultiBanker/broker/src/models"
-	"github.com/MultiBanker/broker/src/servers/http/dto"
+	"github.com/MultiBanker/broker/src/servers/adminsrv/dto"
 )
 
 func DTOToModelPartner(req dto.PartnerRequest) models.Partner {

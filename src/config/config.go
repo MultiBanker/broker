@@ -12,45 +12,55 @@ import (
 type Config struct {
 	*Database
 	*Servers
-	*Client
 	*WorkerConfigs
 	*Token
 	Version string
 }
 
 type Servers struct {
-	HTTP            *HTTPServer
-	GRPC            *GRPCServer
+	HTTP            *HTTP
+	GRPC            *GRPC
 	VictoriaMetrics *VictoriaServer
 
 	Dbg    bool   `long:"dbg" env:"DEBUG" description:"debug mode"`
 	JWTKey string `long:"jwt-key" env:"JWT_KEY" description:"JWT secret key" required:"false" default:"airba-secret"`
 }
 
+type HTTP struct {
+	Client *Client
+	Admin  *Admin
+}
+
 type Database struct {
-	DSName string `short:"n" long:"ds" env:"DATASTORE" description:"DataStore name (format: mongo/null)" required:"false" default:"mongo"`
-	DSDB   string `short:"d" long:"ds-db" env:"DATASTORE_DB" description:"DataStore database name (format: cascade)" required:"false" default:"broker"`
-	DSURL  string `short:"u" long:"ds-url" env:"DATASTORE_URL" description:"DataStore URL (format: mongodb://localhost:27017)" required:"false" default:"mongodb://localhost:27017/"`
+	DSName string `long:"ds" env:"DATASTORE" description:"DataStore name (format: mongo/null)" required:"false" default:"mongo"`
+	DSDB   string `long:"ds-db" env:"DATASTORE_DB" description:"DataStore database name (format: cascade)" required:"false" default:"broker"`
+	DSURL  string `long:"ds-url" env:"DATASTORE_URL" description:"DataStore URL (format: mongodb://localhost:27017)" required:"false" default:"mongodb://localhost:27017/"`
 }
 
-type HTTPServer struct {
-	ListenAddr string `short:"l" long:"listen" env:"LISTEN" description:"Listen Address (format: :8080|127.0.0.1:8080)" required:"false" default:":8080"`
-	BasePath   string `long:"base-path" env:"BASE_PATH" description:"base path of the host" required:"false" default:"/broker"`
-	FilesDir   string `long:"files-directory" env:"FILES_DIR" description:"Directory where all static files are located" required:"false" default:"/usr/share/broker"`
-	IsTesting  bool   `long:"testing" env:"APP_TESTING" description:"testing mode"`
-	CertFile   string `short:"c" long:"cert" env:"CERT_FILE" description:"Location of the SSL/TLS cert file" required:"false" default:""`
-	KeyFile    string `short:"k" long:"key" env:"KEY_FILE" description:"Location of the SSL/TLS key file" required:"false" default:""`
-}
-
-type GRPCServer struct {
+type GRPC struct {
 	ListenAddr string `long:"grpc-listen" env:"GRPC_LISTEN" description:"Grpc Listen Address (format: :4000|127.0.0.1:4000)" required:"false" default:":4000"`
 }
 
 type VictoriaServer struct {
-	ListenAddr string `long:"prom-listen" env:"PROM_LISTEN" description:"Listen Address (format: :9090|127.0.0.1:9090)" required:"false" default:":9090"`
+	ListenAddr string `long:"victoria-metrics-listen" env:"VICTORIA_METRICS_LISTEN" description:"Victoria Metrics Listen Address (format: :9090|127.0.0.1:9090)" required:"false" default:":9090"`
 }
 
 type Client struct {
+	ListenAddr string `long:"client-http-listen" env:"CLIENT_HTTP_LISTEN" description:"Listen Address (format: :8080|127.0.0.1:8080)" required:"false" default:":8080"`
+	BasePath   string `long:"client-base-path" env:"CLIENT_BASE_PATH" description:"base path of the host" required:"false" default:"/broker"`
+	FilesDir   string `long:"client-files-directory" env:"CLIENT_FILES_DIR" description:"Directory where all static files are located" required:"false" default:"/usr/share/broker"`
+	IsTesting  bool   `long:"client-testing" env:"CLIENT_APP_TESTING" description:"testing mode"`
+	CertFile   string `long:"client-cert" env:"CLIENT_CERT_FILE" description:"Location of the SSL/TLS cert file" required:"false" default:""`
+	KeyFile    string `long:"client-key" env:"CLIENT_KEY_FILE" description:"Location of the SSL/TLS key file" required:"false" default:""`
+}
+
+type Admin struct {
+	ListenAddr string `long:"admin-http-listen" env:"ADMIN_HTTP_LISTEN" description:"Listen Address (format: :8080|127.0.0.1:8080)" required:"false" default:":8090"`
+	BasePath   string `long:"admin-base-path" env:"ADMIN_BASE_PATH" description:"base path of the host" required:"false" default:"/broker"`
+	FilesDir   string `long:"admin-files-directory" env:"ADMIN_FILES_DIR" description:"Directory where all static files are located" required:"false" default:"/usr/share/broker"`
+	IsTesting  bool   `long:"admin-testing" env:"ADMIN_APP_TESTING" description:"testing mode"`
+	CertFile   string `long:"admin-cert" env:"ADMIN_CERT_FILE" description:"Location of the SSL/TLS cert file" required:"false" default:""`
+	KeyFile    string `long:"admin-key" env:"ADMIN_KEY_FILE" description:"Location of the SSL/TLS key file" required:"false" default:""`
 }
 
 type WorkerConfigs struct {

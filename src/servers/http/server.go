@@ -27,7 +27,7 @@ func (h *httpServer) Name() string {
 	return "HTTP"
 }
 
-func (h *httpServer) Start(ctx context.Context, cancel context.CancelFunc) error {
+func (h *httpServer) Start(_ context.Context, cancel context.CancelFunc) error {
 	h.server.RegisterOnShutdown(cancel)
 
 	log.Printf("[INFO] Starting http server on %s", h.server.Addr)

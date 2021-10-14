@@ -47,5 +47,8 @@ func (c ContactInfo) Validate() error {
 		errstrings = append(errstrings, ValidationIsEmpty("location").Error())
 	}
 
-	return fmt.Errorf(strings.Join(errstrings, "\n"))
+	if errstrings != nil {
+		return fmt.Errorf(strings.Join(errstrings, "\n"))
+	}
+	return nil
 }
