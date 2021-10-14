@@ -42,10 +42,10 @@ type Order struct {
 }
 
 type Customer struct {
-	TaxCode    string  `json:"taxCode"`
-	FirstName  string  `json:"firstName"`
-	LastName   string  `json:"lastName"`
-	MiddleName string  `json:"middleName"`
+	TaxCode    string  `json:"taxCode" example:"832918392183"`
+	FirstName  string  `json:"firstName" example:"Jon"`
+	LastName   string  `json:"lastName" example:"Bones"`
+	MiddleName string  `json:"middleName" example:"Jones"`
 	Contact    Contact `json:"contact"`
 }
 
@@ -78,8 +78,8 @@ func (c Customer) Validate() error {
 }
 
 type Address struct {
-	Delivery    string `json:"delivery" bson:"delivery"`
-	PickupPoint string `json:"pickupPoint" bson:"pickup_point"`
+	Delivery    string `json:"delivery" bson:"delivery" example:"track"`
+	PickupPoint string `json:"pickupPoint" bson:"pickup_point" example:"Kurmangazy 77"`
 }
 
 func (a Address) Validate() error {
@@ -99,11 +99,11 @@ func (a Address) Validate() error {
 }
 
 type Goods struct {
-	Category string `json:"category" bson:"category"`
-	Brand    string `json:"brand" bson:"brand"`
-	Price    string `json:"price" bson:"price"`
-	Model    string `json:"model" bson:"model"`
-	Image    string `json:"image" bson:"image"`
+	Category string `json:"category" bson:"category" example:"smartphony"`
+	Brand    string `json:"brand" bson:"brand" example:"iphone"`
+	Price    string `json:"price" bson:"price" example:"5000"`
+	Model    string `json:"model" bson:"model" example:"12 PRO"`
+	Image    string `json:"image" bson:"image" example:"https://cdn.dxomark.com/wp-content/uploads/medias/post-61183/iphone-12-pro-blue-hero.jpg"`
 }
 
 func (a Goods) Validate() error {
@@ -136,8 +136,8 @@ func (a Goods) Validate() error {
 }
 
 type Contact struct {
-	MobileNumber string `json:"mobileNumber" bson:"mobile_number"`
-	Email        string `json:"email" bson:"email"`
+	MobileNumber string `json:"mobileNumber" bson:"mobile_number" example:"87777777777"`
+	Email        string `json:"email" bson:"email" example:"jon@mail.ru"`
 }
 
 func (c Contact) Validate() error {
@@ -159,7 +159,7 @@ func (c Contact) Validate() error {
 }
 
 type PaymentPartners struct {
-	Code string `json:"code"`
+	Code string `json:"code" example:"airba_pay"`
 }
 
 func (p PaymentPartners) Validate() error {

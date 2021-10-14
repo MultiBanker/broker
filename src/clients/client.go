@@ -10,7 +10,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/MultiBanker/broker/src/servers/http/dto"
+	"github.com/MultiBanker/broker/src/servers/clienthttp/dto"
 )
 
 type Clienter interface {

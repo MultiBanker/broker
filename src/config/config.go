@@ -46,7 +46,7 @@ type VictoriaServer struct {
 }
 
 type Client struct {
-	ListenAddr string `long:"client-http-listen" env:"CLIENT_HTTP_LISTEN" description:"Listen Address (format: :8080|127.0.0.1:8080)" required:"false" default:":8080"`
+	ListenAddr string `long:"client-clienthttp-listen" env:"CLIENT_HTTP_LISTEN" description:"Listen Address (format: :8080|127.0.0.1:8080)" required:"false" default:":8080"`
 	BasePath   string `long:"client-base-path" env:"CLIENT_BASE_PATH" description:"base path of the host" required:"false" default:"/broker"`
 	FilesDir   string `long:"client-files-directory" env:"CLIENT_FILES_DIR" description:"Directory where all static files are located" required:"false" default:"/usr/share/broker"`
 	IsTesting  bool   `long:"client-testing" env:"CLIENT_APP_TESTING" description:"testing mode"`
@@ -55,7 +55,7 @@ type Client struct {
 }
 
 type Admin struct {
-	ListenAddr string `long:"admin-http-listen" env:"ADMIN_HTTP_LISTEN" description:"Listen Address (format: :8080|127.0.0.1:8080)" required:"false" default:":8090"`
+	ListenAddr string `long:"admin-clienthttp-listen" env:"ADMIN_HTTP_LISTEN" description:"Listen Address (format: :8080|127.0.0.1:8080)" required:"false" default:":8090"`
 	BasePath   string `long:"admin-base-path" env:"ADMIN_BASE_PATH" description:"base path of the host" required:"false" default:"/broker"`
 	FilesDir   string `long:"admin-files-directory" env:"ADMIN_FILES_DIR" description:"Directory where all static files are located" required:"false" default:"/usr/share/broker"`
 	IsTesting  bool   `long:"admin-testing" env:"ADMIN_APP_TESTING" description:"testing mode"`

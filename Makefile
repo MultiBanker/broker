@@ -2,11 +2,19 @@ tidy:
 	go mod tidy
 	go mod vendor
 
+swag-admin:
+	swag init -g ./src/servers/adminhttp/resources/admin/resource.go -o ./swagger/admin/ --parseDependency --parseInternal --exclude ./src/servers/clienthttp/resources/market,./src/servers/clienthttp/resources/partner
+
+swag-market:
+	swag init -g ./src/servers/adminhttp/resources/market/resource.go -o ./swagger/market/ --parseDependency --parseInternal --exclude ./src/servers/adminhttp/resources/admin,./src/servers/clienthttp/resources/partner
+
+swag-partner:
+	swag init -g ./src/servers/clienthttp/resources/partner/resource.go -o ./swagger/partner/ --parseDependency --parseInternal --exclude ./src/servers/adminhttp/resources/admin,./src/servers/clienthttp/resources/market
+
 swag-gen:
-#	swag init -d ./src/app -o ./src/swagger --parseDependency
-	swag init -g ./src/servers/http/resources/admin/resource.go -o ./swagger/admin/ --exclude ./src/servers/http/resources/market,./src/servers/http/resources/partner &&
-	swag init -g ./src/servers/http/resources/market/resource.go -o ./swagger/market/ --exclude ./src/servers/http/resources/admin,./src/servers/http/resources/partner &&
-	swag init -g ./src/servers/http/resources/partner/resource.go -o ./swagger/partner/ --exclude ./src/servers/http/resources/admin,./src/servers/http/resources/market
+	swag-admin
+	swag-market
+	swag-partner
 
 docs:
-	swag init -d ./src/app -o ./src/swagger --parseDependency
+	swag init -d ./src/app -o ./src/swagger --parseDependency --parseInternal

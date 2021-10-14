@@ -12,7 +12,7 @@ import (
 	"github.com/MultiBanker/broker/src/database/repository"
 	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/models/selector"
-	"github.com/MultiBanker/broker/src/servers/http/dto"
+	"github.com/MultiBanker/broker/src/servers/clienthttp/dto"
 )
 
 type Order struct {
@@ -153,7 +153,7 @@ func (o Order) BankOrder(ctx context.Context, id string, partnerCode string, ord
 	}
 
 	log.Printf(
-		"[INFO] OrderID - %s, Partner code - %s, status - %s, http code - %s, redirectURL - %s, uuid - %s, message - %s",
+		"[INFO] OrderID - %s, Partner code - %s, status - %s, clienthttp code - %s, redirectURL - %s, uuid - %s, message - %s",
 		id, partnerCode, orderResponse.Status, orderResponse.Code, orderResponse.RedirectUrl, orderResponse.RequestUuid, orderResponse.Message,
 	)
 
