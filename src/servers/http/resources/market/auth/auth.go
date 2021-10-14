@@ -37,6 +37,12 @@ func (res Resource) auth() http.HandlerFunc {
 			_ = render.Render(w, r, httperrors.BadRequest(err))
 			return
 		}
+
+		if err := req.Validate(); err != nil {
+			_ = render.Render(w, r, httperrors.BadRequest(err))
+			return
+		}
+
 		market, err := res.makretMan.MarketByUsername(ctx, req.Username, req.Password)
 		switch err {
 		case drivers.ErrDoesNotExist:

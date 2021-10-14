@@ -15,9 +15,9 @@ type OfferRequest struct {
 	// Вид оплаты товара
 	PaymentTypeGroupCode string `json:"payment_type_group_code" bson:"payment_type_group_code" example:"online_broker"`
 	// Минимальная сумма заказа
-	MinOrderSum          int    `json:"min_order_sum" bson:"min_order_sum"`
+	MinOrderSum          int    `json:"min_order_sum" bson:"min_order_sum" example:"10000"`
 	// Максимальная сумма заказа
-	MaxOrderSum          int    `json:"max_order_sum" bson:"max_order_sum"`
+	MaxOrderSum          int    `json:"max_order_sum" bson:"max_order_sum" example:"1500000"`
 }
 
 type OfferSpecs struct {

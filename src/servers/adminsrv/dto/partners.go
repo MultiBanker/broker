@@ -44,7 +44,10 @@ func (u URL) Validate() error {
 		errstrings = append(errstrings, ValidationIsEmpty("update url").Error())
 	}
 
-	return fmt.Errorf(strings.Join(errstrings, "\n"))
+	if errstrings != nil {
+		return fmt.Errorf(strings.Join(errstrings, "\n"))
+	}
+	return nil
 }
 
 func (p PartnerRequest) Validate() error {

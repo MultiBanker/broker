@@ -40,6 +40,11 @@ func (o Resource) neworder() http.HandlerFunc {
 			return
 		}
 
+		if err := req.Validate(); err != nil {
+			_ = render.Render(w, r, httperrors.BadRequest(err))
+			return
+		}
+
 		marketCode, ok := ctx.Value(middleware.CodeKey).(string)
 		if !ok {
 			_ = render.Render(w, r, httperrors.BadRequest(fmt.Errorf("[ERROR] unauthorized")))

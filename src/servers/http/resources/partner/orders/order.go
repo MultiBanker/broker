@@ -42,6 +42,11 @@ func (o Resource) updateorderpartner() http.HandlerFunc {
 			return
 		}
 
+		if err := req.Validate(); err != nil {
+			_ = render.Render(w, r, httperrors.BadRequest(err))
+			return
+		}
+
 		id, err := o.orderMan.UpdatePartnerOrder(ctx, models.PartnerOrder{
 			ReferenceID: req.ReferenceID,
 			State:       req.State,

@@ -1,6 +1,18 @@
 package models
 
-import "time"
+import (
+	"fmt"
+	"strings"
+	"time"
+
+	"github.com/pkg/errors"
+)
+
+var ErrIsEmpty = fmt.Errorf("[ERROR] is Empty")
+
+func ValidationIsEmpty(value string) error {
+	return errors.Wrap(ErrIsEmpty, value)
+}
 
 type Order struct {
 	ID                      string            `json:"id" bson:"_id"`
@@ -37,10 +49,55 @@ type Customer struct {
 	Contact    Contact `json:"contact"`
 }
 
+func (c Customer) Validate() error {
+	var errstrings []string
+
+	if c.TaxCode == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("taxCode").Error())
+	}
+
+	if c.FirstName == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("first name").Error())
+	}
+	if c.LastName == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("last name").Error())
+	}
+
+	if c.TaxCode == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("taxCode").Error())
+	}
+
+	if err := c.Contact.Validate(); err != nil {
+		errstrings = append(errstrings, c.Contact.Validate().Error())
+	}
+
+	if errstrings != nil {
+		return fmt.Errorf(strings.Join(errstrings, "\n"))
+	}
+	return nil
+}
+
 type Address struct {
 	Delivery    string `json:"delivery" bson:"delivery"`
 	PickupPoint string `json:"pickupPoint" bson:"pickup_point"`
 }
+
+func (a Address) Validate() error {
+	var errstrings []string
+	if a.Delivery == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("delivery").Error())
+	}
+
+	if a.PickupPoint == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("pickup point").Error())
+	}
+
+	if errstrings != nil {
+		return fmt.Errorf(strings.Join(errstrings, "\n"))
+	}
+	return nil
+}
+
 type Goods struct {
 	Category string `json:"category" bson:"category"`
 	Brand    string `json:"brand" bson:"brand"`
@@ -49,11 +106,65 @@ type Goods struct {
 	Image    string `json:"image" bson:"image"`
 }
 
+func (a Goods) Validate() error {
+	var errstrings []string
+
+	if a.Category == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("delivery").Error())
+	}
+
+	if a.Brand == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("pickup point").Error())
+	}
+
+	if a.Price == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("price").Error())
+	}
+
+	if a.Model == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("model").Error())
+	}
+
+	if a.Image == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("image").Error())
+	}
+
+	if errstrings != nil {
+		return fmt.Errorf(strings.Join(errstrings, "\n"))
+	}
+	return nil
+}
+
 type Contact struct {
 	MobileNumber string `json:"mobileNumber" bson:"mobile_number"`
 	Email        string `json:"email" bson:"email"`
 }
 
+func (c Contact) Validate() error {
+	var errstrings []string
+
+	if c.MobileNumber == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("mobile number").Error())
+	}
+
+	if c.Email == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("email").Error())
+	}
+
+	if errstrings != nil {
+		return fmt.Errorf(strings.Join(errstrings, "\n"))
+	}
+	return nil
+
+}
+
 type PaymentPartners struct {
 	Code string `json:"code"`
+}
+
+func (p PaymentPartners) Validate() error {
+	if p.Code == "" {
+		return ValidationIsEmpty("code partner")
+	}
+	return nil
 }

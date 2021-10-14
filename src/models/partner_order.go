@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"fmt"
+	"strings"
+	"time"
+)
 
 type PartnerOrder struct {
 	ID          string `json:"-" bson:"_id"`
@@ -29,4 +33,40 @@ type Offers struct {
 	LoanLength     string `json:"loanLength" bson:"loan_length"`
 	ContractNumber string `json:"contractNumber" bson:"contract_number"`
 	MonthlyPayment int    `json:"monthlyPayment" bson:"monthly_payment"`
+}
+
+func (o Offers) Validate() error {
+	var errstrings []string
+
+
+	if o.ProductType == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("product type").Error())
+	}
+
+	if o.Product == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("product").Error())
+	}
+
+
+	if o.LoanAmount == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("loan amount").Error())
+	}
+
+	if o.LoanLength == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("loan length").Error())
+	}
+
+
+	if o.ContractNumber == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("contract number").Error())
+	}
+
+	if o.MonthlyPayment == 0 {
+		errstrings = append(errstrings, ValidationIsEmpty("monthly payment").Error())
+	}
+
+	if errstrings != nil {
+		return fmt.Errorf(strings.Join(errstrings, "\n"))
+	}
+	return nil
 }
