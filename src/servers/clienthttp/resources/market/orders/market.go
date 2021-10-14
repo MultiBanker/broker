@@ -21,7 +21,7 @@ import (
 // @Description Создание нового заказа
 // @Accept  json
 // @Produce  json
-// @Param market body dto.OrderRequest true "body"
+// @Param market body dto.MarketOrderRequest true "body"
 // @Security ApiKeyAuth
 // @Param Authorization header string true "Authorization"
 // @Success 200 {object} dto.IDResponse

@@ -37,6 +37,11 @@ func (res Resource) auth() http.HandlerFunc {
 			_ = render.Render(w, r, httperrors.BadRequest(err))
 			return
 		}
+
+		if err := req.Validate(); err != nil {
+			_ = render.Render(w, r, httperrors.BadRequest(err))
+			return
+		}
 		partner, err := res.partnerMan.PartnerByUsername(ctx, req.Username, req.Password)
 		switch err {
 		case drivers.ErrDoesNotExist:
