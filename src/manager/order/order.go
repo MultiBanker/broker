@@ -153,7 +153,7 @@ func (o Order) BankOrder(ctx context.Context, id string, partnerCode string, ord
 	}
 
 	log.Printf(
-		"[INFO] OrderID - %s, Partner code - %s, status - %s, clienthttp code - %s, redirectURL - %s, uuid - %s, message - %s",
+		"[INFO] OrderID - %s, Partner code - %s, status - %s, clienthttp code - %d, redirectURL - %s, uuid - %s, message - %s",
 		id, partnerCode, orderResponse.Status, orderResponse.Code, orderResponse.RedirectUrl, orderResponse.RequestUuid, orderResponse.Message,
 	)
 
