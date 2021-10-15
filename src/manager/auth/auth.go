@@ -27,8 +27,8 @@ type Authenticate struct {
 func NewAuthenticator(opts *config.Config) Authenticator {
 	return &Authenticate{
 		jwtKey:          []byte(opts.JWTKey),
-		AccessTokenTTL:  time.Duration(opts.AccessToken) * time.Hour,
-		RefreshTokenTTL: time.Duration(opts.RefreshToken) * 24 * time.Hour * 30,
+		AccessTokenTTL:  time.Duration(opts.AccessTokenTime) * time.Hour,
+		RefreshTokenTTL: time.Duration(opts.RefreshTokenTime) * 24 * time.Hour * 30,
 	}
 }
 

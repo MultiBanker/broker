@@ -67,8 +67,8 @@ type WorkerConfigs struct {
 }
 
 type Token struct {
-	AccessToken  int `long:"access-token" env:"ACCESS_TOKEN_DURATION_HOURS" description:"Access Token Duration" required:"true" default:"2"`
-	RefreshToken int `long:"refresh-token" env:"REFRESH_TOKEN_DURATION_MONTH" description:"Refresh Token Duration" required:"true" default:"1"`
+	AccessTokenTime  int `long:"access-token" env:"ACCESS_TOKEN_DURATION_HOURS" description:"Access Token Duration" required:"true" default:"2"`
+	RefreshTokenTime int `long:"refresh-token" env:"REFRESH_TOKEN_DURATION_MONTH" description:"Refresh Token Duration" required:"true" default:"1"`
 }
 
 func (d Database) ToDataStore() drivers.DataStoreConfig {

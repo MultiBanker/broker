@@ -2,7 +2,6 @@ package order
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/MultiBanker/broker/src/database/repository"
@@ -15,13 +14,11 @@ const (
 
 type Deadline struct {
 	partnerOrderRepo repository.PartnerOrderer
-	timer            *time.Ticker
 }
 
 func NewDeadline(partnerOrderRepo repository.PartnerOrderer) director.Daemons {
 	return Deadline{
 		partnerOrderRepo: partnerOrderRepo,
-		timer:            time.NewTicker(defaultTicker),
 	}
 }
 
@@ -29,18 +26,14 @@ func (d Deadline) Name() string {
 	return "order-deadliner"
 }
 
-func (d Deadline) Start(ctx context.Context, cancel context.CancelFunc) error {
-	for {
-		select {
-		case <-d.timer.C:
-			if err := d.partnerOrderRepo.UpdateInitStatusByTimeOut(ctx); err != nil {
-				log.Println("[ERROR] Database ", err)
-			}
-		case <-ctx.Done():
-			d.timer.Stop()
-			return nil
-		}
-	}
+func (d Deadline) Start(ctx context.Context, _ context.CancelFunc) error {
+	orderTimeKiller := director.NewWorker(d.Name(), defaultTicker)
+	go orderTimeKiller.Run(ctx, d.InitTimeOutKill)
+	return nil
+}
+
+func (d Deadline) InitTimeOutKill(ctx context.Context) error {
+	return d.partnerOrderRepo.UpdateInitStatusByTimeOut(ctx)
 }
 
 func (d Deadline) Stop(_ context.Context) error {

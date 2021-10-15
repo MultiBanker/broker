@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"sync"
 	"syscall"
+	"time"
 
 	"github.com/MultiBanker/broker/src/config"
 	"github.com/MultiBanker/broker/src/database/drivers"
@@ -15,6 +16,8 @@ import (
 	"github.com/MultiBanker/broker/src/servers"
 	"github.com/VictoriaMetrics/metrics"
 )
+
+const killTimeOut = 35 * time.Second
 
 type application struct {
 	opts    *config.Config
@@ -66,7 +69,8 @@ func (a *application) shutdown(ctx context.Context) {
 	<-ctx.Done()
 
 
-	killContext := context.Background()
+	killContext, cancel := context.WithTimeout(context.Background(), killTimeOut)
+	defer cancel()
 	defer a.ds.Close(killContext)
 
 	log.Printf("[INFO] Disable all services")
