@@ -3,7 +3,6 @@ package dto
 import "github.com/MultiBanker/broker/src/models"
 
 type OrderAdminUpdateRequest struct {
-	ID                      string                   `json:"id" bson:"_id"`
 	ReferenceID             string                   `json:"referenceId" bson:"reference_id"`
 	OrderState              string                   `json:"orderState" bson:"order_state"`
 	RedirectURL             string                   `json:"redirectUrl" bson:"redirect_url"`

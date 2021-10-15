@@ -38,9 +38,9 @@ type Offers struct {
 func (o Offers) Validate() error {
 	var errstrings []string
 
-
-	if o.ProductType == "" {
-		errstrings = append(errstrings, ValidationIsEmpty("product type").Error())
+	_, err := ValidateProductType(o.ProductType)
+	if err != nil {
+		errstrings = append(errstrings, err.Error())
 	}
 
 	if o.Product == "" {
