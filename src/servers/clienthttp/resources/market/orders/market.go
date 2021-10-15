@@ -127,7 +127,7 @@ func (o Resource) neworder() http.HandlerFunc {
 // @Security ApiKeyAuth
 // @Param Authorization header string true "Authorization"
 // @Param reference_id path string true "reference id of the order"
-// @Success 200 {array} dto.OrderResponse
+// @Success 200 {array} models.Order
 // @Failure 400 {object} httperrors.Response
 // @Failure 404 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response

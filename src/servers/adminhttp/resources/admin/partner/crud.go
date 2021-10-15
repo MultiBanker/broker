@@ -23,7 +23,7 @@ import (
 // @Description Создание нового партнера
 // @Accept  json
 // @Produce  json
-// @Param partner body models.Partner true "body"
+// @Param partner body dto.PartnerRequest true "body"
 // @Security ApiKeyAuth
 // @Param Authorization header string true "Authorization"
 // @Success 200 {object} models.Response

@@ -13,17 +13,17 @@ type MarketOrderRequest struct {
 	CityID                  string                   `json:"cityId" example:"050000"`
 	Channel                 string                   `json:"channel" example:"airba_web"`
 	PaymentMethod           string                   `json:"paymentMethod" example:"annuity"`
-	ProductType             string                   `json:"productType" example:""`
-	RedirectURL             string                   `json:"redirectUrl" example:""`
-	SystemCode              string                   `json:"systemCode" example:""`
-	VerificationSmsCode     string                   `json:"verificationSmsCode" example:""`
-	VerificationID          string                   `json:"verificationId" example:""`
-	LoanLength              int                      `json:"loanLength" example:""`
-	VerificationSmsDateTime string                   `json:"verificationSmsDateTime" example:""`
+	ProductType             string                   `json:"productType" example:"installment"`
+	RedirectURL             string                   `json:"redirectUrl" example:"https://airba.kz/order/ok"`
+	SystemCode              string                   `json:"systemCode" example:"oms"`
+	VerificationSmsCode     string                   `json:"verificationSmsCode" example:"12321"`
+	VerificationID          string                   `json:"verificationId" example:"dsad12"`
+	LoanLength              int                      `json:"loanLength" example:"12"`
+	VerificationSmsDateTime string                   `json:"verificationSmsDateTime" example:"12.12.2020"`
 	Customer                models.Customer          `json:"customer"`
 	Address                 models.Address           `json:"address"`
 	Goods                   []models.Goods           `json:"goods"`
-	PaymentPartners         []models.PaymentPartners `json:"paymentPartners" example:""`
+	PaymentPartners         []models.PaymentPartners `json:"paymentPartners"`
 }
 
 func (m MarketOrderRequest) Validate() error {

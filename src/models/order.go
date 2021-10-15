@@ -20,7 +20,7 @@ type Order struct {
 	OrderState              string            `json:"orderState" bson:"order_state"`
 	RedirectURL             string            `json:"redirectUrl" bson:"redirect_url"`
 	Channel                 string            `json:"channel" bson:"channel"`
-	SystemCode              string            `json:"system_code"`
+	SystemCode              string            `json:"systemCode"`
 	StateCode               string            `json:"-"`
 	MarketCode              string            `json:"-"`
 	ProductType             string            `json:"productType" bson:"product_type"`

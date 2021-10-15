@@ -27,12 +27,12 @@ type PartnerOrder struct {
 }
 
 type Offers struct {
-	ProductType    string `json:"productType" bson:"product_type"`
-	Product        string `json:"product" bson:"product"`
-	LoanAmount     string `json:"loanAmount" bson:"loan_amount"`
-	LoanLength     string `json:"loanLength" bson:"loan_length"`
-	ContractNumber string `json:"contractNumber" bson:"contract_number"`
-	MonthlyPayment int    `json:"monthlyPayment" bson:"monthly_payment"`
+	ProductType    string `json:"productType" bson:"product_type" example:"installment"`
+	Product        string `json:"product" bson:"product" example:"rassrochka_12"`
+	LoanAmount     string `json:"loanAmount" bson:"loan_amount" example:"144000"`
+	LoanLength     string `json:"loanLength" bson:"loan_length" example:"12"`
+	ContractNumber string `json:"contractNumber" bson:"contract_number" example:"d12ed1"`
+	MonthlyPayment int    `json:"monthlyPayment" bson:"monthly_payment" example:"12000"`
 }
 
 func (o Offers) Validate() error {
