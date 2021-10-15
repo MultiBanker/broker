@@ -31,12 +31,16 @@ type application struct {
 	metric  *metrics.Set
 }
 
-func initApp(version string) *application {
+func initApp(version string) (*application, error) {
+	opts, err := config.ParseConfig()
+	if err != nil {
+		return nil, err
+	}
 	return &application{
 		version: version,
-		opts:    config.ParseConfig(),
+		opts:    opts,
 		metric:  metrics.NewSet(),
-	}
+	}, nil
 }
 
 func (a *application) run() {
@@ -67,7 +71,6 @@ func (a *application) run() {
 
 func (a *application) shutdown(ctx context.Context) {
 	<-ctx.Done()
-
 
 	killContext, cancel := context.WithTimeout(context.Background(), killTimeOut)
 	defer cancel()

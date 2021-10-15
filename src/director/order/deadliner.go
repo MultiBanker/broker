@@ -32,6 +32,8 @@ func (d Order) Start(ctx context.Context, _ context.CancelFunc) error {
 	return nil
 }
 
+// InitTimeOutKill нужен для отключения проинициализированного
+// заказа без изменения статуса со стороны банка
 func (d Order) InitTimeOutKill(ctx context.Context) error {
 	return d.partnerOrderRepo.UpdateInitStatusByTimeOut(ctx)
 }

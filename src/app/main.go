@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/MultiBanker/broker/src/database"
 )
@@ -21,9 +22,19 @@ var version = ""
 func main() {
 	fmt.Printf("version %s", version)
 
-	app := initApp(version)
-	app.datastore(database.New)
-	app.repository()
+	app, err := initApp(version)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	if err = app.datastore(database.New); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	if err = app.repository(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 	app.managers()
 	app.services()
 	app.run()

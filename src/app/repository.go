@@ -1,15 +1,14 @@
 package main
 
 import (
-	"log"
-
 	"github.com/MultiBanker/broker/src/database/repository"
 )
 
-func (a *application) repository() {
+func (a *application) repository() error {
 	repo, err := repository.NewRepository(a.ds)
 	if err != nil {
-		log.Fatal("[FATAL] FUCK YOU WHERE IS DATASTORE")
+		return err
 	}
 	a.repo = repo
+	return nil
 }

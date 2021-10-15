@@ -1,9 +1,6 @@
 package config
 
 import (
-	"log"
-	"os"
-
 	"github.com/jessevdk/go-flags"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
@@ -79,17 +76,12 @@ func (d Database) ToDataStore() drivers.DataStoreConfig {
 	}
 }
 
-func ParseConfig() *Config {
+func ParseConfig() (*Config, error) {
 	c := &Config{}
 	p := flags.NewParser(c, flags.Default)
 	if _, err := p.Parse(); err != nil {
-		log.Println("[ERROR] Ошибка парсинга опций:", err)
-		if flagsErr, ok := err.(*flags.Error); ok && flagsErr.Type == flags.ErrHelp {
-			os.Exit(0)
-		} else {
-			os.Exit(1)
-		}
+		return nil, err
 	}
 
-	return c
+	return c, nil
 }
