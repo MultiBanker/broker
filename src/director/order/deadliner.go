@@ -12,30 +12,30 @@ const (
 	defaultTicker = 300 * time.Millisecond
 )
 
-type Deadline struct {
+type Order struct {
 	partnerOrderRepo repository.PartnerOrderer
 }
 
 func NewDeadline(partnerOrderRepo repository.PartnerOrderer) director.Daemons {
-	return Deadline{
+	return Order{
 		partnerOrderRepo: partnerOrderRepo,
 	}
 }
 
-func (d Deadline) Name() string {
-	return "order-deadliner"
+func (d Order) Name() string {
+	return "order-worker"
 }
 
-func (d Deadline) Start(ctx context.Context, _ context.CancelFunc) error {
+func (d Order) Start(ctx context.Context, _ context.CancelFunc) error {
 	orderTimeKiller := director.NewWorker(d.Name(), defaultTicker)
 	go orderTimeKiller.Run(ctx, d.InitTimeOutKill)
 	return nil
 }
 
-func (d Deadline) InitTimeOutKill(ctx context.Context) error {
+func (d Order) InitTimeOutKill(ctx context.Context) error {
 	return d.partnerOrderRepo.UpdateInitStatusByTimeOut(ctx)
 }
 
-func (d Deadline) Stop(_ context.Context) error {
+func (d Order) Stop(_ context.Context) error {
 	return nil
 }
