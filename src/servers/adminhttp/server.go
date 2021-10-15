@@ -2,7 +2,6 @@ package adminhttp
 
 import (
 	"context"
-	"log"
 	"net/http"
 )
 
@@ -30,8 +29,6 @@ func (a adminServer) Name() string {
 func (a adminServer) Start(_ context.Context, cancel context.CancelFunc) error {
 	a.server.RegisterOnShutdown(cancel)
 
-	log.Printf("[INFO] Starting admin clienthttp server on %s", a.server.Addr)
-
 	if a.Insecure() {
 		if err := a.server.ListenAndServe(); err != nil {
 			return err
@@ -51,6 +48,5 @@ func (a *adminServer) Insecure() bool {
 }
 
 func (a *adminServer) Stop(ctx context.Context) error {
-	<-ctx.Done()
-	return a.server.Shutdown(context.Background())
+	return a.server.Shutdown(ctx)
 }

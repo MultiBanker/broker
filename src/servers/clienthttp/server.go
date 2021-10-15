@@ -2,18 +2,17 @@ package clienthttp
 
 import (
 	"context"
-	"log"
 	"net/http"
 )
 
-type httpServer struct {
+type clientHttpServer struct {
 	certFile string
 	keyFile  string
 	server   *http.Server
 }
 
-func NewHTTP(addr string, r http.Handler) *httpServer {
-	return &httpServer{
+func NewClientHTTP(addr string, r http.Handler) *clientHttpServer {
+	return &clientHttpServer{
 		server: &http.Server{
 			Addr:         addr,
 			Handler:      r,
@@ -23,14 +22,12 @@ func NewHTTP(addr string, r http.Handler) *httpServer {
 	}
 }
 
-func (h *httpServer) Name() string {
-	return "HTTP"
+func (h *clientHttpServer) Name() string {
+	return "client-server"
 }
 
-func (h *httpServer) Start(_ context.Context, cancel context.CancelFunc) error {
+func (h *clientHttpServer) Start(_ context.Context, cancel context.CancelFunc) error {
 	h.server.RegisterOnShutdown(cancel)
-
-	log.Printf("[INFO] Starting clienthttp server on %s", h.server.Addr)
 
 	if h.Insecure() {
 		if err := h.server.ListenAndServe(); err != nil {
@@ -46,11 +43,10 @@ func (h *httpServer) Start(_ context.Context, cancel context.CancelFunc) error {
 	panic("SOMETHING WRONG WITH CERT FILES")
 }
 
-func (h *httpServer) Insecure() bool {
+func (h *clientHttpServer) Insecure() bool {
 	return h.keyFile == "" && h.certFile == ""
 }
 
-func (h *httpServer) Stop(ctx context.Context) error {
-	<-ctx.Done()
-	return h.server.Shutdown(context.Background())
+func (h *clientHttpServer) Stop(ctx context.Context) error {
+	return h.server.Shutdown(ctx)
 }

@@ -2,7 +2,6 @@ package victoriaMetrics
 
 import (
 	"context"
-	"log"
 	"net/http"
 	"time"
 
@@ -40,8 +39,6 @@ func (p victoriaMetricsServer) Name() string {
 func (p victoriaMetricsServer) Start(_ context.Context, cancel context.CancelFunc) error {
 	p.server.RegisterOnShutdown(cancel)
 
-	log.Printf("[INFO] Starting prometheus server on %s", p.server.Addr)
-
 	if p.Insecure() {
 		if err := p.server.ListenAndServe(); err != nil {
 			return err
@@ -57,8 +54,7 @@ func (p victoriaMetricsServer) Start(_ context.Context, cancel context.CancelFun
 }
 
 func (p victoriaMetricsServer) Stop(ctx context.Context) error {
-	<-ctx.Done()
-	return p.server.Shutdown(context.Background())
+	return p.server.Shutdown(ctx)
 }
 
 func (p *victoriaMetricsServer) Insecure() bool {

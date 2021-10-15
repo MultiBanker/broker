@@ -53,6 +53,30 @@ func (p PartnerOrderRepository) UpdateOrder(ctx context.Context, porder models.P
 	return order.ID, nil
 }
 
+func (p PartnerOrderRepository) UpdateInitStatusByTimeOut(ctx context.Context) error {
+	now := time.Now().UTC()
+
+	filter := bson.D{
+		{"status", models.INIT.Status()},
+		{"created_at", bson.D{
+			{Key: "$lte", Value: now.Add(-3 * time.Minute)},
+		}},
+	}
+	update := bson.D{
+		{"$set", bson.D{
+			{"status", models.CANCELLED.Status()},
+		}},
+	}
+
+	err := p.coll.FindOneAndUpdate(ctx, filter, update).Err()
+	switch {
+	case errors.Is(err, nil), errors.Is(err, mongo.ErrNoDocuments):
+		return nil
+	default:
+		return err
+	}
+}
+
 func (p PartnerOrderRepository) OrdersByReferenceID(ctx context.Context, marketCode, referenceID string) ([]*models.PartnerOrder, error) {
 	filter := bson.D{
 		{"market_code", marketCode},

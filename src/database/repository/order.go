@@ -29,4 +29,5 @@ type PartnerOrderer interface {
 	UpdateOrder(ctx context.Context, order models.PartnerOrder) (string, error)
 	OrdersByReferenceID(ctx context.Context, marketCode, referenceID string) ([]*models.PartnerOrder, error)
 	OrderPartner(ctx context.Context, referenceID, partnerCode string) (models.PartnerOrder, error)
+	UpdateInitStatusByTimeOut(ctx context.Context) error
 }

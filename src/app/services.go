@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/MultiBanker/broker/src/director/order"
 	"github.com/MultiBanker/broker/src/servers/adminhttp"
 	"github.com/MultiBanker/broker/src/servers/victoriaMetrics"
 	"github.com/go-chi/chi/v5"
@@ -14,7 +15,9 @@ import (
 )
 
 func (a *application) services() {
-	a.workers()
+	a.workers(
+		a.orderDeadliner(),
+		)
 	a.clienthttpServer(clienthttp.Routing)
 	a.adminhttpserver(adminhttp.Routing)
 	a.grpcserver(grpcsrv.Routing)
@@ -28,7 +31,7 @@ func (a *application) workers(daemons ...director.Daemons) {
 }
 
 func (a *application) clienthttpServer(fn func(opts *config.Config, man manager.Abstractor) chi.Router) {
-	srv := clienthttp.NewHTTP(a.opts.HTTP.Client.ListenAddr, fn(a.opts, a.man))
+	srv := clienthttp.NewClientHTTP(a.opts.HTTP.Client.ListenAddr, fn(a.opts, a.man))
 	a.servers = append(a.servers, srv)
 }
 
@@ -45,4 +48,8 @@ func (a *application) adminhttpserver(fn func(opts *config.Config, man manager.A
 func (a *application) victoriaMetricsServer() {
 	srv := victoriaMetrics.NewVictoriaM(a.metric, a.opts.VictoriaMetrics.ListenAddr, victoriaMetrics.Routing())
 	a.servers = append(a.servers, srv)
+}
+
+func (a *application) orderDeadliner() director.Daemons {
+	return order.NewDeadline(a.repo.PartnerOrderRepo())
 }

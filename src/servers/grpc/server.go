@@ -35,12 +35,10 @@ func (g *grpcServer) Start(ctx context.Context, cancel context.CancelFunc) error
 
 	g.handler(g.server, g.manager)
 
-	log.Printf("[INFO] serving GRPC on \"%s\"", g.Address)
 	return g.server.Serve(listener)
 }
 
-func (g *grpcServer) Stop(ctx context.Context) error {
-	<-ctx.Done()
+func (g *grpcServer) Stop(_ context.Context) error {
 	g.server.GracefulStop()
 	return nil
 }
