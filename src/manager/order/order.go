@@ -140,6 +140,19 @@ func (o Order) BankOrder(ctx context.Context, id string, partnerCode string, ord
 		return fmt.Errorf("[ERROR] getting partner from db %v", err)
 	}
 
+	_, err = o.partnerOrderColl.NewOrder(ctx, models.PartnerOrder{
+		ReferenceID: order.ReferenceID,
+		PartnerCode: partnerCode,
+		MarketCode:  order.MarketCode,
+		State:       models.INIT.Status(),
+		StateTitle:  models.INIT.Title(),
+		Offers:      []models.Offers{},
+	})
+
+	if err != nil {
+		return err
+	}
+
 	bankCli := clients.NewClient(partner.URL.Create, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW1fY29kZSI6IlREX0JST0tFUiJ9.Fa4wL9KID3A_-8fYmvhZKXi68K5GRMlLsYK0y6PASI4")
 	b, err := bankCli.RequestOrder(ctx, OrderToDTO(order), 3, nil)
 	if err != nil {
@@ -157,19 +170,6 @@ func (o Order) BankOrder(ctx context.Context, id string, partnerCode string, ord
 		id, partnerCode, orderResponse.Status, orderResponse.Code, orderResponse.RedirectUrl, orderResponse.RequestUuid, orderResponse.Message,
 	)
 
-	_, err = o.partnerOrderColl.NewOrder(ctx, models.PartnerOrder{
-		ReferenceID: order.ReferenceID,
-		PartnerCode: partnerCode,
-		MarketCode:  order.MarketCode,
-		Status:      orderResponse.Status,
-		Code:        orderResponse.Code,
-		RedirectURL: orderResponse.RedirectUrl,
-		RequestUUID: orderResponse.RequestUuid,
-		Message:     orderResponse.Message,
-		State:       models.INIT.Status(),
-		StateTitle:  models.INIT.Title(),
-		Offers:      []models.Offers{},
-	})
 	return err
 }
 

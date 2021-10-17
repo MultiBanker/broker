@@ -6,8 +6,6 @@ import (
 )
 
 type adminServer struct {
-	certFile string
-	keyFile  string
 	server   *http.Server
 }
 
@@ -29,23 +27,7 @@ func (a adminServer) Name() string {
 func (a adminServer) Start(_ context.Context, cancel context.CancelFunc) error {
 	defer cancel()
 	a.server.RegisterOnShutdown(cancel)
-
-	if a.Insecure() {
-		if err := a.server.ListenAndServe(); err != nil {
-			return err
-		}
-	}
-
-	if !a.Insecure() {
-		if err := a.server.ListenAndServeTLS(a.certFile, a.keyFile); err != nil {
-			return err
-		}
-	}
-	panic("SOMETHING WRONG WITH CERT FILES")
-}
-
-func (a *adminServer) Insecure() bool {
-	return a.keyFile == "" && a.certFile == ""
+	return a.server.ListenAndServe()
 }
 
 func (a *adminServer) Stop(ctx context.Context) error {
