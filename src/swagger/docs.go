@@ -17,7 +17,11 @@ var doc = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "termsOfService": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "contact": {
+            "name": "Flacko Jodyee",
+            "email": "sultan.kz19991@gmail.com"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -2193,7 +2197,7 @@ var SwaggerInfo = swaggerInfo{
 	BasePath:    "/broker/api/v1/broker",
 	Schemes:     []string{"https"},
 	Title:       "Broker API",
-	Description: "Broker banker requester",
+	Description: "Broker allows to manager bank offers",
 }
 
 type s struct{}

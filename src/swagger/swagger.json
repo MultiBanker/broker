@@ -4,9 +4,13 @@
     ],
     "swagger": "2.0",
     "info": {
-        "description": "Broker banker requester",
+        "description": "Broker allows to manager bank offers",
         "title": "Broker API",
-        "contact": {},
+        "termsOfService": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "contact": {
+            "name": "Flacko Jodyee",
+            "email": "sultan.kz19991@gmail.com"
+        },
         "version": "1.0"
     },
     "host": "api.test.airba.dev",

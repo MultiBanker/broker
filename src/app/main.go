@@ -11,8 +11,11 @@ var version = ""
 
 // @title Broker API
 // @version 1.0
-// @description Broker banker requester
+// @description Broker allows to manager bank offers
 // @securityDefinitions.apikey ApiKeyAuth
+// @termsOfService https://www.youtube.com/watch?v=dQw4w9WgXcQ
+// @contact.name Flacko Jodyee
+// @contact.email sultan.kz19991@gmail.com
 // @in header
 // @name Authorization
 // @host api.test.airba.dev

@@ -559,8 +559,11 @@ definitions:
     type: object
 host: api.test.airba.dev
 info:
-  contact: {}
-  description: Broker banker requester
+  contact:
+    email: sultan.kz19991@gmail.com
+    name: Flacko Jodyee
+  description: Broker allows to manager bank offers
+  termsOfService: https://www.youtube.com/watch?v=dQw4w9WgXcQ
   title: Broker API
   version: "1.0"
 paths:

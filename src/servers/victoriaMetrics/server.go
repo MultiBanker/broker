@@ -38,19 +38,7 @@ func (p victoriaMetricsServer) Name() string {
 
 func (p victoriaMetricsServer) Start(_ context.Context, cancel context.CancelFunc) error {
 	p.server.RegisterOnShutdown(cancel)
-
-	if p.Insecure() {
-		if err := p.server.ListenAndServe(); err != nil {
-			return err
-		}
-	}
-
-	if !p.Insecure() {
-		if err := p.server.ListenAndServeTLS(p.certFile, p.keyFile); err != nil {
-			return err
-		}
-	}
-	panic("SOMETHING WRONG WITH CERT FILES")
+	return p.server.ListenAndServe()
 }
 
 func (p victoriaMetricsServer) Stop(ctx context.Context) error {
