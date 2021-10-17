@@ -23,7 +23,7 @@ type Client struct {
 	cli   *http.Client
 }
 
-func NewClient(URL, Token string) *Client {
+func NewClient(URL string) *Client {
 	transport := &http.Transport{
 		DialContext: (&net.Dialer{
 			Timeout: 5 * time.Second,
@@ -36,10 +36,24 @@ func NewClient(URL, Token string) *Client {
 	}
 	return &Client{
 		URL:   URL,
-		Token: Token,
 		cli:   cli,
 	}
 }
+
+func (p *Client) WithAuth(ctx context.Context, partnerCode, username, password string) (*Client, error) {
+	partner, err := PartnerDetect(partnerCode)
+	if err != nil {
+		return nil, err
+	}
+	token, err := partner.Auth(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &Client{
+		Token: token,
+	}, nil
+}
+
 func (p Client) RequestOrder(ctx context.Context, order interface{}, count int, err error) ([]byte, error) {
 	if count == 0 {
 		return nil, err
@@ -80,4 +94,8 @@ func (p Client) RequestOrder(ctx context.Context, order interface{}, count int, 
 	}
 
 	return body, nil
+}
+
+func (p Client) Auth(ctx context.Context) (string, error) {
+	return "", nil
 }

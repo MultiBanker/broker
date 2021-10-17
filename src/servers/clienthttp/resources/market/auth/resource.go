@@ -5,7 +5,7 @@ import (
 	"github.com/MultiBanker/broker/src/manager/auth"
 	"github.com/MultiBanker/broker/src/manager/market"
 	"github.com/VictoriaMetrics/metrics"
-	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5"
 )
 
 type Resource struct {

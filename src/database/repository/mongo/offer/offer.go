@@ -105,3 +105,23 @@ func (r Repository) Offers(ctx context.Context, paging selector.Paging) ([]model
 	}
 	return nil, 0, err
 }
+
+func (r Repository) OffersByTotalSum(ctx context.Context, total int) ([]*models.Offer, error) {
+	filter := bson.D{
+		{"min_order_sum", bson.D{
+			{"$gte", total},
+		}},
+		{"max_order_sum", bson.D{
+			{"$lte", total},
+		}},
+	}
+
+	cur, err := r.coll.Find(ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+	offers := make([]*models.Offer, cur.RemainingBatchLength())
+	err = cur.All(ctx, &offers)
+
+	return offers, err
+}

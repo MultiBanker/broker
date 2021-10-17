@@ -28,7 +28,7 @@ func (res Resource) Route() chi.Router {
 	r.Group(func(r chi.Router) {
 		//r.Use(jwtauth.Verifier(a.authMan.TokenAuth()))
 		//r.Use(middleware.NewUserAccessCtx(a.authMan.JWTKey()).ChiMiddleware)
-		r.Get("/", res.list)
+		r.Post("/", res.offers)
 	})
 
 	return r

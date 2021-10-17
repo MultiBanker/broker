@@ -24,7 +24,7 @@ import (
 // @Param market body dto.MarketOrderRequest true "body"
 // @Security ApiKeyAuth
 // @Param Authorization header string true "Authorization"
-// @Success 200 {object} dto.IDResponse
+// @Success 200 {object} dto.BrokerResponse
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
@@ -96,29 +96,42 @@ func (o Resource) neworder() http.HandlerFunc {
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
 // @Router /orders/markets [post]
-//func (o Resource) marketOrderUpdate(w clienthttp.ResponseWriter, r *clienthttp.Request) {
-//	ctx := r.Context()
-//
-//	var req dto.UpdateMarketOrderRequest
-//
-//	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-//		_ = render.Render(w, r, httperrors.BadRequest(err))
-//		return
-//	}
-//
-//	err := o.orderMan.UpdateMarketOrder(ctx, req)
-//	switch {
-//	case errors.Is(err, drivers.ErrDoesNotExist):
-//		_ = render.Render(w, r, httperrors.ResourceNotFound(err))
-//		return
-//	case errors.Is(err, nil):
-//		render.Status(r, clienthttp.StatusOK)
-//	default:
-//		_ = render.Render(w, r, httperrors.Internal(err))
-//		return
-//	}
-//
-//}
+func (o Resource) marketOrderUpdate(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	market := ctx.Value("market").(string)
+
+	var req dto.UpdateMarketOrderRequest
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		_ = render.Render(w, r, httperrors.BadRequest(err))
+		return
+	}
+
+	if err := req.Validate(); err != nil {
+		_ = render.Render(w, r, httperrors.BadRequest(err))
+		return
+	}
+
+	err := o.orderMan.UpdateMarketOrder(ctx, models.Order{
+		ReferenceID: req.ReferenceId,
+		OrderState:  req.State,
+		MarketCode:  market,
+		LoanLength:  req.LoanLength,
+		Reason:      req.Reason,
+	})
+	switch {
+	case errors.Is(err, drivers.ErrDoesNotExist):
+		_ = render.Render(w, r, httperrors.ResourceNotFound(err))
+		return
+	case errors.Is(err, nil):
+		render.Status(r, http.StatusOK)
+	default:
+		_ = render.Render(w, r, httperrors.Internal(err))
+		return
+	}
+
+}
 
 // list godoc
 // @Summary Получение заказов по reference_id

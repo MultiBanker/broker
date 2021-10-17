@@ -27,6 +27,7 @@ type PartnerRequest struct {
 }
 
 type URL struct {
+
 	// Урл который создает заказ на стороне партнера
 	Create string `json:"create" bson:"create" example:"https://"`
 	// Урл который обновляет заказ на стороне партнера

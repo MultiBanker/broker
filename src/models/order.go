@@ -36,6 +36,7 @@ type Order struct {
 	Address                 Address           `json:"address" bson:"address"`
 	Goods                   []Goods           `json:"goods" bson:"goods"`
 	PaymentPartners         []PaymentPartners `json:"paymentPartners"`
+	Reason                  string            `json:"reason"`
 
 	CreatedAt time.Time `json:"created_at" bson:"created_at"`
 	UpdatedAt time.Time `json:"updated_at" bson:"updated_at"`

@@ -318,7 +318,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github.com_MultiBanker_broker_src_servers_adminhttp_dto.OfferSpecs"
+                            "$ref": "#/definitions/dto.OfferSpecs"
                         }
                     },
                     "400": {
@@ -380,7 +380,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github.com_MultiBanker_broker_src_servers_adminhttp_dto.IDResponse"
+                            "$ref": "#/definitions/models.Response"
                         }
                     },
                     "400": {
@@ -1061,7 +1061,7 @@ var doc = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Получение офферов",
+                "description": "Получение офферов по заказу",
                 "consumes": [
                     "application/json"
                 ],
@@ -1071,7 +1071,7 @@ var doc = `{
                 "tags": [
                     "Offers"
                 ],
-                "summary": "Получение офферов",
+                "summary": "Получение офферов по заказу",
                 "parameters": [
                     {
                         "type": "string",
@@ -1081,23 +1081,23 @@ var doc = `{
                         "required": true
                     },
                     {
-                        "type": "integer",
-                        "description": "pagination limit",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "pagination skip",
-                        "name": "skip",
-                        "in": "query"
+                        "description": "body",
+                        "name": "order",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.OffersRequest"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github.com_MultiBanker_broker_src_servers_clienthttp_dto.OfferSpecs"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Offer"
+                            }
                         }
                     },
                     "400": {
@@ -1161,7 +1161,71 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github.com_MultiBanker_broker_src_servers_clienthttp_dto.IDResponse"
+                            "$ref": "#/definitions/dto.BrokerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/markets": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Обновление заказа по решению клиента",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Обновление заказа по решению клиента",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "market",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateMarketOrderRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
                         }
                     },
                     "400": {
@@ -1377,6 +1441,14 @@ var doc = `{
         }
     },
     "definitions": {
+        "dto.BrokerResponse": {
+            "type": "object",
+            "properties": {
+                "reference_id": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.ContactInfo": {
             "type": "object",
             "properties": {
@@ -1604,6 +1676,31 @@ var doc = `{
                 }
             }
         },
+        "dto.OfferSpecs": {
+            "type": "object",
+            "properties": {
+                "offers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Offer"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.OffersRequest": {
+            "type": "object",
+            "properties": {
+                "goods": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Goods"
+                    }
+                }
+            }
+        },
         "dto.OrderPartnerUpdateRequest": {
             "type": "object",
             "properties": {
@@ -1732,53 +1829,26 @@ var doc = `{
                 }
             }
         },
-        "github.com_MultiBanker_broker_src_servers_adminhttp_dto.IDResponse": {
+        "dto.UpdateMarketOrderRequest": {
             "type": "object",
             "properties": {
-                "id": {
+                "loanLength": {
                     "type": "string"
                 },
-                "status": {
-                    "type": "string"
-                }
-            }
-        },
-        "github.com_MultiBanker_broker_src_servers_adminhttp_dto.OfferSpecs": {
-            "type": "object",
-            "properties": {
-                "offers": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Offer"
-                    }
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
-        "github.com_MultiBanker_broker_src_servers_clienthttp_dto.IDResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
+                "productCode": {
                     "type": "string"
                 },
-                "status": {
+                "reason": {
                     "type": "string"
-                }
-            }
-        },
-        "github.com_MultiBanker_broker_src_servers_clienthttp_dto.OfferSpecs": {
-            "type": "object",
-            "properties": {
-                "offers": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Offer"
-                    }
                 },
-                "total": {
-                    "type": "integer"
+                "referenceId": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "stateTitle": {
+                    "type": "string"
                 }
             }
         },
@@ -2070,6 +2140,9 @@ var doc = `{
                 "productType": {
                     "type": "string"
                 },
+                "reason": {
+                    "type": "string"
+                },
                 "redirectUrl": {
                     "type": "string"
                 },
@@ -2163,6 +2236,9 @@ var doc = `{
         "models.URL": {
             "type": "object",
             "properties": {
+                "auth": {
+                    "type": "string"
+                },
                 "create": {
                     "type": "string"
                 },

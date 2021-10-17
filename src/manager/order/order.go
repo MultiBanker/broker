@@ -29,7 +29,7 @@ type Orderer interface {
 	OrderByID(ctx context.Context, id string) (models.Order, error)
 	Orders(ctx context.Context, paging *selector.Paging) ([]*models.Order, int64, error)
 	OrdersByReferenceID(ctx context.Context, referenceID string) ([]*models.Order, error)
-	//UpdateMarketOrder(ctx context.Context, req models.Order) error
+	UpdateMarketOrder(ctx context.Context, req models.Order) error
 
 	PartnerOrder(ctx context.Context, marketCode, referenceID string) ([]*models.PartnerOrder, error)
 	UpdatePartnerOrder(ctx context.Context, req models.PartnerOrder) (string, error)
@@ -108,31 +108,31 @@ func (o Order) UpdatePartnerOrder(ctx context.Context, req models.PartnerOrder) 
 	if err != nil {
 		return "", err
 	}
-	cli := clients.NewClient(m.UpdateOrderURL, "")
+	cli := clients.NewClient(m.UpdateOrderURL)
 	_, err = cli.RequestOrder(ctx, req, 3, nil)
 	return "", err
 }
 
-//func (o Order) UpdateMarketOrder(ctx context.Context, req models.Order) error {
-//	partner, err := o.partnerColl.PartnerByCode(ctx, req.ProductCode)
-//	if err != nil {
-//		return err
-//	}
-//
-//	//err = o.orderColl.UpdateOrderState(ctx, req)
-//	//if err != nil {
-//	//	return err
-//	//}
-//
-//	cli := clients.NewClient(partner.URL.Update, "")
-//
-//	_, err = cli.RequestOrder(ctx, req, 3, nil)
-//	if err != nil {
-//		log.Println(err)
-//		return err
-//	}
-//	return nil
-//}
+func (o Order) UpdateMarketOrder(ctx context.Context, req models.Order) error {
+	//partner, err := o.partnerColl.PartnerByCode(ctx, req.ProductCode)
+	//if err != nil {
+	//	return err
+	//}
+
+	//err = o.orderColl.UpdateOrderState(ctx, req)
+	//if err != nil {
+	//	return err
+	//}
+
+	//cli := clients.NewClient(partner.URL.Update, "")
+	//
+	//_, err = cli.RequestOrder(ctx, req, 3, nil)
+	//if err != nil {
+	//	log.Println(err)
+	//	return err
+	//}
+	return nil
+}
 
 func (o Order) BankOrder(ctx context.Context, id string, partnerCode string, order models.Order) error {
 	partner, err := o.partnerColl.PartnerByCode(ctx, partnerCode)
@@ -148,12 +148,14 @@ func (o Order) BankOrder(ctx context.Context, id string, partnerCode string, ord
 		StateTitle:  models.INIT.Title(),
 		Offers:      []models.Offers{},
 	})
-
 	if err != nil {
 		return err
 	}
 
-	bankCli := clients.NewClient(partner.URL.Create, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzeXN0ZW1fY29kZSI6IlREX0JST0tFUiJ9.Fa4wL9KID3A_-8fYmvhZKXi68K5GRMlLsYK0y6PASI4")
+	bankCli, err := clients.NewClient(partner.URL.Create).WithAuth(ctx, partnerCode, "", "")
+	if err != nil {
+		return err
+	}
 	b, err := bankCli.RequestOrder(ctx, OrderToDTO(order), 3, nil)
 	if err != nil {
 		return fmt.Errorf("[ERROR] requesting order to partner from url %v", err)

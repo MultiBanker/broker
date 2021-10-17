@@ -7,6 +7,7 @@ import (
 
 	"github.com/MultiBanker/broker/pkg/httperrors"
 	"github.com/MultiBanker/broker/src/database/drivers"
+	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/models/selector"
 	"github.com/MultiBanker/broker/src/servers/adminhttp/dto"
 	"github.com/go-chi/chi/v5"
@@ -24,7 +25,7 @@ const maxOrderHistoryLimit = 100
 // @Param partner body dto.OfferRequest true "body"
 // @Security ApiKeyAuth
 // @Param Authorization header string true "Authorization"
-// @Success 200 {object} dto.IDResponse
+// @Success 200 {object} models.Response
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
@@ -56,7 +57,7 @@ func (res AdminResource) create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	render.Status(r, http.StatusOK)
-	render.JSON(w, r, dto.IDResponse{
+	render.JSON(w, r, models.Response{
 		ID:     id,
 		Status: "created",
 	})

@@ -1,5 +1,10 @@
 basePath: /broker/api/v1/broker
 definitions:
+  dto.BrokerResponse:
+    properties:
+      reference_id:
+        type: string
+    type: object
   dto.ContactInfo:
     properties:
       bin:
@@ -167,6 +172,22 @@ definitions:
         example: online_broker
         type: string
     type: object
+  dto.OfferSpecs:
+    properties:
+      offers:
+        items:
+          $ref: '#/definitions/models.Offer'
+        type: array
+      total:
+        type: integer
+    type: object
+  dto.OffersRequest:
+    properties:
+      goods:
+        items:
+          $ref: '#/definitions/models.Goods'
+        type: array
+    type: object
   dto.OrderPartnerUpdateRequest:
     properties:
       customer:
@@ -258,37 +279,20 @@ definitions:
         example: https://
         type: string
     type: object
-  github.com_MultiBanker_broker_src_servers_adminhttp_dto.IDResponse:
+  dto.UpdateMarketOrderRequest:
     properties:
-      id:
+      loanLength:
         type: string
-      status:
+      productCode:
         type: string
-    type: object
-  github.com_MultiBanker_broker_src_servers_adminhttp_dto.OfferSpecs:
-    properties:
-      offers:
-        items:
-          $ref: '#/definitions/models.Offer'
-        type: array
-      total:
-        type: integer
-    type: object
-  github.com_MultiBanker_broker_src_servers_clienthttp_dto.IDResponse:
-    properties:
-      id:
+      reason:
         type: string
-      status:
+      referenceId:
         type: string
-    type: object
-  github.com_MultiBanker_broker_src_servers_clienthttp_dto.OfferSpecs:
-    properties:
-      offers:
-        items:
-          $ref: '#/definitions/models.Offer'
-        type: array
-      total:
-        type: integer
+      state:
+        type: string
+      stateTitle:
+        type: string
     type: object
   httperrors.Details:
     properties:
@@ -491,6 +495,8 @@ definitions:
         type: array
       productType:
         type: string
+      reason:
+        type: string
       redirectUrl:
         type: string
       referenceId:
@@ -552,6 +558,8 @@ definitions:
     type: object
   models.URL:
     properties:
+      auth:
+        type: string
       create:
         type: string
       update:
@@ -752,7 +760,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github.com_MultiBanker_broker_src_servers_adminhttp_dto.OfferSpecs'
+            $ref: '#/definitions/dto.OfferSpecs'
         "400":
           description: Bad Request
           schema:
@@ -792,7 +800,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github.com_MultiBanker_broker_src_servers_adminhttp_dto.IDResponse'
+            $ref: '#/definitions/models.Response'
         "400":
           description: Bad Request
           schema:
@@ -1235,28 +1243,28 @@ paths:
     get:
       consumes:
       - application/json
-      description: Получение офферов
+      description: Получение офферов по заказу
       parameters:
       - description: Authorization
         in: header
         name: Authorization
         required: true
         type: string
-      - description: pagination limit
-        in: query
-        name: limit
-        type: integer
-      - description: pagination skip
-        in: query
-        name: skip
-        type: integer
+      - description: body
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/dto.OffersRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github.com_MultiBanker_broker_src_servers_clienthttp_dto.OfferSpecs'
+            items:
+              $ref: '#/definitions/models.Offer'
+            type: array
         "400":
           description: Bad Request
           schema:
@@ -1271,7 +1279,7 @@ paths:
             $ref: '#/definitions/httperrors.Response'
       security:
       - ApiKeyAuth: []
-      summary: Получение офферов
+      summary: Получение офферов по заказу
       tags:
       - Offers
   /orders:
@@ -1297,7 +1305,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github.com_MultiBanker_broker_src_servers_clienthttp_dto.IDResponse'
+            $ref: '#/definitions/dto.BrokerResponse'
         "400":
           description: Bad Request
           schema:
@@ -1351,6 +1359,47 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Получение заказов по reference_id
+      tags:
+      - Orders
+  /orders/markets:
+    post:
+      consumes:
+      - application/json
+      description: Обновление заказа по решению клиента
+      parameters:
+      - description: body
+        in: body
+        name: market
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateMarketOrderRequest'
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление заказа по решению клиента
       tags:
       - Orders
   /partners/login:

@@ -24,6 +24,7 @@ type Partner struct {
 }
 
 type URL struct {
+	Auth   string `json:"auth" bson:"auth"`
 	Create string `json:"create" bson:"create"`
 	Update string `json:"update" bson:"update"`
 }

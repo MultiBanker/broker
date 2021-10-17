@@ -30,6 +30,7 @@ type Manager interface {
 	UpdateOffer(ctx context.Context, offer models.Offer) (models.Offer, error)
 	OfferByCode(ctx context.Context, code string) (models.Offer, error)
 	Offers(ctx context.Context, paging selector.Paging) ([]models.Offer, int64, error)
+	OffersByGoods(ctx context.Context, goods []*models.Goods) ([]*models.Offer, error)
 }
 
 func (o Offer) CreateOffer(ctx context.Context, offer models.Offer) (string, error) {
@@ -59,4 +60,16 @@ func (o Offer) OfferByCode(ctx context.Context, code string) (models.Offer, erro
 
 func (o Offer) Offers(ctx context.Context, paging selector.Paging) ([]models.Offer, int64, error) {
 	return o.offerColl.Offers(ctx, paging)
+}
+
+func (o Offer) OffersByGoods(ctx context.Context, goods []*models.Goods) ([]*models.Offer, error) {
+	var totalSum int
+	for _, good := range goods {
+		sum, err := strconv.Atoi(good.Price)
+		if err != nil {
+			return nil, err
+		}
+		totalSum += sum
+	}
+	return o.offerColl.OffersByTotalSum(ctx, totalSum)
 }

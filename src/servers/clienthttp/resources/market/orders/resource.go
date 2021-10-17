@@ -34,7 +34,7 @@ func (o Resource) Route() chi.Router {
 		r.Use(jwtauth.Verifier(o.authMan.TokenAuth()))
 		r.Use(middleware.NewUserAccessCtx(o.authMan.JWTKey()).ChiMiddleware)
 		r.Post("/", o.neworder())
-		//r.Post("/markets/", o.marketOrderUpdate)
+		r.Post("/markets", o.marketOrderUpdate)
 		r.Get("/{reference_id}/partners", o.ordersByReference)
 	})
 
