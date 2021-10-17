@@ -87,7 +87,9 @@ func (m MarketOrderRequest) Validate() error {
 
 	if m.Goods != nil {
 		for _, good := range m.Goods {
-			errstrings = append(errstrings, good.Validate().Error())
+			if err := good.Validate(); err != nil {
+				errstrings = append(errstrings, good.Validate().Error())
+			}
 		}
 	}
 
@@ -97,7 +99,9 @@ func (m MarketOrderRequest) Validate() error {
 
 	if m.PaymentPartners != nil {
 		for _, partner := range m.PaymentPartners {
-			errstrings = append(errstrings, partner.Validate().Error())
+			if err := partner.Validate(); err != nil {
+				errstrings = append(errstrings, partner.Validate().Error())
+			}
 		}
 	}
 

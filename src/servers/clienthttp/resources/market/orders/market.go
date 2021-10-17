@@ -11,7 +11,6 @@ import (
 	"github.com/MultiBanker/broker/src/database/drivers"
 	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/servers/clienthttp/dto"
-	"github.com/MultiBanker/broker/src/servers/clienthttp/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/render"
 )
@@ -45,14 +44,14 @@ func (o Resource) neworder() http.HandlerFunc {
 			return
 		}
 
-		marketCode, ok := ctx.Value(middleware.CodeKey).(string)
-		if !ok {
-			_ = render.Render(w, r, httperrors.BadRequest(fmt.Errorf("[ERROR] unauthorized")))
-			return
-		}
+		//marketCode, ok := ctx.Value(middleware.CodeKey).(string)
+		//if !ok {
+		//	_ = render.Render(w, r, httperrors.BadRequest(fmt.Errorf("[ERROR] unauthorized")))
+		//	return
+		//}
 
 		id, err := o.orderMan.NewOrder(ctx, &models.Order{
-			MarketCode:              marketCode,
+			MarketCode:              "td",
 			OrderState:              models.INIT.Status(),
 			RedirectURL:             req.RedirectURL,
 			Channel:                 req.Channel,
@@ -71,7 +70,12 @@ func (o Resource) neworder() http.HandlerFunc {
 			SystemCode:              req.SystemCode,
 			PaymentPartners:         req.PaymentPartners,
 		})
-		if err != nil {
+		switch {
+		case errors.Is(err, drivers.ErrDoesNotExist):
+			_ = render.Render(w, r, httperrors.ResourceNotFound(err))
+			return
+		case errors.Is(err, nil):
+		default:
 			_ = render.Render(w, r, httperrors.Internal(err))
 			return
 		}
@@ -154,13 +158,13 @@ func (o Resource) ordersByReference(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	marketCode, ok := ctx.Value("code").(string)
-	if !ok {
-		_ = render.Render(w, r, httperrors.BadRequest(fmt.Errorf("unauthorized")))
-		return
-	}
+	//marketCode, ok := ctx.Value("code").(string)
+	//if !ok {
+	//	_ = render.Render(w, r, httperrors.BadRequest(fmt.Errorf("unauthorized")))
+	//	return
+	//}
 
-	orders, err := o.orderMan.PartnerOrder(ctx, marketCode, referID)
+	orders, err := o.orderMan.PartnerOrder(ctx, "td", referID)
 	switch {
 	case errors.Is(err, drivers.ErrDoesNotExist):
 		_ = render.Render(w, r, httperrors.ResourceNotFound(err))

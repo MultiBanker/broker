@@ -32,6 +32,9 @@ func (or Repository) UpdateOrder(ctx context.Context, order *models.Order) (stri
 		{"_id", order.ID},
 	}
 	update := bson.D{
+		{"$set", bson.D{
+
+		}},
 		//{"reference_id", order.ReferenceID},
 		//{"order_state", order.OrderState},
 		//{"redirect_url", order.RedirectURL},

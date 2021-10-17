@@ -49,9 +49,8 @@ func (p *Client) WithAuth(ctx context.Context, partnerCode, username, password s
 	if err != nil {
 		return nil, err
 	}
-	return &Client{
-		Token: token,
-	}, nil
+	p.Token = token
+	return p, nil
 }
 
 func (p Client) RequestOrder(ctx context.Context, order interface{}, count int, err error) ([]byte, error) {

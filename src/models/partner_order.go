@@ -8,8 +8,8 @@ import (
 
 type PartnerOrder struct {
 	ID          string `json:"-" bson:"_id"`
-	ReferenceID string `json:"-" bson:"reference_id"`
-	PartnerCode string `json:"-" bson:"partner_code"`
+	ReferenceID string `json:"reference_id" bson:"reference_id"`
+	PartnerCode string `json:"partner_code" bson:"partner_code"`
 	MarketCode  string `json:"-" bson:"market_code"`
 
 	Status      string   `json:"status" bson:"status"`

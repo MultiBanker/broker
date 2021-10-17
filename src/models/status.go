@@ -44,7 +44,7 @@ var (
 		DELIVERED:         "DELIVERED",
 		PARTNERCANCELLED:  "PARTNERCANCELLED",
 		CUSTOMERAPPROVED:  "CUSTOMERAPPROVED",
-		CANCELLED:         "CANCELLED",
+		CANCELLED:         "банк не дал предложений",
 	}
 )
 

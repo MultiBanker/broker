@@ -62,6 +62,10 @@ func (o Order) NewOrder(ctx context.Context, order *models.Order) (string, error
 
 	wg := sync.WaitGroup{}
 	for _, partnersCode := range order.PaymentPartners {
+		_, err := o.partnerColl.PartnerByCode(ctx, partnersCode.Code)
+		if err != nil {
+			return "", err
+		}
 		wg.Add(1)
 		go func(partnerCode string) {
 			defer wg.Done()
