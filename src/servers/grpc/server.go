@@ -24,7 +24,7 @@ func (g *grpcServer) Name() string {
 	return "GRPC"
 }
 
-func (g *grpcServer) Start(ctx context.Context, cancel context.CancelFunc) error {
+func (g *grpcServer) Start(_ context.Context, cancel context.CancelFunc) error {
 	defer cancel()
 	listener, err := net.Listen("tcp", g.Address)
 	if err != nil {

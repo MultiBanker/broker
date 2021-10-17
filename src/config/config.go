@@ -24,8 +24,9 @@ type Servers struct {
 }
 
 type HTTP struct {
-	Client *Client
-	Admin  *Admin
+	Client     *Client
+	Admin      *Admin
+	HealthPort string `long:"healthcheck-listen" env:"HEALTH_CHECK_LISTEN" description:"Health check Listen Address (format: :9090|127.0.0.1:9090)" required:"false" default:":2026"`
 }
 
 type Database struct {

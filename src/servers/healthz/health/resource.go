@@ -7,19 +7,19 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-type Kubernetes struct {
+type Health struct {
 	isReady *atomic.Value
 	pinger  func() error
 }
 
-func NewKuber(isReady *atomic.Value, pinger func() error) *Kubernetes {
-	return &Kubernetes{
+func NewHealth(isReady *atomic.Value, pinger func() error) *Health {
+	return &Health{
 		isReady: isReady,
 		pinger:  pinger,
 	}
 }
 
-func (k Kubernetes) Route() chi.Router {
+func (k Health) Route() chi.Router {
 	r := chi.NewRouter()
 
 	r.Group(func(r chi.Router) {
@@ -30,7 +30,7 @@ func (k Kubernetes) Route() chi.Router {
 	return r
 }
 
-func (k Kubernetes) healthz() http.HandlerFunc {
+func (k Health) healthz() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := k.pinger(); err != nil {
 			http.Error(w, err.Error(), http.StatusServiceUnavailable)
@@ -41,7 +41,7 @@ func (k Kubernetes) healthz() http.HandlerFunc {
 	}
 }
 
-func (k Kubernetes) readyz() http.HandlerFunc {
+func (k Health) readyz() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		isready, ok := k.isReady.Load().(bool)
 		if !ok {

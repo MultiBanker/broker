@@ -2,7 +2,9 @@ package main
 
 import (
 	"github.com/MultiBanker/broker/src/director/order"
+	"github.com/MultiBanker/broker/src/servers"
 	"github.com/MultiBanker/broker/src/servers/adminhttp"
+	"github.com/MultiBanker/broker/src/servers/healthz"
 	"github.com/MultiBanker/broker/src/servers/victoriaMetrics"
 	"github.com/go-chi/chi/v5"
 	"google.golang.org/grpc"
@@ -17,7 +19,8 @@ import (
 func (a *application) services() {
 	a.workers(
 		a.orderDeadliner(),
-		)
+	)
+	a.healthServer(healthz.Routing)
 	a.clienthttpServer(clienthttp.Routing)
 	a.adminhttpserver(adminhttp.Routing)
 	a.grpcserver(grpcsrv.Routing)
@@ -31,7 +34,7 @@ func (a *application) workers(daemons ...director.Daemons) {
 }
 
 func (a *application) clienthttpServer(fn func(opts *config.Config, man manager.Abstractor) chi.Router) {
-	srv := clienthttp.NewClientHTTP(a.opts.HTTP.Client.ListenAddr, fn(a.opts, a.man))
+	srv := servers.NewService("client-broker-http", a.opts.HTTP.Client.ListenAddr, fn(a.opts, a.man))
 	a.servers = append(a.servers, srv)
 }
 
@@ -41,12 +44,17 @@ func (a *application) grpcserver(fn func(server *grpc.Server, man manager.Abstra
 }
 
 func (a *application) adminhttpserver(fn func(opts *config.Config, man manager.Abstractor) chi.Router) {
-	srv := adminhttp.NewAdminServer(a.opts.HTTP.Admin.ListenAddr, fn(a.opts, a.man))
+	srv := servers.NewService("admin-broker-http", a.opts.HTTP.Admin.ListenAddr, fn(a.opts, a.man))
 	a.servers = append(a.servers, srv)
 }
 
 func (a *application) victoriaMetricsServer() {
-	srv := victoriaMetrics.NewVictoriaM(a.metric, a.opts.VictoriaMetrics.ListenAddr, victoriaMetrics.Routing())
+	srv := servers.NewService("victoria-metrics", a.opts.VictoriaMetrics.ListenAddr, victoriaMetrics.Routing())
+	a.servers = append(a.servers, srv)
+}
+
+func (a *application) healthServer(fn func(opts *config.Config, man manager.Abstractor) chi.Router) {
+	srv := servers.NewService("health-server", a.opts.HTTP.HealthPort, fn(a.opts, a.man))
 	a.servers = append(a.servers, srv)
 }
 

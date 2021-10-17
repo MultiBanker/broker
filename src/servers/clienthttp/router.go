@@ -1,12 +1,9 @@
 package clienthttp
 
 import (
-	"log"
-	"sync/atomic"
 	"time"
 
 	"github.com/MultiBanker/broker/pkg/metric"
-	"github.com/MultiBanker/broker/src/servers/clienthttp/resources/health"
 	"github.com/MultiBanker/broker/src/servers/clienthttp/resources/market"
 	"github.com/MultiBanker/broker/src/servers/clienthttp/resources/partner"
 	"github.com/VictoriaMetrics/metrics"
@@ -25,9 +22,6 @@ const (
 )
 
 func Routing(opts *config.Config, man manager.Abstractor) chi.Router {
-	isReady := &atomic.Value{}
-	go readyzProbe(isReady)
-
 	r := middleware.Mount(opts.Version, opts.HTTP.Client.FilesDir, opts.HTTP.Client.BasePath)
 	mware := metric.NewMetricware(metrics.NewSet())
 
@@ -40,17 +34,6 @@ func Routing(opts *config.Config, man manager.Abstractor) chi.Router {
 		})
 	})
 
-	r.Mount("/kubernetes", health.NewKuber(isReady, func() error {
-		return man.Pinger()
-	}).Route())
-
 	return r
 }
 
-func readyzProbe(isReady *atomic.Value) {
-	isReady.Store(false)
-	log.Printf("Readyz probe is negative by default...")
-	time.Sleep(10 * time.Second)
-	isReady.Store(true)
-	log.Printf("Readyz probe is positive.")
-}
