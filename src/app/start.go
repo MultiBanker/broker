@@ -48,16 +48,6 @@ func (a *application) run() {
 	defer cancel()
 
 	for _, server := range a.servers {
-		//go func(server servers.Server) {
-		//	if err := server.Start(ctx, cancel); err != nil {
-		//		switch errors.Is(err, http.ErrServerClosed) {
-		//		case true:
-		//			log.Printf("[INFO] Shutting down %s server", server.Name())
-		//		default:
-		//			log.Printf("[ERROR] Server %s not start, or closed", server.Name())
-		//		}
-		//	}
-		//}(server)
 		log.Printf("[INFO] Starting %s server", server.Name())
 		go func(server servers.Server) {
 			server.Start(ctx, cancel)

@@ -37,6 +37,7 @@ func (p victoriaMetricsServer) Name() string {
 }
 
 func (p victoriaMetricsServer) Start(_ context.Context, cancel context.CancelFunc) error {
+	defer cancel()
 	p.server.RegisterOnShutdown(cancel)
 	return p.server.ListenAndServe()
 }

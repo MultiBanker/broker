@@ -27,6 +27,7 @@ func (h *clientHttpServer) Name() string {
 }
 
 func (h *clientHttpServer) Start(_ context.Context, cancel context.CancelFunc) error {
+	defer cancel()
 	h.server.RegisterOnShutdown(cancel)
 
 	if h.Insecure() {

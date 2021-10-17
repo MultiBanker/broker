@@ -27,6 +27,7 @@ func (a adminServer) Name() string {
 }
 
 func (a adminServer) Start(_ context.Context, cancel context.CancelFunc) error {
+	defer cancel()
 	a.server.RegisterOnShutdown(cancel)
 
 	if a.Insecure() {

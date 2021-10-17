@@ -25,6 +25,7 @@ func (g *grpcServer) Name() string {
 }
 
 func (g *grpcServer) Start(ctx context.Context, cancel context.CancelFunc) error {
+	defer cancel()
 	listener, err := net.Listen("tcp", g.Address)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)

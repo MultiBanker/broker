@@ -26,9 +26,10 @@ func (d Order) Name() string {
 	return "order-worker"
 }
 
-func (d Order) Start(ctx context.Context, _ context.CancelFunc) error {
+func (d Order) Start(ctx context.Context, cancel context.CancelFunc) error {
+	defer cancel()
 	orderTimeKiller := director.NewWorker(d.Name(), defaultTicker)
-	go orderTimeKiller.Run(ctx, d.InitTimeOutKill)
+	orderTimeKiller.Run(ctx, d.InitTimeOutKill)
 	return nil
 }
 
