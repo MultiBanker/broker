@@ -36,6 +36,7 @@ func initApp(version string) (*application, error) {
 	if err != nil {
 		return nil, err
 	}
+	resetEnv(opts.JWTKey, opts.DSURL)
 	return &application{
 		version: version,
 		opts:    opts,
@@ -53,8 +54,6 @@ func (a *application) run() {
 			server.Start(ctx, cancel)
 		}(server)
 	}
-
-	resetEnv(a.opts.JWTKey, a.opts.DSURL)
 
 	a.shutdown(ctx)
 }
