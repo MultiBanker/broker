@@ -1,8 +1,6 @@
 package adminhttp
 
 import (
-	"time"
-
 	"github.com/MultiBanker/broker/pkg/metric"
 	"github.com/MultiBanker/broker/src/config"
 	"github.com/MultiBanker/broker/src/manager"
@@ -13,8 +11,6 @@ import (
 )
 
 const (
-	readTimeout  = 5 * time.Second
-	writeTimeout = 30 * time.Second
 	ApiPath      = "/api/v1"
 )
 

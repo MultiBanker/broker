@@ -1,8 +1,6 @@
 package clienthttp
 
 import (
-	"time"
-
 	"github.com/MultiBanker/broker/pkg/metric"
 	"github.com/MultiBanker/broker/src/servers/clienthttp/resources/market"
 	"github.com/MultiBanker/broker/src/servers/clienthttp/resources/partner"
@@ -16,8 +14,6 @@ import (
 )
 
 const (
-	readTimeout  = 5 * time.Second
-	writeTimeout = 30 * time.Second
 	ApiPath      = "/api/v1"
 )
 
