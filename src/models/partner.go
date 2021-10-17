@@ -9,18 +9,19 @@ import (
 )
 
 type Partner struct {
-	ID          string      `json:"id" bson:"_id"`
-	Code        string      `json:"code" bson:"code"`
-	CompanyName string      `json:"company_name" bson:"company_name"`
-	Commission  int         `json:"commission" bson:"commission"`
-	LogoURL     string      `json:"logo_url" bson:"logo_url"`
-	URL         *URL        `json:"url" bson:"url"`
-	Contact     ContactInfo `json:"contact" bson:"contact"`
-	Enabled     bool        `json:"enabled" bson:"enabled"`
-	Username    string      `json:"username" bson:"username"`
-	Password    string      `json:"password" bson:"password"`
-	CreatedAt   time.Time   `json:"created_at" bson:"created_at"`
-	UpdatedAt   time.Time   `json:"updated_at" bson:"updated_at"`
+	ID             string      `json:"id" bson:"_id"`
+	Code           string      `json:"code" bson:"code"`
+	CompanyName    string      `json:"company_name" bson:"company_name"`
+	Commission     int         `json:"commission" bson:"commission"`
+	LogoURL        string      `json:"logo_url" bson:"logo_url"`
+	URL            *URL        `json:"url" bson:"url"`
+	Contact        ContactInfo `json:"contact" bson:"contact"`
+	Enabled        bool        `json:"enabled" bson:"enabled"`
+	Username       string      `json:"username" bson:"username"`
+	HashedPassword string      `json:"-" bson:"hashed_password"`
+	Password       *string     `json:"password,omitempty" bson:"password"`
+	CreatedAt      time.Time   `json:"created_at" bson:"created_at"`
+	UpdatedAt      time.Time   `json:"updated_at" bson:"updated_at"`
 }
 
 type URL struct {

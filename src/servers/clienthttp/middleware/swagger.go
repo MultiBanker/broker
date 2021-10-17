@@ -23,7 +23,6 @@ func (sr SwaggerResource) Routes() chi.Router {
 	))
 
 	r.Group(func(r chi.Router) {
-		r.Get("/admin/*", sr.Indexer("admin"))
 		r.Get("/partner/*", sr.Indexer("partner"))
 		r.Get("/market/*", sr.Indexer("market"))
 	})

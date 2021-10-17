@@ -1,9 +1,7 @@
 definitions:
-  dto.IDResponse:
+  dto.BrokerResponse:
     properties:
-      id:
-        type: string
-      status:
+      reference_id:
         type: string
     type: object
   dto.Login:
@@ -13,39 +11,18 @@ definitions:
       username:
         type: string
     type: object
-  dto.OfferSpecs:
-    properties:
-      offers:
-        items:
-          $ref: '#/definitions/models.Offer'
-        type: array
-      total:
-        type: integer
-    type: object
-  dto.Offers:
-    properties:
-      contractNumber:
-        type: string
-      loanAmount:
-        type: string
-      loanLength:
-        type: string
-      monthlyPayment:
-        type: integer
-      product:
-        type: string
-      productType:
-        type: string
-    type: object
-  dto.OrderRequest:
+  dto.MarketOrderRequest:
     properties:
       address:
         $ref: '#/definitions/models.Address'
       amount:
+        example: "5000"
         type: string
       channel:
+        example: airba_web
         type: string
       cityId:
+        example: "050000"
         type: string
       customer:
         $ref: '#/definitions/models.Customer'
@@ -54,54 +31,64 @@ definitions:
           $ref: '#/definitions/models.Goods'
         type: array
       isDelivery:
+        example: true
         type: boolean
       loanLength:
+        example: 12
         type: integer
       paymentMethod:
+        example: annuity
         type: string
       paymentPartners:
         items:
           $ref: '#/definitions/models.PaymentPartners'
         type: array
       productType:
+        example: installment
         type: string
       redirectUrl:
+        example: https://airba.kz/order/ok
         type: string
       systemCode:
+        example: oms
         type: string
       verificationId:
+        example: dsad12
         type: string
       verificationSmsCode:
+        example: "12321"
         type: string
       verificationSmsDateTime:
+        example: 12.12.2020
         type: string
     type: object
-  dto.OrderResponse:
+  dto.OffersRequest:
     properties:
-      code:
-        type: string
-      message:
-        type: string
-      offers:
+      goods:
         items:
-          $ref: '#/definitions/dto.Offers'
+          $ref: '#/definitions/models.Goods'
         type: array
-      redirectUrl:
-        type: string
-      requestUuid:
-        type: string
-      state:
-        type: string
-      state_title:
-        type: string
-      status:
-        type: string
     type: object
   dto.TokenResponse:
     properties:
       access_token:
         type: string
       response_token:
+        type: string
+    type: object
+  dto.UpdateMarketOrderRequest:
+    properties:
+      loanLength:
+        type: string
+      productCode:
+        type: string
+      reason:
+        type: string
+      referenceId:
+        type: string
+      state:
+        type: string
+      stateTitle:
         type: string
     type: object
   httperrors.Details:
@@ -129,15 +116,19 @@ definitions:
   models.Address:
     properties:
       delivery:
+        example: track
         type: string
       pickupPoint:
+        example: Kurmangazy 77
         type: string
     type: object
   models.Contact:
     properties:
       email:
+        example: jon@mail.ru
         type: string
       mobileNumber:
+        example: "87777777777"
         type: string
     type: object
   models.Customer:
@@ -145,25 +136,34 @@ definitions:
       contact:
         $ref: '#/definitions/models.Contact'
       firstName:
+        example: Jon
         type: string
       lastName:
+        example: Bones
         type: string
       middleName:
+        example: Jones
         type: string
       taxCode:
+        example: "832918392183"
         type: string
     type: object
   models.Goods:
     properties:
       brand:
+        example: iphone
         type: string
       category:
+        example: smartphony
         type: string
       image:
+        example: https://cdn.dxomark.com/wp-content/uploads/medias/post-61183/iphone-12-pro-blue-hero.jpg
         type: string
       model:
+        example: 12 PRO
         type: string
       price:
+        example: "5000"
         type: string
     type: object
   models.Offer:
@@ -185,9 +185,68 @@ definitions:
       updated_at:
         type: string
     type: object
+  models.Order:
+    properties:
+      address:
+        $ref: '#/definitions/models.Address'
+      channel:
+        type: string
+      created_at:
+        type: string
+      customer:
+        $ref: '#/definitions/models.Customer'
+      goods:
+        items:
+          $ref: '#/definitions/models.Goods'
+        type: array
+      id:
+        type: string
+      isDelivery:
+        type: boolean
+      loanLength:
+        type: string
+      orderState:
+        type: string
+      paymentMethod:
+        type: string
+      paymentPartners:
+        items:
+          $ref: '#/definitions/models.PaymentPartners'
+        type: array
+      productType:
+        type: string
+      reason:
+        type: string
+      redirectUrl:
+        type: string
+      referenceId:
+        type: string
+      salesPlace:
+        type: string
+      systemCode:
+        type: string
+      totalCost:
+        type: string
+      updated_at:
+        type: string
+      verificationId:
+        type: string
+      verificationSmsCode:
+        type: string
+      verificationSmsDateTime:
+        type: string
+    type: object
   models.PaymentPartners:
     properties:
       code:
+        example: airba_pay
+        type: string
+    type: object
+  models.Response:
+    properties:
+      id:
+        type: string
+      status:
         type: string
     type: object
 info:
@@ -241,28 +300,28 @@ paths:
     get:
       consumes:
       - application/json
-      description: Получение офферов
+      description: Получение офферов по заказу
       parameters:
       - description: Authorization
         in: header
         name: Authorization
         required: true
         type: string
-      - description: pagination limit
-        in: query
-        name: limit
-        type: integer
-      - description: pagination skip
-        in: query
-        name: skip
-        type: integer
+      - description: body
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/dto.OffersRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.OfferSpecs'
+            items:
+              $ref: '#/definitions/models.Offer'
+            type: array
         "400":
           description: Bad Request
           schema:
@@ -277,7 +336,7 @@ paths:
             $ref: '#/definitions/httperrors.Response'
       security:
       - ApiKeyAuth: []
-      summary: Получение офферов
+      summary: Получение офферов по заказу
       tags:
       - Offers
   /orders:
@@ -291,7 +350,7 @@ paths:
         name: market
         required: true
         schema:
-          $ref: '#/definitions/dto.OrderRequest'
+          $ref: '#/definitions/dto.MarketOrderRequest'
       - description: Authorization
         in: header
         name: Authorization
@@ -303,7 +362,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.IDResponse'
+            $ref: '#/definitions/dto.BrokerResponse'
         "400":
           description: Bad Request
           schema:
@@ -340,7 +399,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/dto.OrderResponse'
+              $ref: '#/definitions/models.Order'
             type: array
         "400":
           description: Bad Request
@@ -357,6 +416,47 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Получение заказов по reference_id
+      tags:
+      - Orders
+  /orders/markets:
+    post:
+      consumes:
+      - application/json
+      description: Обновление заказа по решению клиента
+      parameters:
+      - description: body
+        in: body
+        name: market
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateMarketOrderRequest'
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление заказа по решению клиента
       tags:
       - Orders
 swagger: "2.0"

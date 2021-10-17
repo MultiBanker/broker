@@ -27,7 +27,7 @@ func Mount(version, filesDir, basePath string) chi.Router {
 	// монтируем дополнительные ресурсы
 	r.Mount("/version", VersionResource{Version: version}.Routes())
 	r.Mount(file, FilesResource{FilesDir: filesDir}.Routes())
-	r.Mount("/swagger", SwaggerResource{FilesPath: file, BasePath: basePath}.Routes())
+	r.Mount("/swagger", SwaggerResource{BasePath: basePath, FilesPath: file}.Routes())
 
 	return r
 }

@@ -160,13 +160,16 @@ var doc = `{
             "type": "object",
             "properties": {
                 "firstName": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Jon"
                 },
                 "lastName": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Bones"
                 },
                 "middleName": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Jones"
                 }
             }
         },
@@ -194,13 +197,16 @@ var doc = `{
                     }
                 },
                 "referenceId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "1"
                 },
                 "state": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "order_confirmed"
                 },
                 "stateTitle": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "order_confirmed"
                 }
             }
         },
@@ -251,22 +257,28 @@ var doc = `{
             "type": "object",
             "properties": {
                 "contractNumber": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "d12ed1"
                 },
                 "loanAmount": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "144000"
                 },
                 "loanLength": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "12"
                 },
                 "monthlyPayment": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 12000
                 },
                 "product": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "rassrochka_12"
                 },
                 "productType": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "installment"
                 }
             }
         },

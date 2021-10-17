@@ -160,7 +160,7 @@ func (c Contact) Validate() error {
 }
 
 type PaymentPartners struct {
-	Code string `json:"code" example:"airba_pay"`
+	Code string `json:"code" example:"mfo_airba"`
 }
 
 func (p PaymentPartners) Validate() error {

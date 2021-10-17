@@ -7,6 +7,7 @@ import (
 
 	"github.com/MultiBanker/broker/pkg/httperrors"
 	"github.com/MultiBanker/broker/src/database/drivers"
+	"github.com/MultiBanker/broker/src/manager"
 	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/servers/clienthttp/dto"
 	"github.com/go-chi/render"
@@ -48,6 +49,10 @@ func (res Resource) auth() http.HandlerFunc {
 			_ = render.Render(w, r, httperrors.ResourceNotFound(err))
 			return
 		case nil:
+
+		case manager.ErrAuthorization:
+			_ = render.Render(w, r, httperrors.BadRequest(err))
+			return
 		default:
 			_ = render.Render(w, r, httperrors.Internal(err))
 			return

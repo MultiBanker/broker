@@ -34,11 +34,12 @@ func NewPartner(repos repository.Repositories) Partner {
 }
 
 func (p Partner) NewPartner(ctx context.Context, partner *models.Partner) (string, error) {
-	bytePass, err := auth.HashPassword(partner.Password)
+	bytePass, err := auth.HashPassword(*partner.Password)
 	if err != nil {
 		return "", err
 	}
-	partner.Password = string(bytePass)
+	partner.HashedPassword = string(bytePass)
+	partner.Password = nil
 
 	idInt, err := p.sequenceColl.NextSequenceValue(ctx, models.PartnerSequences)
 	if err != nil {
@@ -53,9 +54,18 @@ func (p Partner) UpdatePartner(ctx context.Context, partner *models.Partner) (st
 	if err != nil {
 		return "", err
 	}
-	if !auth.CheckPasswordHash(partner.Password, []byte(res.Password)) {
+
+	if !auth.CheckPasswordHash(*partner.Password, []byte(res.HashedPassword)) {
 		return "", fmt.Errorf("[ERROR] Wrong Password")
 	}
+
+	bytePass, err := auth.HashPassword(*partner.Password)
+	if err != nil {
+		return "", err
+	}
+	partner.HashedPassword = string(bytePass)
+	partner.Password = nil
+
 	return p.partnerColl.UpdatePartner(ctx, partner)
 }
 
@@ -74,7 +84,7 @@ func (p Partner) PartnerByUsername(ctx context.Context, username, password strin
 		return partner, err
 	}
 
-	if !auth.CheckPasswordHash(password, []byte(partner.Password)) {
+	if !auth.CheckPasswordHash(password, []byte(partner.HashedPassword)) {
 		return partner, fmt.Errorf("[ERROR] Wrong Password")
 	}
 	return partner, nil

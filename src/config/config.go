@@ -27,6 +27,9 @@ type HTTP struct {
 	Client     *Client
 	Admin      *Admin
 	HealthPort string `long:"healthcheck-listen" env:"HEALTH_CHECK_LISTEN" description:"Health check Listen Address (format: :9090|127.0.0.1:9090)" required:"false" default:":2026"`
+	BasePath string `long:"base-path" env:"BASE_PATH" description:"base path of the host" required:"false" default:"/broker"`
+	FilesDir string `long:"files-directory" env:"FILES_DIR" description:"Directory where all static files are located" required:"false" default:"/usr/share/broker"`
+
 }
 
 type Database struct {
@@ -45,20 +48,12 @@ type VictoriaServer struct {
 
 type Client struct {
 	ListenAddr string `long:"client-clienthttp-listen" env:"CLIENT_HTTP_LISTEN" description:"Listen Address (format: :8080|127.0.0.1:8080)" required:"false" default:":8080"`
-	BasePath   string `long:"client-base-path" env:"CLIENT_BASE_PATH" description:"base path of the host" required:"false" default:"/broker"`
-	FilesDir   string `long:"client-files-directory" env:"CLIENT_FILES_DIR" description:"Directory where all static files are located" required:"false" default:"/usr/share/broker"`
 	IsTesting  bool   `long:"client-testing" env:"CLIENT_APP_TESTING" description:"testing mode"`
-	CertFile   string `long:"client-cert" env:"CLIENT_CERT_FILE" description:"Location of the SSL/TLS cert file" required:"false" default:""`
-	KeyFile    string `long:"client-key" env:"CLIENT_KEY_FILE" description:"Location of the SSL/TLS key file" required:"false" default:""`
 }
 
 type Admin struct {
 	ListenAddr string `long:"admin-clienthttp-listen" env:"ADMIN_HTTP_LISTEN" description:"Listen Address (format: :8080|127.0.0.1:8080)" required:"false" default:":8090"`
-	BasePath   string `long:"admin-base-path" env:"ADMIN_BASE_PATH" description:"base path of the host" required:"false" default:"/broker"`
-	FilesDir   string `long:"admin-files-directory" env:"ADMIN_FILES_DIR" description:"Directory where all static files are located" required:"false" default:"/usr/share/broker"`
 	IsTesting  bool   `long:"admin-testing" env:"ADMIN_APP_TESTING" description:"testing mode"`
-	CertFile   string `long:"admin-cert" env:"ADMIN_CERT_FILE" description:"Location of the SSL/TLS cert file" required:"false" default:""`
-	KeyFile    string `long:"admin-key" env:"ADMIN_KEY_FILE" description:"Location of the SSL/TLS key file" required:"false" default:""`
 }
 
 type WorkerConfigs struct {

@@ -12,7 +12,7 @@ func DtoToModelMarket(req dto.MarketRequest) models.Market {
 		Code:           req.Code,
 		UpdateOrderURL: req.UpdateOrderURL,
 		Username:       req.Username,
-		Password:       req.Password,
+		Password:       &req.Password,
 		Contact: models.ContactInfo{
 			FirstName:  req.Contact.FirstName,
 			LastName:   req.Contact.LastName,

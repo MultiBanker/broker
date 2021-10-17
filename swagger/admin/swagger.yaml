@@ -30,13 +30,6 @@ definitions:
         example: https://www.tinkoff.ru
         type: string
     type: object
-  dto.IDResponse:
-    properties:
-      id:
-        type: string
-      status:
-        type: string
-    type: object
   dto.MarketRequest:
     properties:
       code:
@@ -45,6 +38,7 @@ definitions:
         type: string
       company_name:
         description: Название компании
+        example: Tinka
         type: string
       contact:
         $ref: '#/definitions/dto.ContactInfo'
@@ -83,9 +77,11 @@ definitions:
     properties:
       max_order_sum:
         description: Максимальная сумма заказа
+        example: 1500000
         type: integer
       min_order_sum:
         description: Минимальная сумма заказа
+        example: 10000
         type: integer
       name:
         description: Наименование
@@ -108,45 +104,6 @@ definitions:
         type: array
       total:
         type: integer
-    type: object
-  dto.OrderRequest:
-    properties:
-      address:
-        $ref: '#/definitions/models.Address'
-      amount:
-        type: string
-      channel:
-        type: string
-      cityId:
-        type: string
-      customer:
-        $ref: '#/definitions/models.Customer'
-      goods:
-        items:
-          $ref: '#/definitions/models.Goods'
-        type: array
-      isDelivery:
-        type: boolean
-      loanLength:
-        type: integer
-      paymentMethod:
-        type: string
-      paymentPartners:
-        items:
-          $ref: '#/definitions/models.PaymentPartners'
-        type: array
-      productType:
-        type: string
-      redirectUrl:
-        type: string
-      systemCode:
-        type: string
-      verificationId:
-        type: string
-      verificationSmsCode:
-        type: string
-      verificationSmsDateTime:
-        type: string
     type: object
   dto.Orders:
     properties:
@@ -205,6 +162,10 @@ definitions:
     type: object
   dto.URL:
     properties:
+      auth:
+        description: урл авторизации
+        example: https://
+        type: string
       create:
         description: Урл который создает заказ на стороне партнера
         example: https://
@@ -239,15 +200,19 @@ definitions:
   models.Address:
     properties:
       delivery:
+        example: track
         type: string
       pickupPoint:
+        example: Kurmangazy 77
         type: string
     type: object
   models.Contact:
     properties:
       email:
+        example: jon@mail.ru
         type: string
       mobileNumber:
+        example: "87777777777"
         type: string
     type: object
   models.ContactInfo:
@@ -286,25 +251,34 @@ definitions:
       contact:
         $ref: '#/definitions/models.Contact'
       firstName:
+        example: Jon
         type: string
       lastName:
+        example: Bones
         type: string
       middleName:
+        example: Jones
         type: string
       taxCode:
+        example: "832918392183"
         type: string
     type: object
   models.Goods:
     properties:
       brand:
+        example: iphone
         type: string
       category:
+        example: smartphony
         type: string
       image:
+        example: https://cdn.dxomark.com/wp-content/uploads/medias/post-61183/iphone-12-pro-blue-hero.jpg
         type: string
       model:
+        example: 12 PRO
         type: string
       price:
+        example: "5000"
         type: string
     type: object
   models.Market:
@@ -381,13 +355,15 @@ definitions:
         type: array
       productType:
         type: string
+      reason:
+        type: string
       redirectUrl:
         type: string
       referenceId:
         type: string
       salesPlace:
         type: string
-      system_code:
+      systemCode:
         type: string
       totalCost:
         type: string
@@ -430,6 +406,7 @@ definitions:
   models.PaymentPartners:
     properties:
       code:
+        example: airba_pay
         type: string
     type: object
   models.Response:
@@ -441,6 +418,8 @@ definitions:
     type: object
   models.URL:
     properties:
+      auth:
+        type: string
       create:
         type: string
       update:
@@ -674,7 +653,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.IDResponse'
+            $ref: '#/definitions/models.Response'
         "400":
           description: Bad Request
           schema:
@@ -838,7 +817,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.OrderRequest'
+            $ref: '#/definitions/models.Order'
         "400":
           description: Bad Request
           schema:
@@ -866,7 +845,7 @@ paths:
         name: market
         required: true
         schema:
-          $ref: '#/definitions/dto.OrderRequest'
+          $ref: '#/definitions/models.Order'
       - description: id of the order
         in: path
         name: id
@@ -954,7 +933,7 @@ paths:
         name: partner
         required: true
         schema:
-          $ref: '#/definitions/models.Partner'
+          $ref: '#/definitions/dto.PartnerRequest'
       - description: Authorization
         in: header
         name: Authorization

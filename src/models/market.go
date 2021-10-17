@@ -9,7 +9,8 @@ type Market struct {
 	Code           string      `json:"code"`
 	UpdateOrderURL string      `json:"update_order_url" bson:"update_order_url"`
 	Username       string      `json:"username" bson:"username"`
-	Password       string      `json:"password" bson:"password"`
+	HashedPassword string      `json:"-" bson:"hashed_password"`
+	Password       *string     `json:"password" bson:"password"`
 	Contact        ContactInfo `json:"contact" bson:"contact"`
 	Enabled        bool        `json:"enabled" bson:"enabled"`
 	CreatedAt      time.Time   `json:"created_at" bson:"created_at"`

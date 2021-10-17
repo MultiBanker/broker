@@ -19,7 +19,9 @@ func (o OffersRequest) Validate() error {
 
 	if o.Goods != nil {
 		for _, good := range o.Goods {
-			errstrings = append(errstrings, good.Validate().Error())
+			if err := good.Validate(); err != nil {
+				errstrings = append(errstrings, good.Validate().Error())
+			}
 		}
 	}
 	if errstrings != nil {

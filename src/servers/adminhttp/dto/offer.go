@@ -9,20 +9,20 @@ import (
 
 type OfferRequest struct {
 	// Код партнера
-	PartnerCode          string `json:"partner_code" bson:"partner_code" example:"airba_pay"`
+	PartnerCode string `json:"partner_code" bson:"partner_code" example:"airba_pay"`
 	// Наименование
-	Name                 string `json:"name" bson:"name" example:"МФО Аирба"`
+	Name string `json:"name" bson:"name" example:"МФО Аирба"`
 	// Вид оплаты товара
 	PaymentTypeGroupCode string `json:"payment_type_group_code" bson:"payment_type_group_code" example:"online_broker"`
 	// Минимальная сумма заказа
-	MinOrderSum          int    `json:"min_order_sum" bson:"min_order_sum" example:"10000"`
+	MinOrderSum int `json:"min_order_sum" bson:"min_order_sum" example:"10000"`
 	// Максимальная сумма заказа
-	MaxOrderSum          int    `json:"max_order_sum" bson:"max_order_sum" example:"1500000"`
+	MaxOrderSum int `json:"max_order_sum" bson:"max_order_sum" example:"1500000"`
 }
 
 type OfferSpecs struct {
-	Total  int64
-	Offers []models.Offer
+	Total  int64          `json:"total"`
+	Offers []models.Offer `json:"offers"`
 }
 
 func (c OfferRequest) Validate() error {

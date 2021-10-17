@@ -2,7 +2,6 @@ package market
 
 import (
 	"context"
-	"fmt"
 	"strconv"
 
 	"github.com/MultiBanker/broker/src/database/repository"
@@ -34,11 +33,13 @@ type Marketer interface {
 var _ Marketer = (*Market)(nil)
 
 func (m Market) CreateMarket(ctx context.Context, market models.Market) (string, error) {
-	bytePass, err := auth.HashPassword(market.Password)
+	bytePass, err := auth.HashPassword(*market.Password)
 	if err != nil {
 		return "", err
 	}
-	market.Password = string(bytePass)
+	market.HashedPassword = string(bytePass)
+	market.Password = nil
+
 	idInt, err := m.seqColl.NextSequenceValue(ctx, models.MarketSequences)
 	if err != nil {
 		return "", err
@@ -60,9 +61,16 @@ func (m Market) UpdateMarket(ctx context.Context, market models.Market) (string,
 	if err != nil {
 		return "", err
 	}
-	if !auth.CheckPasswordHash(market.Password, []byte(res.Password)) {
-		return "", fmt.Errorf("[ERROR] Wrong Password")
+	if !auth.CheckPasswordHash(*market.Password, []byte(res.HashedPassword)) {
+		return "", err
 	}
+
+	bytePass, err := auth.HashPassword(*market.Password)
+	if err != nil {
+		return "", err
+	}
+	market.HashedPassword = string(bytePass)
+	market.Password = nil
 	return m.marketColl.UpdateMarket(ctx, market)
 }
 
@@ -72,9 +80,9 @@ func (m Market) MarketByUsername(ctx context.Context, username, password string)
 	if err != nil {
 		return market, err
 	}
-	if !auth.CheckPasswordHash(password, []byte(market.Password)) {
-		return market, fmt.Errorf("[ERROR] Wrong Password")
-	}
 
+	if !auth.CheckPasswordHash(password, []byte(market.HashedPassword)) {
+		return market, err
+	}
 	return market, nil
 }

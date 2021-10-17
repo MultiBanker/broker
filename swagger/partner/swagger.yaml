@@ -2,10 +2,13 @@ definitions:
   dto.FIO:
     properties:
       firstName:
+        example: Jon
         type: string
       lastName:
+        example: Bones
         type: string
       middleName:
+        example: Jones
         type: string
     type: object
   dto.Login:
@@ -24,10 +27,13 @@ definitions:
           $ref: '#/definitions/models.Offers'
         type: array
       referenceId:
+        example: "1"
         type: string
       state:
+        example: order_confirmed
         type: string
       stateTitle:
+        example: order_confirmed
         type: string
     type: object
   dto.TokenResponse:
@@ -62,16 +68,22 @@ definitions:
   models.Offers:
     properties:
       contractNumber:
+        example: d12ed1
         type: string
       loanAmount:
+        example: "144000"
         type: string
       loanLength:
+        example: "12"
         type: string
       monthlyPayment:
+        example: 12000
         type: integer
       product:
+        example: rassrochka_12
         type: string
       productType:
+        example: installment
         type: string
     type: object
   models.Response:

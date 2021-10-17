@@ -18,7 +18,7 @@ const (
 )
 
 func Routing(opts *config.Config, man manager.Abstractor) chi.Router {
-	r := middleware.Mount(opts.Version, opts.HTTP.Client.FilesDir, opts.HTTP.Client.BasePath)
+	r := middleware.Mount(opts.Version, opts.HTTP.FilesDir, opts.HTTP.BasePath)
 	mware := metric.NewMetricware(metrics.NewSet())
 
 	// основные роутеры

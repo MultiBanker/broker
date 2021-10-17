@@ -49,7 +49,7 @@ func (m MarketRequest) Validate() error {
 		errstrings = append(errstrings, m.Contact.Validate().Error())
 	}
 	if errstrings != nil {
-		return fmt.Errorf(strings.Join(errstrings, "\n"))
+		return fmt.Errorf(strings.Join(errstrings, " and "))
 	}
 	return nil
 }

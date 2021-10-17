@@ -12,6 +12,7 @@ func DTOToModelPartner(req dto.PartnerRequest) models.Partner {
 		Commission:  req.Commission,
 		LogoURL:     req.LogoURL,
 		URL: &models.URL{
+			Auth:   req.URL.Auth,
 			Create: req.URL.Create,
 			Update: req.URL.Update,
 		},
@@ -26,6 +27,6 @@ func DTOToModelPartner(req dto.PartnerRequest) models.Partner {
 		},
 		Enabled:  req.Enabled,
 		Username: req.Username,
-		Password: req.Password,
+		Password: &req.Password,
 	}
 }

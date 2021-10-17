@@ -48,7 +48,7 @@ func (c ContactInfo) Validate() error {
 	}
 
 	if errstrings != nil {
-		return fmt.Errorf(strings.Join(errstrings, "\n"))
+		return fmt.Errorf(strings.Join(errstrings, " and "))
 	}
 	return nil
 }

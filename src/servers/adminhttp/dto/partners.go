@@ -7,7 +7,7 @@ import (
 
 type PartnerRequest struct {
 	// Код партнера
-	Code        string      `json:"code" bson:"code" example:"airba_pay"`
+	Code        string      `json:"code" bson:"code" example:"mfo_airba"`
 	// Название компании
 	CompanyName string      `json:"company_name" bson:"company_name" example:"Airba Pay"`
 	// Коммиссия
@@ -27,7 +27,8 @@ type PartnerRequest struct {
 }
 
 type URL struct {
-
+	// урл авторизации
+	Auth string `json:"auth" bson:"auth" example:"https://"`
 	// Урл который создает заказ на стороне партнера
 	Create string `json:"create" bson:"create" example:"https://"`
 	// Урл который обновляет заказ на стороне партнера
@@ -36,6 +37,10 @@ type URL struct {
 
 func (u URL) Validate() error {
 	var errstrings []string
+
+	if u.Auth == "" {
+		errstrings = append(errstrings, ValidationIsEmpty("auth url").Error())
+	}
 
 	if u.Create == "" {
 		errstrings = append(errstrings, ValidationIsEmpty("create url").Error())

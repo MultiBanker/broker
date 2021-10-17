@@ -35,12 +35,14 @@ func (r Repository) UpdateOffer(ctx context.Context, offer models.Offer) (models
 	}
 
 	update := bson.D{
-		{"name", offer.Name},
-		{"partner_code", offer.PartnerCode},
-		{"payment_type_group_code", offer.PaymentTypeGroupCode},
-		{"min_order_sum", offer.MinOrderSum},
-		{"max_order_sum", offer.MaxOrderSum},
-		{"updated_at", time.Now().UTC()},
+		{"$set", bson.D{
+			{"name", offer.Name},
+			{"partner_code", offer.PartnerCode},
+			{"payment_type_group_code", offer.PaymentTypeGroupCode},
+			{"min_order_sum", offer.MinOrderSum},
+			{"max_order_sum", offer.MaxOrderSum},
+			{"updated_at", time.Now().UTC()}},
+		},
 	}
 
 	returnDoc := options.After
@@ -109,10 +111,10 @@ func (r Repository) Offers(ctx context.Context, paging selector.Paging) ([]model
 func (r Repository) OffersByTotalSum(ctx context.Context, total int) ([]*models.Offer, error) {
 	filter := bson.D{
 		{"min_order_sum", bson.D{
-			{"$gte", total},
+			{"$lte", total},
 		}},
 		{"max_order_sum", bson.D{
-			{"$lte", total},
+			{"$gte",total},
 		}},
 	}
 

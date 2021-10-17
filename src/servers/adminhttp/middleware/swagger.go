@@ -21,10 +21,7 @@ func (sr SwaggerResource) Routes() chi.Router {
 	r.Get("/*", httpSwagger.Handler(
 		httpSwagger.URL(filepath.Join(sr.BasePath, sr.FilesPath, "swagger.json")),
 	))
-
-	r.Group(func(r chi.Router) {
-		r.Get("/admin/*", sr.Indexer("admin"))
-	})
+	r.Get("/admin/*", sr.Indexer("admin"))
 
 	return r
 }

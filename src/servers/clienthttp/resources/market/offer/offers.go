@@ -5,8 +5,10 @@ import (
 	"net/http"
 
 	"github.com/MultiBanker/broker/pkg/httperrors"
+	_ "github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/servers/clienthttp/dto"
 	"github.com/go-chi/render"
+
 )
 
 // @Tags Offers
@@ -21,7 +23,7 @@ import (
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /offers [get]
+// @Router /offers [post]
 func (res Resource) offers(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 

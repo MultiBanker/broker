@@ -13,7 +13,7 @@ type PartnerAuth interface {
 
 func PartnerDetect(partnerCode string) (PartnerAuth, error) {
 	switch partnerCode {
-	case "airba_pay":
+	case "mfo_airba":
 		return Airba{}, nil
 	}
 

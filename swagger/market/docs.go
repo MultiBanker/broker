@@ -97,7 +97,7 @@ var doc = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Получение офферов",
+                "description": "Получение офферов по заказу",
                 "consumes": [
                     "application/json"
                 ],
@@ -107,7 +107,7 @@ var doc = `{
                 "tags": [
                     "Offers"
                 ],
-                "summary": "Получение офферов",
+                "summary": "Получение офферов по заказу",
                 "parameters": [
                     {
                         "type": "string",
@@ -117,23 +117,23 @@ var doc = `{
                         "required": true
                     },
                     {
-                        "type": "integer",
-                        "description": "pagination limit",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "pagination skip",
-                        "name": "skip",
-                        "in": "query"
+                        "description": "body",
+                        "name": "order",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.OffersRequest"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.OfferSpecs"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Offer"
+                            }
                         }
                     },
                     "400": {
@@ -182,7 +182,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.OrderRequest"
+                            "$ref": "#/definitions/dto.MarketOrderRequest"
                         }
                     },
                     {
@@ -197,7 +197,71 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.IDResponse"
+                            "$ref": "#/definitions/dto.BrokerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/markets": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Обновление заказа по решению клиента",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Обновление заказа по решению клиента",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "market",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateMarketOrderRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
                         }
                     },
                     "400": {
@@ -255,7 +319,7 @@ var doc = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/dto.OrderResponse"
+                                "$ref": "#/definitions/models.Order"
                             }
                         }
                     },
@@ -282,13 +346,10 @@ var doc = `{
         }
     },
     "definitions": {
-        "dto.IDResponse": {
+        "dto.BrokerResponse": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "status": {
+                "reference_id": {
                     "type": "string"
                 }
             }
@@ -304,57 +365,23 @@ var doc = `{
                 }
             }
         },
-        "dto.OfferSpecs": {
-            "type": "object",
-            "properties": {
-                "offers": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Offer"
-                    }
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
-        "dto.Offers": {
-            "type": "object",
-            "properties": {
-                "contractNumber": {
-                    "type": "string"
-                },
-                "loanAmount": {
-                    "type": "string"
-                },
-                "loanLength": {
-                    "type": "string"
-                },
-                "monthlyPayment": {
-                    "type": "integer"
-                },
-                "product": {
-                    "type": "string"
-                },
-                "productType": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.OrderRequest": {
+        "dto.MarketOrderRequest": {
             "type": "object",
             "properties": {
                 "address": {
                     "$ref": "#/definitions/models.Address"
                 },
                 "amount": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "5000"
                 },
                 "channel": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "airba_web"
                 },
                 "cityId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "050000"
                 },
                 "customer": {
                     "$ref": "#/definitions/models.Customer"
@@ -366,13 +393,16 @@ var doc = `{
                     }
                 },
                 "isDelivery": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": true
                 },
                 "loanLength": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 12
                 },
                 "paymentMethod": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "annuity"
                 },
                 "paymentPartners": {
                     "type": "array",
@@ -381,54 +411,39 @@ var doc = `{
                     }
                 },
                 "productType": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "installment"
                 },
                 "redirectUrl": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://airba.kz/order/ok"
                 },
                 "systemCode": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "oms"
                 },
                 "verificationId": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "dsad12"
                 },
                 "verificationSmsCode": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "12321"
                 },
                 "verificationSmsDateTime": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "12.12.2020"
                 }
             }
         },
-        "dto.OrderResponse": {
+        "dto.OffersRequest": {
             "type": "object",
             "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "offers": {
+                "goods": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dto.Offers"
+                        "$ref": "#/definitions/models.Goods"
                     }
-                },
-                "redirectUrl": {
-                    "type": "string"
-                },
-                "requestUuid": {
-                    "type": "string"
-                },
-                "state": {
-                    "type": "string"
-                },
-                "state_title": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
                 }
             }
         },
@@ -439,6 +454,29 @@ var doc = `{
                     "type": "string"
                 },
                 "response_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UpdateMarketOrderRequest": {
+            "type": "object",
+            "properties": {
+                "loanLength": {
+                    "type": "string"
+                },
+                "productCode": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "referenceId": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "stateTitle": {
                     "type": "string"
                 }
             }
@@ -479,10 +517,12 @@ var doc = `{
             "type": "object",
             "properties": {
                 "delivery": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "track"
                 },
                 "pickupPoint": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Kurmangazy 77"
                 }
             }
         },
@@ -490,10 +530,12 @@ var doc = `{
             "type": "object",
             "properties": {
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "jon@mail.ru"
                 },
                 "mobileNumber": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "87777777777"
                 }
             }
         },
@@ -504,16 +546,20 @@ var doc = `{
                     "$ref": "#/definitions/models.Contact"
                 },
                 "firstName": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Jon"
                 },
                 "lastName": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Bones"
                 },
                 "middleName": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Jones"
                 },
                 "taxCode": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "832918392183"
                 }
             }
         },
@@ -521,19 +567,24 @@ var doc = `{
             "type": "object",
             "properties": {
                 "brand": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "iphone"
                 },
                 "category": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "smartphony"
                 },
                 "image": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://cdn.dxomark.com/wp-content/uploads/medias/post-61183/iphone-12-pro-blue-hero.jpg"
                 },
                 "model": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "12 PRO"
                 },
                 "price": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "5000"
                 }
             }
         },
@@ -566,10 +617,99 @@ var doc = `{
                 }
             }
         },
+        "models.Order": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/models.Address"
+                },
+                "channel": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "customer": {
+                    "$ref": "#/definitions/models.Customer"
+                },
+                "goods": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Goods"
+                    }
+                },
+                "id": {
+                    "type": "string"
+                },
+                "isDelivery": {
+                    "type": "boolean"
+                },
+                "loanLength": {
+                    "type": "string"
+                },
+                "orderState": {
+                    "type": "string"
+                },
+                "paymentMethod": {
+                    "type": "string"
+                },
+                "paymentPartners": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.PaymentPartners"
+                    }
+                },
+                "productType": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "redirectUrl": {
+                    "type": "string"
+                },
+                "referenceId": {
+                    "type": "string"
+                },
+                "salesPlace": {
+                    "type": "string"
+                },
+                "systemCode": {
+                    "type": "string"
+                },
+                "totalCost": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "verificationId": {
+                    "type": "string"
+                },
+                "verificationSmsCode": {
+                    "type": "string"
+                },
+                "verificationSmsDateTime": {
+                    "type": "string"
+                }
+            }
+        },
         "models.PaymentPartners": {
             "type": "object",
             "properties": {
                 "code": {
+                    "type": "string",
+                    "example": "airba_pay"
+                }
+            }
+        },
+        "models.Response": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "status": {
                     "type": "string"
                 }
             }
