@@ -22,6 +22,11 @@ type Partners struct {
 	Partners []models.Partner `json:"partners"`
 }
 
+type LoanPrograms struct {
+	Total        int64                `json:"total"`
+	LoanPrograms []models.LoanProgram `json:"loan_programs"`
+}
+
 func RespondJSON(w http.ResponseWriter, r *http.Request, status int, data interface{}) {
 	render.Status(r, status)
 	render.JSON(w, r, data)

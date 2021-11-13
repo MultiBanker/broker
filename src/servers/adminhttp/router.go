@@ -6,18 +6,17 @@ import (
 	"github.com/MultiBanker/broker/src/manager"
 	"github.com/MultiBanker/broker/src/servers/adminhttp/middleware"
 	"github.com/MultiBanker/broker/src/servers/adminhttp/resources/admin"
-	"github.com/VictoriaMetrics/metrics"
 	"github.com/go-chi/chi/v5"
 )
 
 const (
-	ApiPath      = "/api/v1"
+	ApiPath = "/api/v1"
 )
 
 func Routing(opts *config.Config, man manager.Abstractor) chi.Router {
 
 	r := middleware.Mount(opts.Version, opts.HTTP.FilesDir, opts.HTTP.BasePath)
-	mware := metric.NewMetricware(metrics.NewSet())
+	mware := metric.NewMetricware(man.Metric())
 
 	// основные роутеры
 	r.Route(ApiPath, func(r chi.Router) {

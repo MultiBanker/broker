@@ -5,4 +5,5 @@ const (
 	PartnerSequences = "partner"
 	MarketSequences  = "market"
 	OfferSequences   = "offer"
+	LoanSequences    = "loan"
 )

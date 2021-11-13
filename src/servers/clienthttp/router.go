@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	ApiPath      = "/api/v1"
+	ApiPath = "/api/v1"
 )
 
 func Routing(opts *config.Config, man manager.Abstractor) chi.Router {
@@ -32,4 +32,3 @@ func Routing(opts *config.Config, man manager.Abstractor) chi.Router {
 
 	return r
 }
-

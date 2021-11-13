@@ -30,6 +30,38 @@ definitions:
         example: https://www.tinkoff.ru
         type: string
     type: object
+  dto.LoanProgramRequest:
+    properties:
+      code:
+        type: string
+      is_enabled:
+        type: boolean
+      max_amount:
+        type: integer
+      min_amount:
+        type: integer
+      name:
+        type: string
+      note:
+        type: string
+      partner_code:
+        type: string
+      rate:
+        type: number
+      term:
+        type: integer
+      type:
+        type: string
+    type: object
+  dto.LoanPrograms:
+    properties:
+      loan_programs:
+        items:
+          $ref: '#/definitions/models.LoanProgram'
+        type: array
+      total:
+        type: integer
+    type: object
   dto.MarketRequest:
     properties:
       code:
@@ -118,7 +150,7 @@ definitions:
     properties:
       code:
         description: Код партнера
-        example: airba_pay
+        example: mfo_airba
         type: string
       commission:
         description: Коммиссия
@@ -281,6 +313,35 @@ definitions:
         example: "5000"
         type: string
     type: object
+  models.LoanProgram:
+    properties:
+      code:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      is_enabled:
+        type: boolean
+      max_amount:
+        type: integer
+      min_amount:
+        type: integer
+      name:
+        type: string
+      note:
+        type: string
+      partner_code:
+        type: string
+      rate:
+        type: number
+      term:
+        type: integer
+      type:
+        type: string
+      updated_at:
+        type: string
+    type: object
   models.Market:
     properties:
       code:
@@ -406,7 +467,7 @@ definitions:
   models.PaymentPartners:
     properties:
       code:
-        example: airba_pay
+        example: mfo_airba
         type: string
     type: object
   models.Response:
@@ -1048,4 +1109,155 @@ paths:
       summary: Обновление партнера
       tags:
       - Partner
+  /loan-programs:
+    get:
+      description: Получение кредитных программ
+      parameters:
+      - description: токен авторизации
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: страница
+        in: query
+        name: page
+        type: integer
+      - description: размер страницы
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.LoanPrograms'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение кредитных программ
+      tags:
+      - programs
+  /loan-programs/:
+    post:
+      consumes:
+      - application/json
+      description: Создание кредитной программы
+      parameters:
+      - description: токен авторизации
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: кредитная программа
+        in: body
+        name: program
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoanProgramRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Создание кредитной программы
+      tags:
+      - programs
+  /loan-programs/{code}:
+    get:
+      description: Получение кредитной программы по уникальному коду
+      parameters:
+      - description: токен авторизации
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: уникальный код программы
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LoanProgram'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение кредитной программы по уникальному коду
+      tags:
+      - programs
+    put:
+      consumes:
+      - application/json
+      description: Обновление кредитной программы
+      parameters:
+      - description: токен авторизации
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: уникальный код программы
+        in: path
+        name: code
+        required: true
+        type: string
+      - description: кредитная программа
+        in: body
+        name: program
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoanProgramRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление кредитной программы
+      tags:
+      - programs
 swagger: "2.0"

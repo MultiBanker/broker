@@ -91,7 +91,7 @@ var doc = `{
             }
         },
         "/offers": {
-            "get": {
+            "post": {
                 "security": [
                     {
                         "ApiKeyAuth": []
@@ -699,7 +699,7 @@ var doc = `{
             "properties": {
                 "code": {
                     "type": "string",
-                    "example": "airba_pay"
+                    "example": "mfo_airba"
                 }
             }
         },

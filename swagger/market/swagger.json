@@ -72,7 +72,7 @@
             }
         },
         "/offers": {
-            "get": {
+            "post": {
                 "security": [
                     {
                         "ApiKeyAuth": []
@@ -680,7 +680,7 @@
             "properties": {
                 "code": {
                     "type": "string",
-                    "example": "airba_pay"
+                    "example": "mfo_airba"
                 }
             }
         },

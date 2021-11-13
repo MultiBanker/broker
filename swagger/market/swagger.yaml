@@ -239,7 +239,7 @@ definitions:
   models.PaymentPartners:
     properties:
       code:
-        example: airba_pay
+        example: mfo_airba
         type: string
     type: object
   models.Response:
@@ -297,7 +297,7 @@ paths:
       tags:
       - Market
   /offers:
-    get:
+    post:
       consumes:
       - application/json
       description: Получение офферов по заказу

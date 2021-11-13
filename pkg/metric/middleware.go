@@ -68,3 +68,11 @@ func (m *Metricware) All(path string) []func(handler http.Handler) http.Handler 
 		m.Latency(path),
 	}
 }
+
+func (m Metricware) Status(status string) {
+
+}
+
+type Metric struct {
+	metrics.Counter
+}
