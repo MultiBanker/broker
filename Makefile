@@ -30,3 +30,4 @@ mocks:
 	mockgen --source=src/manager/offer/offers.go --destination=src/mock_manager/mock_offer_manager/offers.go
 	mockgen --source=src/manager/order/order.go --destination=src/mock_manager/mock_order_manager/order.go
 	mockgen --source=src/manager/partner/partner.go --destination=src/mock_manager/mock_partner_manager/partner.go
+	mockgen --source=src/manager/loan/loan-program.go --destination=src/mock_manager/mock_loan_manager/loan-program.go

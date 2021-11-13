@@ -8,6 +8,7 @@ import (
 	reflect "reflect"
 
 	auth "github.com/MultiBanker/broker/src/manager/auth"
+	loan "github.com/MultiBanker/broker/src/manager/loan"
 	market "github.com/MultiBanker/broker/src/manager/market"
 	offer "github.com/MultiBanker/broker/src/manager/offer"
 	order "github.com/MultiBanker/broker/src/manager/order"
@@ -51,6 +52,20 @@ func (m *MockAbstractor) Auther() auth.Authenticator {
 func (mr *MockAbstractorMockRecorder) Auther() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Auther", reflect.TypeOf((*MockAbstractor)(nil).Auther))
+}
+
+// LoanProgram mocks base method.
+func (m *MockAbstractor) LoanProgram() loan.Program {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "LoanProgram")
+	ret0, _ := ret[0].(loan.Program)
+	return ret0
+}
+
+// LoanProgram indicates an expected call of LoanProgram.
+func (mr *MockAbstractorMockRecorder) LoanProgram() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LoanProgram", reflect.TypeOf((*MockAbstractor)(nil).LoanProgram))
 }
 
 // Marketer mocks base method.

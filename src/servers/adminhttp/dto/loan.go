@@ -7,16 +7,26 @@ import (
 )
 
 type LoanProgramRequest struct {
-	Code        string  `json:"code" bson:"code"`
-	IsEnabled   bool    `json:"is_enabled" bson:"is_enabled"`
-	MaxAmount   int     `json:"max_amount" bson:"max_amount"`
-	MinAmount   int     `json:"min_amount" bson:"min_amount"`
-	Name        string  `json:"name" bson:"name"`
-	Note        string  `json:"note" bson:"note"`
-	PartnerCode string  `json:"partner_code" bson:"partner_code"`
-	Rate        float64 `json:"rate" bson:"rate"`
-	Term        int     `json:"term" bson:"term"`
-	Type        string  `json:"type" bson:"type"`
+	// Код продукта
+	Code        string  `json:"code" example:"001"`
+	// Доступность
+	IsEnabled   bool    `json:"is_enabled" example:"true"`
+	// Максимальная сумма корзины
+	MaxAmount   int     `json:"max_amount" example:"10000000"`
+	// Минимальная сумма корзины
+	MinAmount   int     `json:"min_amount" example:"5000"`
+	// Наименование продукта
+	Name        string  `json:"name" example:"Installment 1"`
+	// Примечание
+	Note        string  `json:"note" example:"Note"`
+	// Код банка партнера
+	PartnerCode string  `json:"partner_code" example:"mfo_ff"`
+	// Ставка по кредиту
+	Rate        float64 `json:"rate" example:"0.3"`
+	// Срок
+	Term        int     `json:"term" example:"12"`
+	// Тип
+	Type        string  `json:"type" example:"installment" enums:"loan,installment"`
 }
 
 func (l LoanProgramRequest) Validate() error {

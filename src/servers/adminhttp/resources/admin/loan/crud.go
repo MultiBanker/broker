@@ -14,7 +14,7 @@ import (
 	"github.com/go-chi/render"
 )
 
-// @Router /loan-programs/ [post]
+// @Router /admins/loan-programs/ [post]
 // @Summary Создание кредитной программы
 // @Description Создание кредитной программы
 // @Tags programs
@@ -55,7 +55,7 @@ func (res AdminResource) create(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// @Router /loan-programs/{code} [put]
+// @Router /admins/loan-programs/{code} [put]
 // @Summary Обновление кредитной программы
 // @Description Обновление кредитной программы
 // @Tags programs
@@ -105,7 +105,7 @@ func (res AdminResource) update(w http.ResponseWriter, r *http.Request) {
 	render.Status(r, http.StatusNoContent)
 }
 
-// @Router /loan-programs/{code} [get]
+// @Router /admins/loan-programs/{code} [get]
 // @Summary Получение кредитной программы по уникальному коду
 // @Description Получение кредитной программы по уникальному коду
 // @Tags programs
@@ -137,7 +137,7 @@ func (res AdminResource) get(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// @Router /loan-programs [get]
+// @Router /admins/loan-programs [get]
 // @Summary Получение кредитных программ
 // @Description Получение кредитных программ
 // @Tags programs

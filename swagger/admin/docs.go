@@ -23,6 +23,241 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/admins/loan-programs": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Получение кредитных программ",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "programs"
+                ],
+                "summary": "Получение кредитных программ",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "токен авторизации",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "страница",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "размер страницы",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoanPrograms"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admins/loan-programs/": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Создание кредитной программы",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "programs"
+                ],
+                "summary": "Создание кредитной программы",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "токен авторизации",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "кредитная программа",
+                        "name": "program",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoanProgramRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/admins/loan-programs/{code}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Получение кредитной программы по уникальному коду",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "programs"
+                ],
+                "summary": "Получение кредитной программы по уникальному коду",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "токен авторизации",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "уникальный код программы",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.LoanProgram"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Обновление кредитной программы",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "programs"
+                ],
+                "summary": "Обновление кредитной программы",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "токен авторизации",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "уникальный код программы",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "кредитная программа",
+                        "name": "program",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoanProgramRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/admins/markets": {
             "get": {
                 "security": [
@@ -982,241 +1217,6 @@ var doc = `{
                     }
                 }
             }
-        },
-        "/loan-programs": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Получение кредитных программ",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "programs"
-                ],
-                "summary": "Получение кредитных программ",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "токен авторизации",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "страница",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "размер страницы",
-                        "name": "limit",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dto.LoanPrograms"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/loan-programs/": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Создание кредитной программы",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "programs"
-                ],
-                "summary": "Создание кредитной программы",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "токен авторизации",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "кредитная программа",
-                        "name": "program",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.LoanProgramRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Response"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/loan-programs/{code}": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Получение кредитной программы по уникальному коду",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "programs"
-                ],
-                "summary": "Получение кредитной программы по уникальному коду",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "токен авторизации",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "уникальный код программы",
-                        "name": "code",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.LoanProgram"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Обновление кредитной программы",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "programs"
-                ],
-                "summary": "Обновление кредитной программы",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "токен авторизации",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "уникальный код программы",
-                        "name": "code",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "кредитная программа",
-                        "name": "program",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.LoanProgramRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": ""
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/httperrors.Response"
-                        }
-                    }
-                }
-            }
         }
     },
     "definitions": {
@@ -1264,34 +1264,58 @@ var doc = `{
             "type": "object",
             "properties": {
                 "code": {
-                    "type": "string"
+                    "description": "Код продукта",
+                    "type": "string",
+                    "example": "001"
                 },
                 "is_enabled": {
-                    "type": "boolean"
+                    "description": "Доступность",
+                    "type": "boolean",
+                    "example": true
                 },
                 "max_amount": {
-                    "type": "integer"
+                    "description": "Максимальная сумма корзины",
+                    "type": "integer",
+                    "example": 10000000
                 },
                 "min_amount": {
-                    "type": "integer"
+                    "description": "Минимальная сумма корзины",
+                    "type": "integer",
+                    "example": 5000
                 },
                 "name": {
-                    "type": "string"
+                    "description": "Наименование продукта",
+                    "type": "string",
+                    "example": "Installment 1"
                 },
                 "note": {
-                    "type": "string"
+                    "description": "Примечание",
+                    "type": "string",
+                    "example": "Note"
                 },
                 "partner_code": {
-                    "type": "string"
+                    "description": "Код банка партнера",
+                    "type": "string",
+                    "example": "mfo_ff"
                 },
                 "rate": {
-                    "type": "number"
+                    "description": "Ставка по кредиту",
+                    "type": "number",
+                    "example": 0.3
                 },
                 "term": {
-                    "type": "integer"
+                    "description": "Срок",
+                    "type": "integer",
+                    "example": 12
                 },
                 "type": {
-                    "type": "string"
+                    "description": "Тип",
+                    "type": "string",
+                    "enum": [
+                        "loan",
+                        "installment"
+                    ],
+                    "example": "installment"
                 }
             }
         },
@@ -1342,7 +1366,7 @@ var doc = `{
                     "example": "Password123"
                 },
                 "update_order_url": {
-                    "description": "Обновление заказов",
+                    "description": "Эндпоинт обновление заказов",
                     "type": "string",
                     "example": "https://google.com"
                 },

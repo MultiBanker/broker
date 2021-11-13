@@ -12,7 +12,7 @@ type MarketRequest struct {
 	LogoURL string `json:"logo_url" bson:"logo_url" example:"https://plusworld.ru/wp-content/uploads/2021/09/759950f2eafdab128b887f1296316ea6f1af5152.jpg"`
 	// Код картинки
 	Code string `json:"code" example:"tinkoff"`
-	// Обновление заказов
+	// Эндпоинт обновление заказов
 	UpdateOrderURL string `json:"update_order_url" bson:"update_order_url" example:"https://google.com"`
 	// Имя пользователя
 	Username string `json:"username" bson:"username" example:"Olejka"`

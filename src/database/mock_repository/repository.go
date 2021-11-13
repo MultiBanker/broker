@@ -34,6 +34,20 @@ func (m *MockRepositories) EXPECT() *MockRepositoriesMockRecorder {
 	return m.recorder
 }
 
+// LoanProgramRepo mocks base method.
+func (m *MockRepositories) LoanProgramRepo() repository.LoanProgram {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "LoanProgramRepo")
+	ret0, _ := ret[0].(repository.LoanProgram)
+	return ret0
+}
+
+// LoanProgramRepo indicates an expected call of LoanProgramRepo.
+func (mr *MockRepositoriesMockRecorder) LoanProgramRepo() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LoanProgramRepo", reflect.TypeOf((*MockRepositories)(nil).LoanProgramRepo))
+}
+
 // MarketRepo mocks base method.
 func (m *MockRepositories) MarketRepo() repository.Marketer {
 	m.ctrl.T.Helper()

@@ -33,24 +33,47 @@ definitions:
   dto.LoanProgramRequest:
     properties:
       code:
+        description: Код продукта
+        example: "001"
         type: string
       is_enabled:
+        description: Доступность
+        example: true
         type: boolean
       max_amount:
+        description: Максимальная сумма корзины
+        example: 10000000
         type: integer
       min_amount:
+        description: Минимальная сумма корзины
+        example: 5000
         type: integer
       name:
+        description: Наименование продукта
+        example: Installment 1
         type: string
       note:
+        description: Примечание
+        example: Note
         type: string
       partner_code:
+        description: Код банка партнера
+        example: mfo_ff
         type: string
       rate:
+        description: Ставка по кредиту
+        example: 0.3
         type: number
       term:
+        description: Срок
+        example: 12
         type: integer
       type:
+        description: Тип
+        enum:
+        - loan
+        - installment
+        example: installment
         type: string
     type: object
   dto.LoanPrograms:
@@ -88,7 +111,7 @@ definitions:
         example: Password123
         type: string
       update_order_url:
-        description: Обновление заказов
+        description: Эндпоинт обновление заказов
         example: https://google.com
         type: string
       username:
@@ -489,6 +512,157 @@ definitions:
 info:
   contact: {}
 paths:
+  /admins/loan-programs:
+    get:
+      description: Получение кредитных программ
+      parameters:
+      - description: токен авторизации
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: страница
+        in: query
+        name: page
+        type: integer
+      - description: размер страницы
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.LoanPrograms'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение кредитных программ
+      tags:
+      - programs
+  /admins/loan-programs/:
+    post:
+      consumes:
+      - application/json
+      description: Создание кредитной программы
+      parameters:
+      - description: токен авторизации
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: кредитная программа
+        in: body
+        name: program
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoanProgramRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Создание кредитной программы
+      tags:
+      - programs
+  /admins/loan-programs/{code}:
+    get:
+      description: Получение кредитной программы по уникальному коду
+      parameters:
+      - description: токен авторизации
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: уникальный код программы
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LoanProgram'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение кредитной программы по уникальному коду
+      tags:
+      - programs
+    put:
+      consumes:
+      - application/json
+      description: Обновление кредитной программы
+      parameters:
+      - description: токен авторизации
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: уникальный код программы
+        in: path
+        name: code
+        required: true
+        type: string
+      - description: кредитная программа
+        in: body
+        name: program
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoanProgramRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление кредитной программы
+      tags:
+      - programs
   /admins/markets:
     get:
       description: Получение маркетов
@@ -1109,155 +1283,4 @@ paths:
       summary: Обновление партнера
       tags:
       - Partner
-  /loan-programs:
-    get:
-      description: Получение кредитных программ
-      parameters:
-      - description: токен авторизации
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: страница
-        in: query
-        name: page
-        type: integer
-      - description: размер страницы
-        in: query
-        name: limit
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dto.LoanPrograms'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Получение кредитных программ
-      tags:
-      - programs
-  /loan-programs/:
-    post:
-      consumes:
-      - application/json
-      description: Создание кредитной программы
-      parameters:
-      - description: токен авторизации
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: кредитная программа
-        in: body
-        name: program
-        required: true
-        schema:
-          $ref: '#/definitions/dto.LoanProgramRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Создание кредитной программы
-      tags:
-      - programs
-  /loan-programs/{code}:
-    get:
-      description: Получение кредитной программы по уникальному коду
-      parameters:
-      - description: токен авторизации
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: уникальный код программы
-        in: path
-        name: code
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.LoanProgram'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Получение кредитной программы по уникальному коду
-      tags:
-      - programs
-    put:
-      consumes:
-      - application/json
-      description: Обновление кредитной программы
-      parameters:
-      - description: токен авторизации
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: уникальный код программы
-        in: path
-        name: code
-        required: true
-        type: string
-      - description: кредитная программа
-        in: body
-        name: program
-        required: true
-        schema:
-          $ref: '#/definitions/dto.LoanProgramRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: ""
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Обновление кредитной программы
-      tags:
-      - programs
 swagger: "2.0"
