@@ -13,7 +13,7 @@ const (
 	ApiPath = "/api/v1"
 )
 
-func Routing(opts *config.Config, man manager.Abstractor) chi.Router {
+func Routing(opts *config.Config, man manager.Wrapper) chi.Router {
 
 	r := middleware.Mount(opts.Version, opts.HTTP.FilesDir, opts.HTTP.BasePath)
 	mware := metric.NewMetricware(man.Metric())

@@ -14,7 +14,7 @@ type Resource struct {
 	set      *metrics.Set
 }
 
-func NewResource(man manager.Abstractor) *Resource {
+func NewResource(man manager.Wrapper) *Resource {
 	return &Resource{
 		authMan:  man.Auther(),
 		offerMan: man.Offer(),

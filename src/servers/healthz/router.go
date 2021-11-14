@@ -11,7 +11,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func Routing(_ *config.Config, man manager.Abstractor) chi.Router {
+func Routing(_ *config.Config, man manager.Wrapper) chi.Router {
 	isReady := &atomic.Value{}
 	go readyzProbe(isReady)
 

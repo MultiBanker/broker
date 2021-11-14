@@ -9,10 +9,10 @@ import (
 )
 
 type Resource struct {
-	man manager.Abstractor
+	man manager.Wrapper
 }
 
-func NewResource(man manager.Abstractor) Resource {
+func NewResource(man manager.Wrapper) Resource {
 	return Resource{
 		man: man,
 	}

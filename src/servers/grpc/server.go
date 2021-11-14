@@ -15,9 +15,9 @@ type grpcServer struct {
 	Address   string
 	IsTesting bool
 
-	manager manager.Abstractor
+	manager manager.Wrapper
 	server  *grpc.Server
-	handler func(server *grpc.Server, abstract manager.Abstractor)
+	handler func(server *grpc.Server, abstract manager.Wrapper)
 }
 
 func (g *grpcServer) Name() string {
@@ -44,7 +44,7 @@ func (g *grpcServer) Stop(_ context.Context) error {
 	return nil
 }
 
-func NewGRPC(config *config.Config, man manager.Abstractor, handler func(server *grpc.Server, abstract manager.Abstractor)) *grpcServer {
+func NewGRPC(config *config.Config, man manager.Wrapper, handler func(server *grpc.Server, abstract manager.Wrapper)) *grpcServer {
 	return &grpcServer{
 		Address: config.GRPC.ListenAddr,
 		manager: man,

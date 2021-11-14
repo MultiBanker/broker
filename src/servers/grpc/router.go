@@ -8,6 +8,6 @@ import (
 
 // setupResources монтирует необходимые grpc-ресурсы для
 // обработки клиентских запросов
-func Routing(server *grpc.Server, man manager.Abstractor) {
+func Routing(server *grpc.Server, man manager.Wrapper) {
 
 }

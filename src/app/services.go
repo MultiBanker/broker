@@ -33,17 +33,17 @@ func (a *application) workers(daemons ...director.Daemons) {
 	}
 }
 
-func (a *application) clienthttpServer(fn func(opts *config.Config, man manager.Abstractor) chi.Router) {
+func (a *application) clienthttpServer(fn func(opts *config.Config, man manager.Wrapper) chi.Router) {
 	srv := servers.NewService("client-broker-http", a.opts.HTTP.Client.ListenAddr, fn(a.opts, a.man))
 	a.servers = append(a.servers, srv)
 }
 
-func (a *application) grpcserver(fn func(server *grpc.Server, man manager.Abstractor)) {
+func (a *application) grpcserver(fn func(server *grpc.Server, man manager.Wrapper)) {
 	srv := grpcsrv.NewGRPC(a.opts, a.man, fn)
 	a.servers = append(a.servers, srv)
 }
 
-func (a *application) adminhttpserver(fn func(opts *config.Config, man manager.Abstractor) chi.Router) {
+func (a *application) adminhttpserver(fn func(opts *config.Config, man manager.Wrapper) chi.Router) {
 	srv := servers.NewService("admin-broker-http", a.opts.HTTP.Admin.ListenAddr, fn(a.opts, a.man))
 	a.servers = append(a.servers, srv)
 }
@@ -53,7 +53,7 @@ func (a *application) victoriaMetricsServer() {
 	a.servers = append(a.servers, srv)
 }
 
-func (a *application) healthServer(fn func(opts *config.Config, man manager.Abstractor) chi.Router) {
+func (a *application) healthServer(fn func(opts *config.Config, man manager.Wrapper) chi.Router) {
 	srv := servers.NewService("health-server", a.opts.HTTP.HealthPort, fn(a.opts, a.man))
 	a.servers = append(a.servers, srv)
 }

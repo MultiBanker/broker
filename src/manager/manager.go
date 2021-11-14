@@ -13,7 +13,7 @@ import (
 	"github.com/VictoriaMetrics/metrics"
 )
 
-type Abstractor interface {
+type Wrapper interface {
 	Auther() auth.Authenticator
 	Partnerer() partner.Partnerer
 	Orderer() order.Orderer
@@ -67,7 +67,7 @@ func (a *Abstract) Metric() *metrics.Set {
 	return a.metricMan
 }
 
-func NewAbstract(db drivers.Datastore, repo repository.Repositories, opts *config.Config, metric *metrics.Set) Abstractor {
+func NewWrapper(db drivers.Datastore, repo repository.Repositories, opts *config.Config, metric *metrics.Set) Wrapper {
 	return &Abstract{
 		db:         db,
 		partnerMan: partner.NewPartner(repo),

@@ -14,7 +14,7 @@ type AdminResource struct {
 	set      *metrics.Set
 }
 
-func NewAdminResource(man manager.Abstractor) *AdminResource {
+func NewAdminResource(man manager.Wrapper) *AdminResource {
 	return &AdminResource{
 		authMan:  man.Auther(),
 		offerMan: man.Offer(),

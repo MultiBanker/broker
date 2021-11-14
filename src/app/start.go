@@ -27,7 +27,7 @@ type application struct {
 	servers []servers.Server
 	ds      drivers.Datastore
 	repo    repository.Repositories
-	man     manager.Abstractor
+	man     manager.Wrapper
 	metric  *metrics.Set
 }
 
