@@ -119,10 +119,32 @@ func (m *Mongo) Close(ctx context.Context) error {
 
 // убеждается что все индексы построены
 func (m *Mongo) ensureIndexes() error {
-	_, cancel := context.WithTimeout(context.Background(), m.connectionTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), m.connectionTimeout)
 	defer cancel()
 
-	return nil
+	err := m.LoanIndexes(ctx)
+	if err != nil {
+		return err
+	}
+	err = m.MarketIndexes(ctx)
+	if err != nil {
+		return err
+	}
+	err = m.OrderIndexes(ctx)
+	if err != nil {
+		return err
+	}
+	err = m.PartnerOrderIndexes(ctx)
+	if err != nil {
+		return err
+	}
+
+	err = m.PartnerIndexes(ctx)
+	if err != nil {
+		return err
+	}
+
+	return m.SequenceIndexes(ctx)
 }
 
 // indexExistsByName проверяет существование индекса с именем name.
