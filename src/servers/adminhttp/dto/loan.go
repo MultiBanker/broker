@@ -2,6 +2,7 @@ package dto
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/MultiBanker/broker/src/models"
 )
@@ -30,37 +31,41 @@ type LoanProgramRequest struct {
 }
 
 func (l LoanProgramRequest) Validate() error {
-	if l.Type != models.INSTALLMENT.String() || l.Type != models.LOAN.String() {
-		return fmt.Errorf("[ERROR] invalid type")
-	}
+	var errstrings []string
 
+	if _, err := models.ValidateProductType(l.Type); err != nil {
+		errstrings = append(errstrings, fmt.Errorf("invalid type").Error())
+	}
 	if l.Name == "" {
-		return fmt.Errorf("[ERROR] empty name")
+		errstrings = append(errstrings, ValidationIsEmpty("name").Error())
 	}
 
 	if l.Code == "" {
-		return fmt.Errorf("[ERROR] empty code")
+		errstrings = append(errstrings, ValidationIsEmpty("code").Error())
 	}
 
 	if l.Note == "" {
-		return fmt.Errorf("[ERROR] empty note")
+		errstrings = append(errstrings, ValidationIsEmpty("note").Error())
 	}
 
 	if l.PartnerCode == "" {
-		return fmt.Errorf("[ERROR] invalid partner code")
+		errstrings = append(errstrings, ValidationIsEmpty("partner code").Error())
 	}
 
 	if l.Term == 0 {
-		return fmt.Errorf("[ERROR] empty loan term")
+		errstrings = append(errstrings, ValidationIsEmpty("term").Error())
 	}
 
 	if l.MinAmount > l.MaxAmount || l.MinAmount == 0 || l.MaxAmount == 0 {
-		return fmt.Errorf("[ERROR] wrong min and max amount")
+		errstrings = append(errstrings, fmt.Errorf("[ERROR] wrong min and max amount").Error())
 	}
 
 	if l.Rate == 0 {
-		return fmt.Errorf("[ERROR] wrong rate")
+		errstrings = append(errstrings, ValidationIsEmpty("rate").Error())
 	}
 
+	if errstrings != nil {
+		return fmt.Errorf(strings.Join(errstrings, " and "))
+	}
 	return nil
 }

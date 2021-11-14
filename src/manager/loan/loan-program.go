@@ -9,6 +9,8 @@ import (
 	"github.com/MultiBanker/broker/src/models/selector"
 )
 
+var _ Program = (*ProgramManager)(nil)
+
 type ProgramManager struct {
 	loanColl repository.LoanProgram
 	seqColl  repository.Sequencer

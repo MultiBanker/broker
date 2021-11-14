@@ -163,8 +163,8 @@ func (res AdminResource) list(w http.ResponseWriter, r *http.Request) {
 	programs, total, err := res.loanMan.LoanPrograms(ctx, selector.Paging{
 		Skip:    paging.Skip,
 		Limit:   paging.Limit,
-		SortVal: paging.SortVal,
-		SortKey: paging.SortKey,
+		SortVal: -1,
+		SortKey: "created_at",
 	})
 	switch err {
 	case drivers.ErrDoesNotExist:

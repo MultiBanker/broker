@@ -85,17 +85,18 @@ func (l ProgramRepository) UpdateLoanProgram(ctx context.Context, code string, p
 		{"code", code},
 	}
 	update := bson.D{
-		{"name", program.Name},
-		{"note", program.Note},
-		{"type", program.Type},
-		{"partner_code", program.PartnerCode},
-		{"is_enabled", program.IsEnabled},
-		{"term", program.Term},
-		{"type", program.Type},
-		{"rate", program.Rate},
-		{"min_amount", program.MinAmount},
-		{"max_amount", program.MaxAmount},
-		{"updated_at", time.Now().UTC()},
+		{"$set", bson.D{
+			{"name", program.Name},
+			{"note", program.Note},
+			{"type", program.Type},
+			{"partner_code", program.PartnerCode},
+			{"is_enabled", program.IsEnabled},
+			{"term", program.Term},
+			{"rate", program.Rate},
+			{"min_amount", program.MinAmount},
+			{"max_amount", program.MaxAmount},
+			{"updated_at", time.Now().UTC()},
+		}},
 	}
 	_, err := l.coll.UpdateOne(ctx, filter, update)
 	switch err {

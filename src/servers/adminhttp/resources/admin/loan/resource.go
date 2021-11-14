@@ -31,7 +31,7 @@ func (res AdminResource) Route() chi.Router {
 		r.Post("/", res.create)
 		r.Get("/", res.list)
 		r.Get("/{code}", res.get)
-		r.Put("/{id}", res.update)
+		r.Put("/{code}", res.update)
 	})
 
 	return r
