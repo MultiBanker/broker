@@ -10,7 +10,7 @@ type PartnerRequest struct {
 	Code        string      `json:"code" bson:"code" example:"mfo_airba"`
 	// Название компании
 	CompanyName string      `json:"company_name" bson:"company_name" example:"Airba Pay"`
-	// Коммиссия
+	// Комиссия
 	Commission  int         `json:"commission" bson:"commission" example:"5"`
 	// Веб адрес компании
 	LogoURL     string      `json:"logo_url" bson:"logo_url" example:"https://emotionsgroup.kz/uploads/7f47072c77ad20f58acb9e7114cfeb5c.jpg"`

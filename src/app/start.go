@@ -27,7 +27,7 @@ type application struct {
 	servers []servers.Server
 	ds      drivers.Datastore
 	repo    repository.Repositories
-	man     manager.Wrapper
+	man     manager.Managers
 	metric  *metrics.Set
 }
 
@@ -36,7 +36,7 @@ func initApp(version string) (*application, error) {
 	if err != nil {
 		return nil, err
 	}
-	resetEnv(opts.JWTKey, opts.DSURL)
+	defer resetEnv(opts.JWTKey, opts.DSURL)
 	return &application{
 		version: version,
 		opts:    opts,

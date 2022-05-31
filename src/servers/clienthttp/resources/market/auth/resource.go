@@ -1,8 +1,8 @@
 package auth
 
 import (
+	"github.com/MultiBanker/broker/pkg/auth"
 	"github.com/MultiBanker/broker/src/manager"
-	"github.com/MultiBanker/broker/src/manager/auth"
 	"github.com/MultiBanker/broker/src/manager/market"
 	"github.com/VictoriaMetrics/metrics"
 	"github.com/go-chi/chi/v5"
@@ -14,11 +14,11 @@ type Resource struct {
 	set       *metrics.Set
 }
 
-func NewResource(man manager.Wrapper) *Resource {
+func NewResource(man manager.Managers) *Resource {
 	return &Resource{
-		authMan:   man.Auther(),
-		makretMan: man.Marketer(),
-		set:       man.Metric(),
+		authMan:   man.AuthMan,
+		makretMan: man.MarketMan,
+		set:       man.MetricMan,
 	}
 }
 

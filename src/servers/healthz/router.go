@@ -5,20 +5,19 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/MultiBanker/broker/src/config"
 	"github.com/MultiBanker/broker/src/manager"
 	"github.com/MultiBanker/broker/src/servers/healthz/health"
 	"github.com/go-chi/chi/v5"
 )
 
-func Routing(_ *config.Config, man manager.Wrapper) chi.Router {
+func Routing(man manager.Managers) chi.Router {
 	isReady := &atomic.Value{}
 	go readyzProbe(isReady)
 
 	r := chi.NewRouter()
 
-	r.Mount("/healthcheck", health.NewHealth(isReady, func() error {
-		return man.Pinger()
+	r.Mount("/healthcheck", health.New(isReady, func() error {
+		return man.DB.Ping()
 	}).Route())
 
 	return r

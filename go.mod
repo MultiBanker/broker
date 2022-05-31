@@ -10,8 +10,8 @@ require (
 	github.com/go-chi/chi/v5 v5.0.4
 	github.com/go-chi/jwtauth/v5 v5.0.2
 	github.com/go-chi/render v1.0.1
-	github.com/golang/mock v1.6.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
+	github.com/hashicorp/go-multierror v1.1.1
 	github.com/jessevdk/go-flags v1.5.0
 	github.com/kr/pretty v0.3.0 // indirect
 	github.com/lestrrat-go/jwx v1.2.6

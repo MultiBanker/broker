@@ -12,7 +12,7 @@ type Health struct {
 	pinger  func() error
 }
 
-func NewHealth(isReady *atomic.Value, pinger func() error) *Health {
+func New(isReady *atomic.Value, pinger func() error) *Health {
 	return &Health{
 		isReady: isReady,
 		pinger:  pinger,

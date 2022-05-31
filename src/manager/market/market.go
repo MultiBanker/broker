@@ -4,8 +4,8 @@ import (
 	"context"
 	"strconv"
 
+	"github.com/MultiBanker/broker/pkg/auth"
 	"github.com/MultiBanker/broker/src/database/repository"
-	"github.com/MultiBanker/broker/src/manager/auth"
 	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/models/selector"
 )
@@ -17,8 +17,8 @@ type Market struct {
 
 func NewMarket(repo repository.Repositories) Marketer {
 	return Market{
-		marketColl: repo.MarketRepo(),
-		seqColl:    repo.SequenceRepo(),
+		marketColl: repo.Market,
+		seqColl:    repo.Sequence,
 	}
 }
 
@@ -61,7 +61,7 @@ func (m Market) UpdateMarket(ctx context.Context, market models.Market) (string,
 	if err != nil {
 		return "", err
 	}
-	if !auth.CheckPasswordHash(*market.Password, []byte(res.HashedPassword)) {
+	if !auth.CheckPasswordHash(*market.Password, res.HashedPassword) {
 		return "", err
 	}
 
@@ -81,7 +81,7 @@ func (m Market) MarketByUsername(ctx context.Context, username, password string)
 		return market, err
 	}
 
-	if !auth.CheckPasswordHash(password, []byte(market.HashedPassword)) {
+	if !auth.CheckPasswordHash(password, market.HashedPassword) {
 		return market, err
 	}
 	return market, nil

@@ -7,14 +7,6 @@ import (
 	"github.com/MultiBanker/broker/src/models/selector"
 )
 
-func (r Repository) OrderRepo() Orderer {
-	return r.Order
-}
-
-func (r Repository) PartnerOrderRepo() PartnerOrderer {
-	return r.PartnerOrder
-}
-
 type Orderer interface {
 	NewOrder(ctx context.Context, order *models.Order) (string, error)
 	UpdateOrder(ctx context.Context, order *models.Order) (string, error)

@@ -7,10 +7,6 @@ import (
 	"github.com/MultiBanker/broker/src/models/selector"
 )
 
-func (r Repository) OfferRepo() Offer {
-	return r.Offer
-}
-
 type Offer interface {
 	CreateOffer(ctx context.Context, offer models.Offer) (string, error)
 	UpdateOffer(ctx context.Context, offer models.Offer) (models.Offer, error)

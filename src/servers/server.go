@@ -40,7 +40,6 @@ func NewService(name, addr string, r http.Handler) *Service {
 
 func (s *Service) Start(_ context.Context, cancel context.CancelFunc) error {
 	defer cancel()
-	s.server.RegisterOnShutdown(cancel)
 	return s.server.ListenAndServe()
 }
 

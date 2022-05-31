@@ -1,9 +1,11 @@
 package repository
 
 import (
+	"github.com/MultiBanker/broker/src/database/repository/mongo/auto"
 	"github.com/MultiBanker/broker/src/database/repository/mongo/loan"
 	"github.com/MultiBanker/broker/src/database/repository/mongo/market"
 	"github.com/MultiBanker/broker/src/database/repository/mongo/offer"
+	"github.com/MultiBanker/broker/src/database/repository/mongo/user"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
@@ -20,19 +22,13 @@ const (
 	Market       = "market"
 	OfferColl    = "offer"
 	LoanPrograms = "loan-programs"
+	User         = "user"
+	Recovery     = "recovery"
+	Verify       = "verify"
+	AutoColl     = "auto"
 )
 
-type Repositories interface {
-	PartnerRepo() Partnerer
-	SequenceRepo() Sequencer
-	OrderRepo() Orderer
-	MarketRepo() Marketer
-	PartnerOrderRepo() PartnerOrderer
-	OfferRepo() Offer
-	LoanProgramRepo() LoanProgram
-}
-
-type Repository struct {
+type Repositories struct {
 	Partner      Partnerer
 	Sequence     Sequencer
 	Order        Orderer
@@ -40,12 +36,16 @@ type Repository struct {
 	PartnerOrder PartnerOrderer
 	Offer        Offer
 	LoanProgram  LoanProgram
+	User         UsersRepository
+	Verify       VerificationRepository
+	Recovery     RecoveryRepository
+	Auto         Auto
 }
 
 func NewRepository(datastore drivers.Datastore) (Repositories, error) {
 	if datastore.Name() == "mongo" {
 		db := datastore.Database().(*mongo.Database)
-		return &Repository{
+		return Repositories{
 			Sequence:     sequence.NewRepository(db.Collection(Sequence)),
 			Partner:      partner.NewRepository(db.Collection(Partner)),
 			Order:        order.NewRepository(db.Collection(Order)),
@@ -53,7 +53,11 @@ func NewRepository(datastore drivers.Datastore) (Repositories, error) {
 			PartnerOrder: order.NewPartnerOrderRepository(db.Collection(PartnerOrder)),
 			Offer:        offer.NewRepository(db.Collection(OfferColl)),
 			LoanProgram:  loan.NewProgramRepository(db.Collection(LoanPrograms)),
+			User:         user.NewUsersRepositoryImpl(db.Collection(User)),
+			Verify:       user.NewVerificationRepositoryImpl(db.Collection(Verify)),
+			Recovery:     user.NewRecoveryRepositoryImpl(db.Collection(Recovery)),
+			Auto:         auto.NewRepository(db.Collection(AutoColl)),
 		}, nil
 	}
-	return nil, ErrDatastoreNotImplemented
+	return Repositories{}, ErrDatastoreNotImplemented
 }

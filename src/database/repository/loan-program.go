@@ -7,10 +7,6 @@ import (
 	"github.com/MultiBanker/broker/src/models/selector"
 )
 
-func (r Repository) LoanProgramRepo() LoanProgram {
-	return r.LoanProgram
-}
-
 type LoanProgram interface {
 	LoanProgram(ctx context.Context, code string) (models.LoanProgram, error)
 	LoanPrograms(ctx context.Context, paging selector.Paging) ([]models.LoanProgram, int64, error)

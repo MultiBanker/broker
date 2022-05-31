@@ -14,4 +14,5 @@ func (ds ErrInvalidDatastoreName) Error() error {
 var (
 	ErrEmptyConfigStruct       = fmt.Errorf("empty config structure")
 	ErrDatastoreNotImplemented = fmt.Errorf("datastore not implemented")
+	ErrDoesNotExist        = fmt.Errorf("user not exists")
 )

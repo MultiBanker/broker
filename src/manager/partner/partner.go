@@ -2,11 +2,10 @@ package partner
 
 import (
 	"context"
-	"fmt"
 	"strconv"
 
+	"github.com/MultiBanker/broker/pkg/auth"
 	"github.com/MultiBanker/broker/src/database/repository"
-	"github.com/MultiBanker/broker/src/manager/auth"
 	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/models/selector"
 )
@@ -28,8 +27,8 @@ var _ Partnerer = (*Partner)(nil)
 
 func NewPartner(repos repository.Repositories) Partner {
 	return Partner{
-		sequenceColl: repos.SequenceRepo(),
-		partnerColl:  repos.PartnerRepo(),
+		sequenceColl: repos.Sequence,
+		partnerColl:  repos.Partner,
 	}
 }
 
@@ -55,8 +54,8 @@ func (p Partner) UpdatePartner(ctx context.Context, partner *models.Partner) (st
 		return "", err
 	}
 
-	if !auth.CheckPasswordHash(*partner.Password, []byte(res.HashedPassword)) {
-		return "", fmt.Errorf("[ERROR] Wrong Password")
+	if !auth.CheckPasswordHash(*partner.Password, res.HashedPassword) {
+		return "", ErrAuthorization
 	}
 
 	bytePass, err := auth.HashPassword(*partner.Password)
@@ -84,8 +83,8 @@ func (p Partner) PartnerByUsername(ctx context.Context, username, password strin
 		return partner, err
 	}
 
-	if !auth.CheckPasswordHash(password, []byte(partner.HashedPassword)) {
-		return partner, fmt.Errorf("[ERROR] Wrong Password")
+	if !auth.CheckPasswordHash(password, partner.HashedPassword) {
+		return partner, ErrAuthorization
 	}
 	return partner, nil
 }

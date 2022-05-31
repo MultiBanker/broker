@@ -2,6 +2,7 @@ package order
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/MultiBanker/broker/src/database/repository"
@@ -36,7 +37,11 @@ func (d Order) Start(ctx context.Context, cancel context.CancelFunc) error {
 // InitTimeOutKill нужен для отключения проинициализированного
 // заказа без изменения статуса со стороны банка
 func (d Order) InitTimeOutKill(ctx context.Context) error {
-	return d.partnerOrderRepo.UpdateInitStatusByTimeOut(ctx)
+	const op = "Order.InitTimeOutKill"
+	if err := d.partnerOrderRepo.UpdateInitStatusByTimeOut(ctx); err != nil {
+		return fmt.Errorf("%s:%w", op, err)
+	}
+	return nil
 }
 
 func (d Order) Stop(_ context.Context) error {

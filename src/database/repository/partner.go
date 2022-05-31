@@ -7,10 +7,6 @@ import (
 	"github.com/MultiBanker/broker/src/models/selector"
 )
 
-func (r Repository) PartnerRepo() Partnerer {
-	return r.Partner
-}
-
 type Partnerer interface {
 	NewPartner(ctx context.Context, partner *models.Partner) (string, error)
 	UpdatePartner(ctx context.Context, partner *models.Partner) (string, error)

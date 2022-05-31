@@ -1,0 +1,3839 @@
+{
+    "schemes": [
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "title": "AutoCredit API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "api.test.somatic.dev",
+    "basePath": "/",
+    "paths": {
+        "/api/v1/auto": {
+            "get": {
+                "security": [
+                    {
+                        "ApiTokenAuth": []
+                    }
+                ],
+                "description": "list car product",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auto"
+                ],
+                "summary": "list car product",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "pagination limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pagination skip",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ListAuto"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiTokenAuth": []
+                    }
+                ],
+                "description": "add car product",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auto"
+                ],
+                "summary": "add car product",
+                "parameters": [
+                    {
+                        "description": "add car",
+                        "name": "auto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.Auto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auto/{sku}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiTokenAuth": []
+                    }
+                ],
+                "description": "get car product",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auto"
+                ],
+                "summary": "get car product",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "sku",
+                        "name": "sku",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Auto"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiTokenAuth": []
+                    }
+                ],
+                "description": "update car product",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auto"
+                ],
+                "summary": "update car product",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "sku",
+                        "name": "sku",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "add car",
+                        "name": "auto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.Auto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiTokenAuth": []
+                    }
+                ],
+                "description": "delete car product",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auto"
+                ],
+                "summary": "delete car product",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "sku",
+                        "name": "sku",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/brokers/loan-programs": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Получение кредитных программ",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "programs"
+                ],
+                "summary": "Получение кредитных программ",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "токен авторизации",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "страница",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "размер страницы",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoanPrograms"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/brokers/loan-programs/": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Создание кредитной программы",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "programs"
+                ],
+                "summary": "Создание кредитной программы",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "токен авторизации",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "кредитная программа",
+                        "name": "program",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoanProgramRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/brokers/loan-programs/{code}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Получение кредитной программы по уникальному коду",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "programs"
+                ],
+                "summary": "Получение кредитной программы по уникальному коду",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "токен авторизации",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "уникальный код программы",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.LoanProgram"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Обновление кредитной программы",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "programs"
+                ],
+                "summary": "Обновление кредитной программы",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "токен авторизации",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "уникальный код программы",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "кредитная программа",
+                        "name": "program",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoanProgramRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/brokers/offers": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Получение офферов",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Offers"
+                ],
+                "summary": "Получение офферов",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pagination limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pagination skip",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.OfferSpecs"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Создание нового оффера",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Offers"
+                ],
+                "summary": "Создание нового оффера",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "partner",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.OfferRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/brokers/offers/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Получение оффера",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Offers"
+                ],
+                "summary": "Получение оффера",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "id of the market",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Partner"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Обновление оффера",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Offers"
+                ],
+                "summary": "Обновление оффера",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "partner",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.OfferRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "id of the market",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Offer"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/brokers/orders": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Получение заказов",
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Получение заказов",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pagination limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pagination skip",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Orders"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/brokers/orders/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Получение заказа",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Получение заказа",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id of the order",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Order"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Обновление заказа",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Обновление заказа",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "market",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Order"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "id of the order",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/brokers/partners": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Создание нового партнера",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Partner"
+                ],
+                "summary": "Создание нового партнера",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "partner",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.PartnerRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/brokers/partners/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Получение партнера",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Partner"
+                ],
+                "summary": "Получение партнера",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "id of the market",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Partner"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Обновление партнера",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Partner"
+                ],
+                "summary": "Обновление партнера",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "partner",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.PartnerRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "id of the market",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/markets": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Получение маркетов",
+                "tags": [
+                    "Market"
+                ],
+                "summary": "Получение маркетов",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pagination limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pagination skip",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Markets"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Создание нового маркета",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Market"
+                ],
+                "summary": "Создание нового маркета",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "market",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.MarketRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/markets/auto/connect": {
+            "put": {
+                "security": [
+                    {
+                        "ApiTokenAuth": []
+                    }
+                ],
+                "description": "VIN Connection",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Markets"
+                ],
+                "summary": "VIN Connection",
+                "parameters": [
+                    {
+                        "description": "auto to connect",
+                        "name": "connect",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ConnectAuto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/markets/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Получение маркета",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Market"
+                ],
+                "summary": "Получение маркета",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id of the partner",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Market"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Обновление определенного маркета",
+                "tags": [
+                    "Market"
+                ],
+                "summary": "Обновление определенного маркета",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "body",
+                        "name": "market",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.MarketRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "id of the partner",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/partners/login": {
+            "post": {
+                "description": "Авторизация партнера",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Partner"
+                ],
+                "summary": "Авторизация партнера",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "auth",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.Login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.TokenResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/partners/logout": {
+            "get": {
+                "description": "выход авторизации партнера",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Partner"
+                ],
+                "summary": "выход авторизации партнера",
+                "responses": {}
+            }
+        },
+        "/api/v1/partners/orders/": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Обновление заказа по решению партнера",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Обновление заказа по решению партнера",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "market",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.OrderPartnerUpdateRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/application/": {
+            "post": {
+                "security": [
+                    {
+                        "ApiTokenAuth": []
+                    }
+                ],
+                "description": "user application",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "user application",
+                "parameters": [
+                    {
+                        "description": "add car",
+                        "name": "auto",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserApplication"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/application/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiTokenAuth": []
+                    }
+                ],
+                "description": "user application",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "user application",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "pagination limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pagination skip",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserApplications"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/application/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiTokenAuth": []
+                    }
+                ],
+                "description": "user application",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "user application",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "application id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.UserApplication"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiTokenAuth": []
+                    }
+                ],
+                "description": "user application",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "user application",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "application id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/auth/signin/phone": {
+            "post": {
+                "description": "Аутентифицирует пользователя по номеру телефона",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Аутентификация по номеру телефона",
+                "parameters": [
+                    {
+                        "description": "Данные для быстрой аутентификации",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SignInByPhone"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.NewJWTTokenResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "410": {
+                        "description": "Gone",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/auth/signout": {
+            "delete": {
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "description": "Удаляет JWT токен в cookie.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Завершает сессию пользователя, удаляя JWT токен",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Токен аутентификации",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/users/auth/signup": {
+            "post": {
+                "description": "Регистрирует пользователя в ССО",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Регистрация пользователя",
+                "parameters": [
+                    {
+                        "description": "Данные для регистрации пользователя",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SignUp"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/recovery/phone": {
+            "put": {
+                "description": "Отправляет OTP на указанный номер телефона для восстановления пароля",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "recovery"
+                ],
+                "summary": "Отправка OTP на указанный номер телефона для восстановления пароля",
+                "parameters": [
+                    {
+                        "description": "Данные для восстановления пароля",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RecoveryPhone"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/recovery/phone/otp": {
+            "put": {
+                "description": "Проверяет OTP при восстановлении пароля",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "recovery"
+                ],
+                "summary": "Валидация OTP по номеру телефона",
+                "parameters": [
+                    {
+                        "description": "Данные для валидации OTP",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RecoveryPhoneOTP"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/verify/phone": {
+            "put": {
+                "description": "Отправляет OTP на указанный номер телефона для верификации",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "verify"
+                ],
+                "summary": "Отправка OTP на указанный номер телефона для верификации",
+                "parameters": [
+                    {
+                        "description": "Данные для верификации телефона",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.VerifyPhone"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "410": {
+                        "description": "Gone",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/verify/phone/otp": {
+            "put": {
+                "description": "Проверяет OTP при верификации номера телефона и выдает JWT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "verify"
+                ],
+                "summary": "Валидация OTP по номеру телефона",
+                "parameters": [
+                    {
+                        "description": "Данные для валидации OTP",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.VerifyPhoneOTP"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.NewJWTTokenResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/markets/login": {
+            "post": {
+                "description": "Авторизация маркета",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Market"
+                ],
+                "summary": "Авторизация маркета",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "auth",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.Login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.TokenResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/markets/logout": {
+            "get": {
+                "description": "выход с авторизации маркета",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Market"
+                ],
+                "summary": "выход с авторизации маркета",
+                "responses": {}
+            }
+        },
+        "/offers": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Получение офферов по заказу",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Offers"
+                ],
+                "summary": "Получение офферов по заказу",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "body",
+                        "name": "order",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.OffersRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Offer"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Создание нового заказа",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Создание нового заказа",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "market",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.MarketOrderRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.BrokerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/markets": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Обновление заказа по решению клиента",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Обновление заказа по решению клиента",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "market",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateMarketOrderRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/{reference_id}/partners": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Получение заказов по reference_id",
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Получение заказов по reference_id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "reference id of the order",
+                        "name": "reference_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Order"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/partners": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Получение партнеров",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Partner"
+                ],
+                "summary": "Получение партнеров",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pagination limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pagination skip",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Partners"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.Auto": {
+            "type": "object",
+            "properties": {
+                "about": {
+                    "$ref": "#/definitions/models.LangOptions"
+                },
+                "brand": {
+                    "$ref": "#/definitions/models.Brand"
+                },
+                "color": {
+                    "$ref": "#/definitions/models.Color"
+                },
+                "media": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Media"
+                    }
+                },
+                "price": {
+                    "$ref": "#/definitions/models.Price"
+                },
+                "title": {
+                    "$ref": "#/definitions/models.LangOptions"
+                }
+            }
+        },
+        "dto.BrokerResponse": {
+            "type": "object",
+            "properties": {
+                "reference_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.ConnectAuto": {
+            "type": "object",
+            "properties": {
+                "sku": {
+                    "type": "string"
+                },
+                "vin": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.ContactInfo": {
+            "type": "object",
+            "properties": {
+                "bin": {
+                    "description": "БИН организации",
+                    "type": "string",
+                    "example": "5189011425"
+                },
+                "email": {
+                    "description": "Имейл",
+                    "type": "string",
+                    "example": "oleg@tinkoff.ru"
+                },
+                "first_name": {
+                    "description": "Имя",
+                    "type": "string",
+                    "example": "Oleg"
+                },
+                "last_name": {
+                    "description": "Фамилия",
+                    "type": "string",
+                    "example": "Tinkoff"
+                },
+                "location": {
+                    "description": "Адрес организации",
+                    "type": "string",
+                    "example": "Bldg. 26, 38A, 2 Khutorskaya str., Moscow, Russia."
+                },
+                "phone": {
+                    "description": "Телефон",
+                    "type": "string",
+                    "example": "87777777777"
+                },
+                "web_address": {
+                    "description": "Веб адрес организации",
+                    "type": "string",
+                    "example": "https://www.tinkoff.ru"
+                }
+            }
+        },
+        "dto.FIO": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string",
+                    "example": "Jon"
+                },
+                "lastName": {
+                    "type": "string",
+                    "example": "Bones"
+                },
+                "middleName": {
+                    "type": "string",
+                    "example": "Jones"
+                }
+            }
+        },
+        "dto.ListAuto": {
+            "type": "object",
+            "properties": {
+                "autos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Auto"
+                    }
+                },
+                "count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.LoanProgramRequest": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "Код продукта",
+                    "type": "string",
+                    "example": "001"
+                },
+                "is_enabled": {
+                    "description": "Доступность",
+                    "type": "boolean",
+                    "example": true
+                },
+                "max_amount": {
+                    "description": "Максимальная сумма корзины",
+                    "type": "integer",
+                    "example": 10000000
+                },
+                "min_amount": {
+                    "description": "Минимальная сумма корзины",
+                    "type": "integer",
+                    "example": 5000
+                },
+                "name": {
+                    "description": "Наименование продукта",
+                    "type": "string",
+                    "example": "Installment 1"
+                },
+                "note": {
+                    "description": "Примечание",
+                    "type": "string",
+                    "example": "Note"
+                },
+                "partner_code": {
+                    "description": "Код банка партнера",
+                    "type": "string",
+                    "example": "mfo_ff"
+                },
+                "rate": {
+                    "description": "Ставка по кредиту",
+                    "type": "number",
+                    "example": 0.3
+                },
+                "term": {
+                    "description": "Срок",
+                    "type": "integer",
+                    "example": 12
+                },
+                "type": {
+                    "description": "Тип",
+                    "type": "string",
+                    "enum": [
+                        "loan",
+                        "installment"
+                    ],
+                    "example": "installment"
+                }
+            }
+        },
+        "dto.LoanPrograms": {
+            "type": "object",
+            "properties": {
+                "loan_programs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.LoanProgram"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.Login": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.MarketOrderRequest": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/models.Address"
+                },
+                "amount": {
+                    "type": "string",
+                    "example": "5000"
+                },
+                "channel": {
+                    "type": "string",
+                    "example": "airba_web"
+                },
+                "cityId": {
+                    "type": "string",
+                    "example": "050000"
+                },
+                "customer": {
+                    "$ref": "#/definitions/models.Customer"
+                },
+                "goods": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Goods"
+                    }
+                },
+                "isDelivery": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "loanLength": {
+                    "type": "integer",
+                    "example": 12
+                },
+                "paymentMethod": {
+                    "type": "string",
+                    "example": "annuity"
+                },
+                "paymentPartners": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.PaymentPartners"
+                    }
+                },
+                "productType": {
+                    "type": "string",
+                    "example": "installment"
+                },
+                "redirectUrl": {
+                    "type": "string",
+                    "example": "https://airba.kz/order/ok"
+                },
+                "systemCode": {
+                    "type": "string",
+                    "example": "oms"
+                },
+                "verificationId": {
+                    "type": "string",
+                    "example": "dsad12"
+                },
+                "verificationSmsCode": {
+                    "type": "string",
+                    "example": "12321"
+                },
+                "verificationSmsDateTime": {
+                    "type": "string",
+                    "example": "12.12.2020"
+                }
+            }
+        },
+        "dto.MarketRequest": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "Код картинки",
+                    "type": "string",
+                    "example": "tinkoff"
+                },
+                "company_name": {
+                    "description": "Название компании",
+                    "type": "string",
+                    "example": "Tinka"
+                },
+                "contact": {
+                    "description": "Контакт",
+                    "$ref": "#/definitions/dto.ContactInfo"
+                },
+                "enabled": {
+                    "description": "Включение",
+                    "type": "boolean",
+                    "example": true
+                },
+                "logo_url": {
+                    "description": "Веб адрес картинки",
+                    "type": "string",
+                    "example": "https://plusworld.ru/wp-content/uploads/2021/09/759950f2eafdab128b887f1296316ea6f1af5152.jpg"
+                },
+                "password": {
+                    "description": "Пароль",
+                    "type": "string",
+                    "example": "Password123"
+                },
+                "update_order_url": {
+                    "description": "Эндпоинт обновление заказов",
+                    "type": "string",
+                    "example": "https://google.com"
+                },
+                "username": {
+                    "description": "Имя пользователя",
+                    "type": "string",
+                    "example": "Olejka"
+                }
+            }
+        },
+        "dto.Markets": {
+            "type": "object",
+            "properties": {
+                "markets": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Market"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.NewJWTTokenResponse": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "refresh_token": {
+                    "type": "string"
+                },
+                "tdid": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.OfferRequest": {
+            "type": "object",
+            "properties": {
+                "max_order_sum": {
+                    "description": "Максимальная сумма заказа",
+                    "type": "integer",
+                    "example": 1500000
+                },
+                "min_order_sum": {
+                    "description": "Минимальная сумма заказа",
+                    "type": "integer",
+                    "example": 10000
+                },
+                "name": {
+                    "description": "Наименование",
+                    "type": "string",
+                    "example": "МФО Аирба"
+                },
+                "partner_code": {
+                    "description": "Код партнера",
+                    "type": "string",
+                    "example": "airba_pay"
+                },
+                "payment_type_group_code": {
+                    "description": "Вид оплаты товара",
+                    "type": "string",
+                    "example": "online_broker"
+                }
+            }
+        },
+        "dto.OfferSpecs": {
+            "type": "object",
+            "properties": {
+                "offers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Offer"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.OffersRequest": {
+            "type": "object",
+            "properties": {
+                "goods": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Goods"
+                    }
+                }
+            }
+        },
+        "dto.OrderPartnerUpdateRequest": {
+            "type": "object",
+            "properties": {
+                "customer": {
+                    "$ref": "#/definitions/dto.FIO"
+                },
+                "offers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Offers"
+                    }
+                },
+                "referenceId": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "state": {
+                    "type": "string",
+                    "example": "order_confirmed"
+                },
+                "stateTitle": {
+                    "type": "string",
+                    "example": "order_confirmed"
+                }
+            }
+        },
+        "dto.Orders": {
+            "type": "object",
+            "properties": {
+                "orders": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Order"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.PartnerRequest": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "Код партнера",
+                    "type": "string",
+                    "example": "mfo_airba"
+                },
+                "commission": {
+                    "description": "Комиссия",
+                    "type": "integer",
+                    "example": 5
+                },
+                "company_name": {
+                    "description": "Название компании",
+                    "type": "string",
+                    "example": "Airba Pay"
+                },
+                "contact": {
+                    "description": "Контактные данные",
+                    "$ref": "#/definitions/dto.ContactInfo"
+                },
+                "enabled": {
+                    "description": "Включен",
+                    "type": "boolean",
+                    "example": true
+                },
+                "logo_url": {
+                    "description": "Веб адрес компании",
+                    "type": "string",
+                    "example": "https://emotionsgroup.kz/uploads/7f47072c77ad20f58acb9e7114cfeb5c.jpg"
+                },
+                "password": {
+                    "description": "Пароль",
+                    "type": "string",
+                    "example": "Password123"
+                },
+                "url": {
+                    "description": "Адреса на обновления АПИ",
+                    "$ref": "#/definitions/dto.URL"
+                },
+                "username": {
+                    "description": "Имя пользователя",
+                    "type": "string",
+                    "example": "SuperRinat"
+                }
+            }
+        },
+        "dto.Partners": {
+            "type": "object",
+            "properties": {
+                "partners": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Partner"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.RecoveryPhone": {
+            "type": "object",
+            "properties": {
+                "phone": {
+                    "description": "Номер телефона для восстановления",
+                    "type": "string"
+                }
+            }
+        },
+        "dto.RecoveryPhoneOTP": {
+            "type": "object",
+            "properties": {
+                "otp": {
+                    "description": "One-Time-Password отправленный по СМС",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "Новый пароль пользователя",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "Номер телефона для восстановления",
+                    "type": "string"
+                }
+            }
+        },
+        "dto.SignInByPhone": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "description": "Пароль для аутентификации",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "Номер телефона для аутентификации",
+                    "type": "string"
+                }
+            }
+        },
+        "dto.SignUp": {
+            "type": "object",
+            "properties": {
+                "first_name": {
+                    "description": "Имя пользователя",
+                    "type": "string"
+                },
+                "last_name": {
+                    "description": "Фамилия пользователя",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "Пароль пользователя",
+                    "type": "string"
+                },
+                "patronymic": {
+                    "description": "Отчество пользователя",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "Номер телефона пользователя",
+                    "type": "string"
+                }
+            }
+        },
+        "dto.TokenResponse": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "response_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.URL": {
+            "type": "object",
+            "properties": {
+                "auth": {
+                    "description": "урл авторизации",
+                    "type": "string",
+                    "example": "https://"
+                },
+                "create": {
+                    "description": "Урл который создает заказ на стороне партнера",
+                    "type": "string",
+                    "example": "https://"
+                },
+                "update": {
+                    "description": "Урл который обновляет заказ на стороне партнера",
+                    "type": "string",
+                    "example": "https://"
+                }
+            }
+        },
+        "dto.UpdateMarketOrderRequest": {
+            "type": "object",
+            "properties": {
+                "loanLength": {
+                    "type": "string"
+                },
+                "productCode": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "referenceId": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "stateTitle": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UserApplication": {
+            "type": "object",
+            "properties": {
+                "chosenSKU": {
+                    "type": "string"
+                },
+                "userID": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UserApplications": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "user_apps": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.UserApplication"
+                    }
+                }
+            }
+        },
+        "dto.VerifyPhone": {
+            "type": "object",
+            "properties": {
+                "phone": {
+                    "description": "Номер телефона для верификации",
+                    "type": "string"
+                }
+            }
+        },
+        "dto.VerifyPhoneOTP": {
+            "type": "object",
+            "properties": {
+                "otp": {
+                    "description": "One-Time-Password отправленный по СМС",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "Номер телефона для верификации",
+                    "type": "string"
+                }
+            }
+        },
+        "httperrors.Details": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "application-определенный код ошибки",
+                    "type": "integer"
+                },
+                "message": {
+                    "description": "application-level сообщение, для дебага",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "сообщение пользовательского уровня",
+                    "type": "string"
+                }
+            }
+        },
+        "httperrors.Response": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "$ref": "#/definitions/httperrors.Details"
+                },
+                "validation": {
+                    "description": "ошибки валидации",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "models.Address": {
+            "type": "object",
+            "properties": {
+                "delivery": {
+                    "type": "string",
+                    "example": "track"
+                },
+                "pickupPoint": {
+                    "type": "string",
+                    "example": "Kurmangazy 77"
+                }
+            }
+        },
+        "models.Auto": {
+            "type": "object",
+            "required": [
+                "title"
+            ],
+            "properties": {
+                "about": {
+                    "$ref": "#/definitions/models.LangOptions"
+                },
+                "brand": {
+                    "$ref": "#/definitions/models.Brand"
+                },
+                "color": {
+                    "$ref": "#/definitions/models.Color"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "media": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Media"
+                    }
+                },
+                "price": {
+                    "$ref": "#/definitions/models.Price"
+                },
+                "sku": {
+                    "type": "string"
+                },
+                "title": {
+                    "$ref": "#/definitions/models.LangOptions"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Brand": {
+            "type": "object",
+            "properties": {
+                "equipment": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "title": {
+                    "$ref": "#/definitions/models.LangOptions"
+                }
+            }
+        },
+        "models.Color": {
+            "type": "object",
+            "properties": {
+                "hex": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "title": {
+                    "$ref": "#/definitions/models.LangOptions"
+                },
+                "type": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Contact": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "jon@mail.ru"
+                },
+                "mobileNumber": {
+                    "type": "string",
+                    "example": "87777777777"
+                }
+            }
+        },
+        "models.ContactInfo": {
+            "type": "object",
+            "properties": {
+                "bin": {
+                    "description": "БИН организации",
+                    "type": "string",
+                    "example": "5189011425"
+                },
+                "email": {
+                    "description": "Имейл",
+                    "type": "string",
+                    "example": "oleg@tinkoff.ru"
+                },
+                "first_name": {
+                    "description": "Имя",
+                    "type": "string",
+                    "example": "Oleg"
+                },
+                "last_name": {
+                    "description": "Фамилия",
+                    "type": "string",
+                    "example": "Tinkoff"
+                },
+                "location": {
+                    "description": "Адрес организации",
+                    "type": "string",
+                    "example": "Bldg. 26, 38A, 2 Khutorskaya str., Moscow, Russia."
+                },
+                "phone": {
+                    "description": "Телефон",
+                    "type": "string",
+                    "example": "87777777777"
+                },
+                "web_address": {
+                    "description": "Веб адрес организации",
+                    "type": "string",
+                    "example": "https://www.tinkoff.ru"
+                }
+            }
+        },
+        "models.Customer": {
+            "type": "object",
+            "properties": {
+                "contact": {
+                    "$ref": "#/definitions/models.Contact"
+                },
+                "firstName": {
+                    "type": "string",
+                    "example": "Jon"
+                },
+                "lastName": {
+                    "type": "string",
+                    "example": "Bones"
+                },
+                "middleName": {
+                    "type": "string",
+                    "example": "Jones"
+                },
+                "taxCode": {
+                    "type": "string",
+                    "example": "832918392183"
+                }
+            }
+        },
+        "models.Goods": {
+            "type": "object",
+            "properties": {
+                "brand": {
+                    "type": "string",
+                    "example": "iphone"
+                },
+                "category": {
+                    "type": "string",
+                    "example": "smartphony"
+                },
+                "image": {
+                    "type": "string",
+                    "example": "https://cdn.dxomark.com/wp-content/uploads/medias/post-61183/iphone-12-pro-blue-hero.jpg"
+                },
+                "model": {
+                    "type": "string",
+                    "example": "12 PRO"
+                },
+                "price": {
+                    "type": "string",
+                    "example": "5000"
+                }
+            }
+        },
+        "models.LangOptions": {
+            "type": "object",
+            "properties": {
+                "kz": {
+                    "type": "string"
+                },
+                "ru": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.LoanProgram": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "is_enabled": {
+                    "type": "boolean"
+                },
+                "max_amount": {
+                    "type": "integer"
+                },
+                "min_amount": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "partner_code": {
+                    "type": "string"
+                },
+                "rate": {
+                    "type": "number"
+                },
+                "term": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Market": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "contact": {
+                    "$ref": "#/definitions/models.ContactInfo"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "enabled": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "logo_url": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "update_order_url": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Media": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Offer": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "max_order_sum": {
+                    "type": "integer"
+                },
+                "min_order_sum": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "partner_code": {
+                    "type": "string"
+                },
+                "payment_type_group_code": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Offers": {
+            "type": "object",
+            "properties": {
+                "contractNumber": {
+                    "type": "string",
+                    "example": "d12ed1"
+                },
+                "loanAmount": {
+                    "type": "string",
+                    "example": "144000"
+                },
+                "loanLength": {
+                    "type": "string",
+                    "example": "12"
+                },
+                "monthlyPayment": {
+                    "type": "integer",
+                    "example": 12000
+                },
+                "product": {
+                    "type": "string",
+                    "example": "rassrochka_12"
+                },
+                "productType": {
+                    "type": "string",
+                    "example": "installment"
+                }
+            }
+        },
+        "models.Order": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/models.Address"
+                },
+                "channel": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "customer": {
+                    "$ref": "#/definitions/models.Customer"
+                },
+                "goods": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Goods"
+                    }
+                },
+                "id": {
+                    "type": "string"
+                },
+                "isDelivery": {
+                    "type": "boolean"
+                },
+                "loanLength": {
+                    "type": "string"
+                },
+                "orderState": {
+                    "type": "string"
+                },
+                "paymentMethod": {
+                    "type": "string"
+                },
+                "paymentPartners": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.PaymentPartners"
+                    }
+                },
+                "productType": {
+                    "type": "string"
+                },
+                "reason": {
+                    "type": "string"
+                },
+                "redirectUrl": {
+                    "type": "string"
+                },
+                "referenceId": {
+                    "type": "string"
+                },
+                "salesPlace": {
+                    "type": "string"
+                },
+                "systemCode": {
+                    "type": "string"
+                },
+                "totalCost": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "verificationId": {
+                    "type": "string"
+                },
+                "verificationSmsCode": {
+                    "type": "string"
+                },
+                "verificationSmsDateTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Partner": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "commission": {
+                    "type": "integer"
+                },
+                "company_name": {
+                    "type": "string"
+                },
+                "contact": {
+                    "$ref": "#/definitions/models.ContactInfo"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "enabled": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "logo_url": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "url": {
+                    "$ref": "#/definitions/models.URL"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.PaymentPartners": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "mfo_airba"
+                }
+            }
+        },
+        "models.Price": {
+            "type": "object",
+            "properties": {
+                "current": {
+                    "type": "integer"
+                },
+                "minimum": {
+                    "description": "Minimum is the minimum possible price for this product. Used for validation of merchant prices.",
+                    "type": "integer"
+                },
+                "old": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.Response": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.URL": {
+            "type": "object",
+            "properties": {
+                "auth": {
+                    "type": "string"
+                },
+                "create": {
+                    "type": "string"
+                },
+                "update": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UserApplication": {
+            "type": "object",
+            "properties": {
+                "chosenSKU": {
+                    "type": "string"
+                },
+                "userID": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

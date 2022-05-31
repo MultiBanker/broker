@@ -59,7 +59,7 @@ func (p PartnerOrderRepository) UpdateInitStatusByTimeOut(ctx context.Context) e
 	filter := bson.D{
 		{"state", models.INIT.Status()},
 		{"created_at", bson.D{
-			{Key: "$lte", Value: now.Add(-3 * time.Minute)},
+			{Key: "$lte", Value: now.Add(-72 * time.Hour)},
 		}},
 	}
 	update := bson.D{

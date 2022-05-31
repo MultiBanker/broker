@@ -17,9 +17,9 @@ type Offer struct {
 
 func NewOffer(repo repository.Repositories) *Offer {
 	return &Offer{
-		seqColl:     repo.SequenceRepo(),
-		offerColl:   repo.OfferRepo(),
-		partnerColl: repo.PartnerRepo(),
+		seqColl:     repo.Sequence,
+		offerColl:   repo.Offer,
+		partnerColl: repo.Partner,
 	}
 }
 

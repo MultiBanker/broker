@@ -39,11 +39,11 @@ var _ Orderer = (*Order)(nil)
 
 func NewOrder(repos repository.Repositories) Orderer {
 	return Order{
-		orderColl:        repos.OrderRepo(),
-		partnerOrderColl: repos.PartnerOrderRepo(),
-		partnerColl:      repos.PartnerRepo(),
-		sequenceColl:     repos.SequenceRepo(),
-		marketColl:       repos.MarketRepo(),
+		orderColl:        repos.Order,
+		partnerOrderColl: repos.PartnerOrder,
+		partnerColl:      repos.Partner,
+		sequenceColl:     repos.Sequence,
+		marketColl:       repos.Market,
 	}
 }
 
@@ -160,7 +160,7 @@ func (o Order) BankOrder(ctx context.Context, id string, partnerCode string, ord
 	if err != nil {
 		return err
 	}
-	b, err := bankCli.RequestOrder(ctx, OrderToDTO(order), 3, nil)
+	b, err := bankCli.RequestOrder(ctx, ToDTO(order), 3, nil)
 	if err != nil {
 		return fmt.Errorf("[ERROR] requesting order to partner from url %v", err)
 	}
@@ -179,7 +179,7 @@ func (o Order) BankOrder(ctx context.Context, id string, partnerCode string, ord
 	return err
 }
 
-func OrderToDTO(order models.Order) dto.PartnerOrderRequest {
+func ToDTO(order models.Order) dto.PartnerOrderRequest {
 	return dto.PartnerOrderRequest{
 		ReferenceId:             order.ReferenceID,
 		IsDelivery:              order.IsDelivery,

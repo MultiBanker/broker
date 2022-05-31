@@ -7,7 +7,7 @@ import (
 
 	"github.com/MultiBanker/broker/pkg/httperrors"
 	"github.com/MultiBanker/broker/src/database/drivers"
-	"github.com/MultiBanker/broker/src/manager"
+	"github.com/MultiBanker/broker/src/manager/partner"
 	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/servers/clienthttp/dto"
 	"github.com/go-chi/render"
@@ -27,7 +27,7 @@ const (
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /partners/login [post]
+// @Router /api/v1/partners/login [post]
 func (res Resource) auth() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
@@ -43,14 +43,14 @@ func (res Resource) auth() http.HandlerFunc {
 			_ = render.Render(w, r, httperrors.BadRequest(err))
 			return
 		}
-		partner, err := res.partnerMan.PartnerByUsername(ctx, req.Username, req.Password)
+		partnerResult, err := res.partnerMan.PartnerByUsername(ctx, req.Username, req.Password)
 		switch err {
 		case drivers.ErrDoesNotExist:
 			_ = render.Render(w, r, httperrors.ResourceNotFound(err))
 			return
 		case nil:
 
-		case manager.ErrAuthorization:
+		case partner.ErrAuthorization:
 			_ = render.Render(w, r, httperrors.BadRequest(err))
 			return
 		default:
@@ -58,7 +58,7 @@ func (res Resource) auth() http.HandlerFunc {
 			return
 		}
 
-		access, refresh, err := res.authMan.Tokens(partner.ID, partner.Code, models.PARTNER)
+		access, refresh, err := res.authMan.Tokens(partnerResult.ID, partnerResult.Code, models.PARTNER)
 		if err != nil {
 			_ = render.Render(w, r, httperrors.BadRequest(err))
 			return
@@ -74,7 +74,7 @@ func (res Resource) auth() http.HandlerFunc {
 // @Description выход авторизации партнера
 // @Accept  json
 // @Produce  json
-// @Router /partners/logout [get]
+// @Router /api/v1/partners/logout [get]
 func (res Resource) out() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		http.SetCookie(w, &http.Cookie{
@@ -87,4 +87,3 @@ func (res Resource) out() http.HandlerFunc {
 		render.Status(r, http.StatusOK)
 	}
 }
-

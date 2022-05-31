@@ -1,6 +1,8 @@
 package config
 
 import (
+	"time"
+
 	"github.com/jessevdk/go-flags"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
@@ -27,9 +29,8 @@ type HTTP struct {
 	Client     *Client
 	Admin      *Admin
 	HealthPort string `long:"healthcheck-listen" env:"HEALTH_CHECK_LISTEN" description:"Health check Listen Address (format: :9090|127.0.0.1:9090)" required:"false" default:":2026"`
-	BasePath string `long:"base-path" env:"BASE_PATH" description:"base path of the host" required:"false" default:"/broker"`
-	FilesDir string `long:"files-directory" env:"FILES_DIR" description:"Directory where all static files are located" required:"false" default:"/usr/share/broker"`
-
+	BasePath   string `long:"base-path" env:"BASE_PATH" description:"base path of the host" required:"false" default:"/broker"`
+	FilesDir   string `long:"files-directory" env:"FILES_DIR" description:"Directory where all static files are located" required:"false" default:"/usr/share/broker"`
 }
 
 type Database struct {
@@ -52,16 +53,16 @@ type Client struct {
 }
 
 type Admin struct {
-	ListenAddr string `long:"admin-clienthttp-listen" env:"ADMIN_HTTP_LISTEN" description:"Listen Address (format: :8080|127.0.0.1:8080)" required:"false" default:":8090"`
-	IsTesting  bool   `long:"admin-testing" env:"ADMIN_APP_TESTING" description:"testing mode"`
+	ListenAddr string `long:"broker-clienthttp-listen" env:"ADMIN_HTTP_LISTEN" description:"Listen Address (format: :8080|127.0.0.1:8080)" required:"false" default:":8090"`
+	IsTesting  bool   `long:"broker-testing" env:"ADMIN_APP_TESTING" description:"testing mode"`
 }
 
 type WorkerConfigs struct {
 }
 
 type Token struct {
-	AccessTokenTime  int `long:"access-token" env:"ACCESS_TOKEN_DURATION_HOURS" description:"Access Token Duration" required:"true" default:"2"`
-	RefreshTokenTime int `long:"refresh-token" env:"REFRESH_TOKEN_DURATION_MONTH" description:"Refresh Token Duration" required:"true" default:"1"`
+	AccessTokenTime  time.Duration `long:"access-token" env:"ACCESS_TOKEN_DURATION_HOURS" description:"Access Token Duration" required:"true" default:"2h"`
+	RefreshTokenTime time.Duration `long:"refresh-token" env:"REFRESH_TOKEN_DURATION_MONTH" description:"Refresh Token Duration" required:"true" default:"1h"`
 }
 
 func (d Database) ToDataStore() drivers.DataStoreConfig {
@@ -73,11 +74,11 @@ func (d Database) ToDataStore() drivers.DataStoreConfig {
 }
 
 func ParseConfig() (*Config, error) {
-	c := &Config{}
-	p := flags.NewParser(c, flags.Default)
+	var c Config
+	p := flags.NewParser(&c, flags.Default)
 	if _, err := p.Parse(); err != nil {
 		return nil, err
 	}
 
-	return c, nil
+	return &c, nil
 }

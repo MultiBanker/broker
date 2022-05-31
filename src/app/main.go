@@ -9,19 +9,19 @@ import (
 
 var version = ""
 
-// @title Broker API
-// @version 1.0
-// @description Broker allows to manager bank offers
-// @securityDefinitions.apikey ApiKeyAuth
-// @termsOfService https://www.youtube.com/watch?v=dQw4w9WgXcQ
-// @contact.name Flacko Jodyee
-// @contact.email sultan.kz19991@gmail.com
-// @in header
-// @name Authorization
-// @host api.test.airba.dev
-// @BasePath /broker/api/v1/broker
-// @schemes https
-// @query.collection.format multi
+// @title                       Broker API
+// @version                     1.0
+// @description                 Broker allows to manager bank offers
+// @securityDefinitions.apikey  ApiKeyAuth
+// @termsOfService              https://www.youtube.com/watch?v=dQw4w9WgXcQ
+// @contact.name                Flacko Jodyee
+// @contact.email               sultan.kz19991@gmail.com
+// @in                          header
+// @name                        Authorization
+// @host                        api.test.airba.dev
+// @BasePath                    /broker/api/v1/broker
+// @schemes                     https
+// @query.collection.format     multi
 func main() {
 	fmt.Printf("version %s", version)
 

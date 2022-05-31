@@ -24,7 +24,7 @@ import (
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /partners/orders/ [post]
+// @Router /api/v1/partners/orders/ [post]
 func (o Resource) updateorderpartner() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()

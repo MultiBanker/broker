@@ -1,0 +1,2536 @@
+basePath: /
+definitions:
+  dto.Auto:
+    properties:
+      about:
+        $ref: '#/definitions/models.LangOptions'
+      brand:
+        $ref: '#/definitions/models.Brand'
+      color:
+        $ref: '#/definitions/models.Color'
+      media:
+        items:
+          $ref: '#/definitions/models.Media'
+        type: array
+      price:
+        $ref: '#/definitions/models.Price'
+      title:
+        $ref: '#/definitions/models.LangOptions'
+    type: object
+  dto.BrokerResponse:
+    properties:
+      reference_id:
+        type: string
+    type: object
+  dto.ConnectAuto:
+    properties:
+      sku:
+        type: string
+      vin:
+        type: string
+    type: object
+  dto.ContactInfo:
+    properties:
+      bin:
+        description: БИН организации
+        example: "5189011425"
+        type: string
+      email:
+        description: Имейл
+        example: oleg@tinkoff.ru
+        type: string
+      first_name:
+        description: Имя
+        example: Oleg
+        type: string
+      last_name:
+        description: Фамилия
+        example: Tinkoff
+        type: string
+      location:
+        description: Адрес организации
+        example: Bldg. 26, 38A, 2 Khutorskaya str., Moscow, Russia.
+        type: string
+      phone:
+        description: Телефон
+        example: "87777777777"
+        type: string
+      web_address:
+        description: Веб адрес организации
+        example: https://www.tinkoff.ru
+        type: string
+    type: object
+  dto.FIO:
+    properties:
+      firstName:
+        example: Jon
+        type: string
+      lastName:
+        example: Bones
+        type: string
+      middleName:
+        example: Jones
+        type: string
+    type: object
+  dto.ListAuto:
+    properties:
+      autos:
+        items:
+          $ref: '#/definitions/models.Auto'
+        type: array
+      count:
+        type: integer
+    type: object
+  dto.LoanProgramRequest:
+    properties:
+      code:
+        description: Код продукта
+        example: "001"
+        type: string
+      is_enabled:
+        description: Доступность
+        example: true
+        type: boolean
+      max_amount:
+        description: Максимальная сумма корзины
+        example: 10000000
+        type: integer
+      min_amount:
+        description: Минимальная сумма корзины
+        example: 5000
+        type: integer
+      name:
+        description: Наименование продукта
+        example: Installment 1
+        type: string
+      note:
+        description: Примечание
+        example: Note
+        type: string
+      partner_code:
+        description: Код банка партнера
+        example: mfo_ff
+        type: string
+      rate:
+        description: Ставка по кредиту
+        example: 0.3
+        type: number
+      term:
+        description: Срок
+        example: 12
+        type: integer
+      type:
+        description: Тип
+        enum:
+        - loan
+        - installment
+        example: installment
+        type: string
+    type: object
+  dto.LoanPrograms:
+    properties:
+      loan_programs:
+        items:
+          $ref: '#/definitions/models.LoanProgram'
+        type: array
+      total:
+        type: integer
+    type: object
+  dto.Login:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  dto.MarketOrderRequest:
+    properties:
+      address:
+        $ref: '#/definitions/models.Address'
+      amount:
+        example: "5000"
+        type: string
+      channel:
+        example: airba_web
+        type: string
+      cityId:
+        example: "050000"
+        type: string
+      customer:
+        $ref: '#/definitions/models.Customer'
+      goods:
+        items:
+          $ref: '#/definitions/models.Goods'
+        type: array
+      isDelivery:
+        example: true
+        type: boolean
+      loanLength:
+        example: 12
+        type: integer
+      paymentMethod:
+        example: annuity
+        type: string
+      paymentPartners:
+        items:
+          $ref: '#/definitions/models.PaymentPartners'
+        type: array
+      productType:
+        example: installment
+        type: string
+      redirectUrl:
+        example: https://airba.kz/order/ok
+        type: string
+      systemCode:
+        example: oms
+        type: string
+      verificationId:
+        example: dsad12
+        type: string
+      verificationSmsCode:
+        example: "12321"
+        type: string
+      verificationSmsDateTime:
+        example: 12.12.2020
+        type: string
+    type: object
+  dto.MarketRequest:
+    properties:
+      code:
+        description: Код картинки
+        example: tinkoff
+        type: string
+      company_name:
+        description: Название компании
+        example: Tinka
+        type: string
+      contact:
+        $ref: '#/definitions/dto.ContactInfo'
+        description: Контакт
+      enabled:
+        description: Включение
+        example: true
+        type: boolean
+      logo_url:
+        description: Веб адрес картинки
+        example: https://plusworld.ru/wp-content/uploads/2021/09/759950f2eafdab128b887f1296316ea6f1af5152.jpg
+        type: string
+      password:
+        description: Пароль
+        example: Password123
+        type: string
+      update_order_url:
+        description: Эндпоинт обновление заказов
+        example: https://google.com
+        type: string
+      username:
+        description: Имя пользователя
+        example: Olejka
+        type: string
+    type: object
+  dto.Markets:
+    properties:
+      markets:
+        items:
+          $ref: '#/definitions/models.Market'
+        type: array
+      total:
+        type: integer
+    type: object
+  dto.NewJWTTokenResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+      tdid:
+        type: string
+    type: object
+  dto.OfferRequest:
+    properties:
+      max_order_sum:
+        description: Максимальная сумма заказа
+        example: 1500000
+        type: integer
+      min_order_sum:
+        description: Минимальная сумма заказа
+        example: 10000
+        type: integer
+      name:
+        description: Наименование
+        example: МФО Аирба
+        type: string
+      partner_code:
+        description: Код партнера
+        example: airba_pay
+        type: string
+      payment_type_group_code:
+        description: Вид оплаты товара
+        example: online_broker
+        type: string
+    type: object
+  dto.OfferSpecs:
+    properties:
+      offers:
+        items:
+          $ref: '#/definitions/models.Offer'
+        type: array
+      total:
+        type: integer
+    type: object
+  dto.OffersRequest:
+    properties:
+      goods:
+        items:
+          $ref: '#/definitions/models.Goods'
+        type: array
+    type: object
+  dto.OrderPartnerUpdateRequest:
+    properties:
+      customer:
+        $ref: '#/definitions/dto.FIO'
+      offers:
+        items:
+          $ref: '#/definitions/models.Offers'
+        type: array
+      referenceId:
+        example: "1"
+        type: string
+      state:
+        example: order_confirmed
+        type: string
+      stateTitle:
+        example: order_confirmed
+        type: string
+    type: object
+  dto.Orders:
+    properties:
+      orders:
+        items:
+          $ref: '#/definitions/models.Order'
+        type: array
+      total:
+        type: integer
+    type: object
+  dto.PartnerRequest:
+    properties:
+      code:
+        description: Код партнера
+        example: mfo_airba
+        type: string
+      commission:
+        description: Комиссия
+        example: 5
+        type: integer
+      company_name:
+        description: Название компании
+        example: Airba Pay
+        type: string
+      contact:
+        $ref: '#/definitions/dto.ContactInfo'
+        description: Контактные данные
+      enabled:
+        description: Включен
+        example: true
+        type: boolean
+      logo_url:
+        description: Веб адрес компании
+        example: https://emotionsgroup.kz/uploads/7f47072c77ad20f58acb9e7114cfeb5c.jpg
+        type: string
+      password:
+        description: Пароль
+        example: Password123
+        type: string
+      url:
+        $ref: '#/definitions/dto.URL'
+        description: Адреса на обновления АПИ
+      username:
+        description: Имя пользователя
+        example: SuperRinat
+        type: string
+    type: object
+  dto.Partners:
+    properties:
+      partners:
+        items:
+          $ref: '#/definitions/models.Partner'
+        type: array
+      total:
+        type: integer
+    type: object
+  dto.RecoveryPhone:
+    properties:
+      phone:
+        description: Номер телефона для восстановления
+        type: string
+    type: object
+  dto.RecoveryPhoneOTP:
+    properties:
+      otp:
+        description: One-Time-Password отправленный по СМС
+        type: string
+      password:
+        description: Новый пароль пользователя
+        type: string
+      phone:
+        description: Номер телефона для восстановления
+        type: string
+    type: object
+  dto.SignInByPhone:
+    properties:
+      password:
+        description: Пароль для аутентификации
+        type: string
+      phone:
+        description: Номер телефона для аутентификации
+        type: string
+    type: object
+  dto.SignUp:
+    properties:
+      first_name:
+        description: Имя пользователя
+        type: string
+      last_name:
+        description: Фамилия пользователя
+        type: string
+      password:
+        description: Пароль пользователя
+        type: string
+      patronymic:
+        description: Отчество пользователя
+        type: string
+      phone:
+        description: Номер телефона пользователя
+        type: string
+    type: object
+  dto.TokenResponse:
+    properties:
+      access_token:
+        type: string
+      response_token:
+        type: string
+    type: object
+  dto.URL:
+    properties:
+      auth:
+        description: урл авторизации
+        example: https://
+        type: string
+      create:
+        description: Урл который создает заказ на стороне партнера
+        example: https://
+        type: string
+      update:
+        description: Урл который обновляет заказ на стороне партнера
+        example: https://
+        type: string
+    type: object
+  dto.UpdateMarketOrderRequest:
+    properties:
+      loanLength:
+        type: string
+      productCode:
+        type: string
+      reason:
+        type: string
+      referenceId:
+        type: string
+      state:
+        type: string
+      stateTitle:
+        type: string
+    type: object
+  dto.UserApplication:
+    properties:
+      chosenSKU:
+        type: string
+      userID:
+        type: string
+    type: object
+  dto.UserApplications:
+    properties:
+      count:
+        type: integer
+      user_apps:
+        items:
+          $ref: '#/definitions/models.UserApplication'
+        type: array
+    type: object
+  dto.VerifyPhone:
+    properties:
+      phone:
+        description: Номер телефона для верификации
+        type: string
+    type: object
+  dto.VerifyPhoneOTP:
+    properties:
+      otp:
+        description: One-Time-Password отправленный по СМС
+        type: string
+      phone:
+        description: Номер телефона для верификации
+        type: string
+    type: object
+  httperrors.Details:
+    properties:
+      code:
+        description: application-определенный код ошибки
+        type: integer
+      message:
+        description: application-level сообщение, для дебага
+        type: string
+      status:
+        description: сообщение пользовательского уровня
+        type: string
+    type: object
+  httperrors.Response:
+    properties:
+      error:
+        $ref: '#/definitions/httperrors.Details'
+      validation:
+        additionalProperties:
+          type: string
+        description: ошибки валидации
+        type: object
+    type: object
+  models.Address:
+    properties:
+      delivery:
+        example: track
+        type: string
+      pickupPoint:
+        example: Kurmangazy 77
+        type: string
+    type: object
+  models.Auto:
+    properties:
+      about:
+        $ref: '#/definitions/models.LangOptions'
+      brand:
+        $ref: '#/definitions/models.Brand'
+      color:
+        $ref: '#/definitions/models.Color'
+      created_at:
+        type: string
+      id:
+        type: string
+      media:
+        items:
+          $ref: '#/definitions/models.Media'
+        type: array
+      price:
+        $ref: '#/definitions/models.Price'
+      sku:
+        type: string
+      title:
+        $ref: '#/definitions/models.LangOptions'
+      updated_at:
+        type: string
+    required:
+    - title
+    type: object
+  models.Brand:
+    properties:
+      equipment:
+        type: string
+      slug:
+        type: string
+      title:
+        $ref: '#/definitions/models.LangOptions'
+    type: object
+  models.Color:
+    properties:
+      hex:
+        type: string
+      slug:
+        type: string
+      title:
+        $ref: '#/definitions/models.LangOptions'
+      type:
+        type: integer
+    type: object
+  models.Contact:
+    properties:
+      email:
+        example: jon@mail.ru
+        type: string
+      mobileNumber:
+        example: "87777777777"
+        type: string
+    type: object
+  models.ContactInfo:
+    properties:
+      bin:
+        description: БИН организации
+        example: "5189011425"
+        type: string
+      email:
+        description: Имейл
+        example: oleg@tinkoff.ru
+        type: string
+      first_name:
+        description: Имя
+        example: Oleg
+        type: string
+      last_name:
+        description: Фамилия
+        example: Tinkoff
+        type: string
+      location:
+        description: Адрес организации
+        example: Bldg. 26, 38A, 2 Khutorskaya str., Moscow, Russia.
+        type: string
+      phone:
+        description: Телефон
+        example: "87777777777"
+        type: string
+      web_address:
+        description: Веб адрес организации
+        example: https://www.tinkoff.ru
+        type: string
+    type: object
+  models.Customer:
+    properties:
+      contact:
+        $ref: '#/definitions/models.Contact'
+      firstName:
+        example: Jon
+        type: string
+      lastName:
+        example: Bones
+        type: string
+      middleName:
+        example: Jones
+        type: string
+      taxCode:
+        example: "832918392183"
+        type: string
+    type: object
+  models.Goods:
+    properties:
+      brand:
+        example: iphone
+        type: string
+      category:
+        example: smartphony
+        type: string
+      image:
+        example: https://cdn.dxomark.com/wp-content/uploads/medias/post-61183/iphone-12-pro-blue-hero.jpg
+        type: string
+      model:
+        example: 12 PRO
+        type: string
+      price:
+        example: "5000"
+        type: string
+    type: object
+  models.LangOptions:
+    properties:
+      kz:
+        type: string
+      ru:
+        type: string
+    type: object
+  models.LoanProgram:
+    properties:
+      code:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      is_enabled:
+        type: boolean
+      max_amount:
+        type: integer
+      min_amount:
+        type: integer
+      name:
+        type: string
+      note:
+        type: string
+      partner_code:
+        type: string
+      rate:
+        type: number
+      term:
+        type: integer
+      type:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.Market:
+    properties:
+      code:
+        type: string
+      contact:
+        $ref: '#/definitions/models.ContactInfo'
+      created_at:
+        type: string
+      enabled:
+        type: boolean
+      id:
+        type: string
+      logo_url:
+        type: string
+      password:
+        type: string
+      title:
+        type: string
+      update_order_url:
+        type: string
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+  models.Media:
+    properties:
+      type:
+        type: string
+      url:
+        type: string
+    type: object
+  models.Offer:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      max_order_sum:
+        type: integer
+      min_order_sum:
+        type: integer
+      name:
+        type: string
+      partner_code:
+        type: string
+      payment_type_group_code:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.Offers:
+    properties:
+      contractNumber:
+        example: d12ed1
+        type: string
+      loanAmount:
+        example: "144000"
+        type: string
+      loanLength:
+        example: "12"
+        type: string
+      monthlyPayment:
+        example: 12000
+        type: integer
+      product:
+        example: rassrochka_12
+        type: string
+      productType:
+        example: installment
+        type: string
+    type: object
+  models.Order:
+    properties:
+      address:
+        $ref: '#/definitions/models.Address'
+      channel:
+        type: string
+      created_at:
+        type: string
+      customer:
+        $ref: '#/definitions/models.Customer'
+      goods:
+        items:
+          $ref: '#/definitions/models.Goods'
+        type: array
+      id:
+        type: string
+      isDelivery:
+        type: boolean
+      loanLength:
+        type: string
+      orderState:
+        type: string
+      paymentMethod:
+        type: string
+      paymentPartners:
+        items:
+          $ref: '#/definitions/models.PaymentPartners'
+        type: array
+      productType:
+        type: string
+      reason:
+        type: string
+      redirectUrl:
+        type: string
+      referenceId:
+        type: string
+      salesPlace:
+        type: string
+      systemCode:
+        type: string
+      totalCost:
+        type: string
+      updated_at:
+        type: string
+      verificationId:
+        type: string
+      verificationSmsCode:
+        type: string
+      verificationSmsDateTime:
+        type: string
+    type: object
+  models.Partner:
+    properties:
+      code:
+        type: string
+      commission:
+        type: integer
+      company_name:
+        type: string
+      contact:
+        $ref: '#/definitions/models.ContactInfo'
+      created_at:
+        type: string
+      enabled:
+        type: boolean
+      id:
+        type: string
+      logo_url:
+        type: string
+      password:
+        type: string
+      updated_at:
+        type: string
+      url:
+        $ref: '#/definitions/models.URL'
+      username:
+        type: string
+    type: object
+  models.PaymentPartners:
+    properties:
+      code:
+        example: mfo_airba
+        type: string
+    type: object
+  models.Price:
+    properties:
+      current:
+        type: integer
+      minimum:
+        description: Minimum is the minimum possible price for this product. Used
+          for validation of merchant prices.
+        type: integer
+      old:
+        type: integer
+    type: object
+  models.Response:
+    properties:
+      id:
+        type: string
+      status:
+        type: string
+    type: object
+  models.URL:
+    properties:
+      auth:
+        type: string
+      create:
+        type: string
+      update:
+        type: string
+    type: object
+  models.UserApplication:
+    properties:
+      chosenSKU:
+        type: string
+      userID:
+        type: string
+    type: object
+host: api.test.somatic.dev
+info:
+  contact: {}
+  title: AutoCredit API
+  version: "1.0"
+paths:
+  /api/v1/auto:
+    get:
+      description: list car product
+      parameters:
+      - description: pagination limit
+        in: query
+        name: limit
+        type: integer
+      - description: pagination skip
+        in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ListAuto'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiTokenAuth: []
+      summary: list car product
+      tags:
+      - Auto
+    post:
+      description: add car product
+      parameters:
+      - description: add car
+        in: body
+        name: auto
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Auto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiTokenAuth: []
+      summary: add car product
+      tags:
+      - Auto
+  /api/v1/auto/{sku}:
+    delete:
+      description: delete car product
+      parameters:
+      - description: sku
+        in: path
+        name: sku
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiTokenAuth: []
+      summary: delete car product
+      tags:
+      - Auto
+    get:
+      description: get car product
+      parameters:
+      - description: sku
+        in: path
+        name: sku
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Auto'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiTokenAuth: []
+      summary: get car product
+      tags:
+      - Auto
+    put:
+      description: update car product
+      parameters:
+      - description: sku
+        in: path
+        name: sku
+        required: true
+        type: string
+      - description: add car
+        in: body
+        name: auto
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Auto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiTokenAuth: []
+      summary: update car product
+      tags:
+      - Auto
+  /api/v1/brokers/loan-programs:
+    get:
+      description: Получение кредитных программ
+      parameters:
+      - description: токен авторизации
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: страница
+        in: query
+        name: page
+        type: integer
+      - description: размер страницы
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.LoanPrograms'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение кредитных программ
+      tags:
+      - programs
+  /api/v1/brokers/loan-programs/:
+    post:
+      consumes:
+      - application/json
+      description: Создание кредитной программы
+      parameters:
+      - description: токен авторизации
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: кредитная программа
+        in: body
+        name: program
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoanProgramRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Создание кредитной программы
+      tags:
+      - programs
+  /api/v1/brokers/loan-programs/{code}:
+    get:
+      description: Получение кредитной программы по уникальному коду
+      parameters:
+      - description: токен авторизации
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: уникальный код программы
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LoanProgram'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение кредитной программы по уникальному коду
+      tags:
+      - programs
+    put:
+      consumes:
+      - application/json
+      description: Обновление кредитной программы
+      parameters:
+      - description: токен авторизации
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: уникальный код программы
+        in: path
+        name: code
+        required: true
+        type: string
+      - description: кредитная программа
+        in: body
+        name: program
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoanProgramRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление кредитной программы
+      tags:
+      - programs
+  /api/v1/brokers/offers:
+    get:
+      consumes:
+      - application/json
+      description: Получение офферов
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: pagination limit
+        in: query
+        name: limit
+        type: integer
+      - description: pagination skip
+        in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.OfferSpecs'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение офферов
+      tags:
+      - Offers
+    post:
+      consumes:
+      - application/json
+      description: Создание нового оффера
+      parameters:
+      - description: body
+        in: body
+        name: partner
+        required: true
+        schema:
+          $ref: '#/definitions/dto.OfferRequest'
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Создание нового оффера
+      tags:
+      - Offers
+  /api/v1/brokers/offers/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Получение оффера
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id of the market
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Partner'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение оффера
+      tags:
+      - Offers
+    put:
+      consumes:
+      - application/json
+      description: Обновление оффера
+      parameters:
+      - description: body
+        in: body
+        name: partner
+        required: true
+        schema:
+          $ref: '#/definitions/dto.OfferRequest'
+      - description: id of the market
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Offer'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление оффера
+      tags:
+      - Offers
+  /api/v1/brokers/orders:
+    get:
+      description: Получение заказов
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: pagination limit
+        in: query
+        name: limit
+        type: integer
+      - description: pagination skip
+        in: query
+        name: skip
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Orders'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение заказов
+      tags:
+      - Orders
+  /api/v1/brokers/orders/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Получение заказа
+      parameters:
+      - description: id of the order
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Order'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение заказа
+      tags:
+      - Orders
+    put:
+      consumes:
+      - application/json
+      description: Обновление заказа
+      parameters:
+      - description: body
+        in: body
+        name: market
+        required: true
+        schema:
+          $ref: '#/definitions/models.Order'
+      - description: id of the order
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление заказа
+      tags:
+      - Orders
+  /api/v1/brokers/partners:
+    post:
+      consumes:
+      - application/json
+      description: Создание нового партнера
+      parameters:
+      - description: body
+        in: body
+        name: partner
+        required: true
+        schema:
+          $ref: '#/definitions/dto.PartnerRequest'
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Создание нового партнера
+      tags:
+      - Partner
+  /api/v1/brokers/partners/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Получение партнера
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id of the market
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Partner'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение партнера
+      tags:
+      - Partner
+    put:
+      consumes:
+      - application/json
+      description: Обновление партнера
+      parameters:
+      - description: body
+        in: body
+        name: partner
+        required: true
+        schema:
+          $ref: '#/definitions/dto.PartnerRequest'
+      - description: id of the market
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление партнера
+      tags:
+      - Partner
+  /api/v1/markets:
+    get:
+      description: Получение маркетов
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: pagination limit
+        in: query
+        name: limit
+        type: integer
+      - description: pagination skip
+        in: query
+        name: page
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Markets'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение маркетов
+      tags:
+      - Market
+    post:
+      consumes:
+      - application/json
+      description: Создание нового маркета
+      parameters:
+      - description: body
+        in: body
+        name: market
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MarketRequest'
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Создание нового маркета
+      tags:
+      - Market
+  /api/v1/markets/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Получение маркета
+      parameters:
+      - description: id of the partner
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Market'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение маркета
+      tags:
+      - Market
+    put:
+      description: Обновление определенного маркета
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: body
+        in: body
+        name: market
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MarketRequest'
+      - description: id of the partner
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление определенного маркета
+      tags:
+      - Market
+  /api/v1/markets/auto/connect:
+    put:
+      consumes:
+      - application/json
+      description: VIN Connection
+      parameters:
+      - description: auto to connect
+        in: body
+        name: connect
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ConnectAuto'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiTokenAuth: []
+      summary: VIN Connection
+      tags:
+      - Markets
+  /api/v1/partners/login:
+    post:
+      consumes:
+      - application/json
+      description: Авторизация партнера
+      parameters:
+      - description: body
+        in: body
+        name: auth
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Login'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      summary: Авторизация партнера
+      tags:
+      - Partner
+  /api/v1/partners/logout:
+    get:
+      consumes:
+      - application/json
+      description: выход авторизации партнера
+      produces:
+      - application/json
+      responses: {}
+      summary: выход авторизации партнера
+      tags:
+      - Partner
+  /api/v1/partners/orders/:
+    post:
+      consumes:
+      - application/json
+      description: Обновление заказа по решению партнера
+      parameters:
+      - description: body
+        in: body
+        name: market
+        required: true
+        schema:
+          $ref: '#/definitions/dto.OrderPartnerUpdateRequest'
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление заказа по решению партнера
+      tags:
+      - Orders
+  /api/v1/users/application/:
+    post:
+      description: user application
+      parameters:
+      - description: add car
+        in: body
+        name: auto
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UserApplication'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiTokenAuth: []
+      summary: user application
+      tags:
+      - User
+  /api/v1/users/application/{id}:
+    delete:
+      description: user application
+      parameters:
+      - description: application id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiTokenAuth: []
+      summary: user application
+      tags:
+      - User
+    get:
+      description: user application
+      parameters:
+      - description: application id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserApplication'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiTokenAuth: []
+      summary: user application
+      tags:
+      - User
+  /api/v1/users/application/list:
+    get:
+      description: user application
+      parameters:
+      - description: pagination limit
+        in: query
+        name: limit
+        type: integer
+      - description: pagination skip
+        in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UserApplications'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiTokenAuth: []
+      summary: user application
+      tags:
+      - User
+  /api/v1/users/auth/signin/phone:
+    post:
+      consumes:
+      - application/json
+      description: Аутентифицирует пользователя по номеру телефона
+      parameters:
+      - description: Данные для быстрой аутентификации
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SignInByPhone'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.NewJWTTokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "410":
+          description: Gone
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      summary: Аутентификация по номеру телефона
+      tags:
+      - auth
+  /api/v1/users/auth/signout:
+    delete:
+      description: Удаляет JWT токен в cookie.
+      parameters:
+      - description: Токен аутентификации
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      security:
+      - JWT: []
+      summary: Завершает сессию пользователя, удаляя JWT токен
+      tags:
+      - auth
+  /api/v1/users/auth/signup:
+    post:
+      consumes:
+      - application/json
+      description: Регистрирует пользователя в ССО
+      parameters:
+      - description: Данные для регистрации пользователя
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SignUp'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      summary: Регистрация пользователя
+      tags:
+      - auth
+  /api/v1/users/recovery/phone:
+    put:
+      consumes:
+      - application/json
+      description: Отправляет OTP на указанный номер телефона для восстановления пароля
+      parameters:
+      - description: Данные для восстановления пароля
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RecoveryPhone'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      summary: Отправка OTP на указанный номер телефона для восстановления пароля
+      tags:
+      - recovery
+  /api/v1/users/recovery/phone/otp:
+    put:
+      consumes:
+      - application/json
+      description: Проверяет OTP при восстановлении пароля
+      parameters:
+      - description: Данные для валидации OTP
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RecoveryPhoneOTP'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      summary: Валидация OTP по номеру телефона
+      tags:
+      - recovery
+  /api/v1/users/verify/phone:
+    put:
+      consumes:
+      - application/json
+      description: Отправляет OTP на указанный номер телефона для верификации
+      parameters:
+      - description: Данные для верификации телефона
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/dto.VerifyPhone'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "410":
+          description: Gone
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      summary: Отправка OTP на указанный номер телефона для верификации
+      tags:
+      - verify
+  /api/v1/users/verify/phone/otp:
+    put:
+      consumes:
+      - application/json
+      description: Проверяет OTP при верификации номера телефона и выдает JWT
+      parameters:
+      - description: Данные для валидации OTP
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/dto.VerifyPhoneOTP'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.NewJWTTokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      summary: Валидация OTP по номеру телефона
+      tags:
+      - verify
+  /markets/login:
+    post:
+      consumes:
+      - application/json
+      description: Авторизация маркета
+      parameters:
+      - description: body
+        in: body
+        name: auth
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Login'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      summary: Авторизация маркета
+      tags:
+      - Market
+  /markets/logout:
+    get:
+      consumes:
+      - application/json
+      description: выход с авторизации маркета
+      produces:
+      - application/json
+      responses: {}
+      summary: выход с авторизации маркета
+      tags:
+      - Market
+  /offers:
+    post:
+      consumes:
+      - application/json
+      description: Получение офферов по заказу
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: body
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/dto.OffersRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Offer'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение офферов по заказу
+      tags:
+      - Offers
+  /orders:
+    post:
+      consumes:
+      - application/json
+      description: Создание нового заказа
+      parameters:
+      - description: body
+        in: body
+        name: market
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MarketOrderRequest'
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.BrokerResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Создание нового заказа
+      tags:
+      - Orders
+  /orders/{reference_id}/partners:
+    get:
+      description: Получение заказов по reference_id
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: reference id of the order
+        in: path
+        name: reference_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Order'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение заказов по reference_id
+      tags:
+      - Orders
+  /orders/markets:
+    post:
+      consumes:
+      - application/json
+      description: Обновление заказа по решению клиента
+      parameters:
+      - description: body
+        in: body
+        name: market
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateMarketOrderRequest'
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление заказа по решению клиента
+      tags:
+      - Orders
+  /partners:
+    get:
+      consumes:
+      - application/json
+      description: Получение партнеров
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: pagination limit
+        in: query
+        name: limit
+        type: integer
+      - description: pagination skip
+        in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Partners'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение партнеров
+      tags:
+      - Partner
+schemes:
+- https
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -1,81 +1,50 @@
 package manager
 
 import (
+	"github.com/MultiBanker/broker/pkg/auth"
 	"github.com/MultiBanker/broker/src/config"
 	"github.com/MultiBanker/broker/src/database/drivers"
 	"github.com/MultiBanker/broker/src/database/repository"
-	"github.com/MultiBanker/broker/src/manager/auth"
+	"github.com/MultiBanker/broker/src/manager/auto"
 	"github.com/MultiBanker/broker/src/manager/loan"
 	"github.com/MultiBanker/broker/src/manager/market"
 	"github.com/MultiBanker/broker/src/manager/offer"
 	"github.com/MultiBanker/broker/src/manager/order"
 	"github.com/MultiBanker/broker/src/manager/partner"
+	"github.com/MultiBanker/broker/src/manager/user"
 	"github.com/VictoriaMetrics/metrics"
 )
 
-type Wrapper interface {
-	Auther() auth.Authenticator
-	Partnerer() partner.Partnerer
-	Orderer() order.Orderer
-	Marketer() market.Marketer
-	Offer() offer.Manager
-	LoanProgram() loan.Program
-	Pinger() error
-	Metric() *metrics.Set
+type Managers struct {
+	DB                 drivers.Datastore
+	PartnerMan         partner.Partnerer
+	AuthMan            auth.Authenticator
+	OrderMan           order.Orderer
+	MarketMan          market.Marketer
+	OfferMan           offer.Manager
+	LoanMan            loan.Program
+	UserMan            user.UsersManager
+	UserApplicationMan user.ApplicationManager
+	LoginMan           user.LogInManager
+	RecoveryMan        user.RecoveryManager
+	VerifyMan          user.VerificationManager
+	AutoMan            auto.Auto
+	MetricMan          *metrics.Set
 }
 
-type Abstract struct {
-	db         drivers.Datastore
-	partnerMan partner.Partnerer
-	authMan    auth.Authenticator
-	orderMan   order.Orderer
-	marketMan  market.Marketer
-	offerMan   offer.Manager
-	loanMan    loan.Program
-	metricMan  *metrics.Set
-}
-
-func (a *Abstract) Pinger() error {
-	return a.db.Ping()
-}
-
-func (a *Abstract) Partnerer() partner.Partnerer {
-	return a.partnerMan
-}
-
-func (a *Abstract) Auther() auth.Authenticator {
-	return a.authMan
-}
-
-func (a *Abstract) Orderer() order.Orderer {
-	return a.orderMan
-}
-
-func (a *Abstract) Marketer() market.Marketer {
-	return a.marketMan
-}
-
-func (a *Abstract) Offer() offer.Manager {
-	return a.offerMan
-}
-
-func (a *Abstract) LoanProgram() loan.Program {
-	return a.loanMan
-}
-
-func (a *Abstract) Metric() *metrics.Set {
-	return a.metricMan
-}
-
-func NewWrapper(db drivers.Datastore, repo repository.Repositories, opts *config.Config, metric *metrics.Set) Wrapper {
-	return &Abstract{
-		db:         db,
-		partnerMan: partner.NewPartner(repo),
-		authMan:    auth.NewAuthenticator(opts),
-		orderMan:   order.NewOrder(repo),
-		marketMan:  market.NewMarket(repo),
-		offerMan:   offer.NewOffer(repo),
-		loanMan:    loan.NewProgramManager(repo),
-		metricMan:  metric,
+func NewWrapper(db drivers.Datastore, repo repository.Repositories, opts *config.Config, metric *metrics.Set) Managers {
+	return Managers{
+		DB:          db,
+		PartnerMan:  partner.NewPartner(repo),
+		AuthMan:     auth.NewAuthenticator([]byte(opts.JWTKey), opts.AccessTokenTime, opts.RefreshTokenTime),
+		OrderMan:    order.NewOrder(repo),
+		MarketMan:   market.NewMarket(repo),
+		OfferMan:    offer.NewOffer(repo),
+		LoanMan:     loan.NewProgramManager(repo),
+		UserMan:     user.NewUsersManagerImpl(repo.User),
+		LoginMan:    user.NewLogInManagerImpl(repo.User),
+		RecoveryMan: user.NewRecoveryManagerImpl(false, repo.Recovery, repo.User),
+		VerifyMan:   user.NewVerificationManagerImpl(false, repo.Verify, repo.User),
+		MetricMan:   metric,
 	}
 }

@@ -18,8 +18,8 @@ type ProgramManager struct {
 
 func NewProgramManager(repo repository.Repositories) *ProgramManager {
 	return &ProgramManager{
-		loanColl: repo.LoanProgramRepo(),
-		seqColl:  repo.SequenceRepo(),
+		loanColl: repo.LoanProgram,
+		seqColl:  repo.Sequence,
 	}
 }
 

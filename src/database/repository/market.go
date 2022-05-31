@@ -7,10 +7,6 @@ import (
 	"github.com/MultiBanker/broker/src/models/selector"
 )
 
-func (r Repository) MarketRepo() Marketer {
-	return r.Market
-}
-
 type Marketer interface {
 	CreateMarket(ctx context.Context, market models.Market) (string, error)
 	MarketByID(ctx context.Context, id string) (models.Market, error)

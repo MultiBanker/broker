@@ -1,8 +1,8 @@
 package orders
 
 import (
+	"github.com/MultiBanker/broker/pkg/auth"
 	"github.com/MultiBanker/broker/src/manager"
-	"github.com/MultiBanker/broker/src/manager/auth"
 	"github.com/MultiBanker/broker/src/servers/clienthttp/middleware"
 	"github.com/VictoriaMetrics/metrics"
 	"github.com/go-chi/chi/v5"
@@ -19,11 +19,11 @@ type Resource struct {
 	set      *metrics.Set
 }
 
-func NewResource(man manager.Wrapper) Resource {
+func NewResource(man manager.Managers) Resource {
 	return Resource{
-		authMan:  man.Auther(),
-		orderMan: man.Orderer(),
-		set:      man.Metric(),
+		authMan:  man.AuthMan,
+		orderMan: man.OrderMan,
+		set:      man.MetricMan,
 	}
 }
 
