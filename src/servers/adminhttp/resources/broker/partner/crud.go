@@ -166,7 +166,7 @@ func (a resource) partner() http.HandlerFunc {
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /partners [get]
+// @Router /api/v1/brokers/partners [get]
 func (a resource) partners() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()

@@ -4,8 +4,8 @@ tidy:
 
 docs:
 	swag fmt -d src/app
-	swag init --parseDependency --parseDepth 5 -g servers/adminhttp/router.go -o swagger/admin -d src --exclude ./src/clienthttp/
-	swag init --parseDependency --parseDepth 5 -g servers/clienthttp/router.go -o swagger/users -d src --exclude ./src/adminhttp/
+	swag init --parseDependency --parseDepth 5 -g servers/adminhttp/router.go -o swagger/admin -d src --exclude ./src/servers/clienthttp/
+	swag init --parseDependency --parseDepth 5 -g servers/clienthttp/router.go -o swagger/users -d src --exclude ./src/servers/adminhttp/
 
 mocks:
 	mockgen --source=src/database/repository/partner.go --destination=src/database/mock_repository/partner.go
