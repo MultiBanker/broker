@@ -27,7 +27,7 @@ import (
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /orders [post]
+// @Router /api/v1/orders [post]
 func (o Resource) neworder() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
@@ -99,7 +99,7 @@ func (o Resource) neworder() http.HandlerFunc {
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /orders/markets [post]
+// @Router /api/v1/orders/markets [post]
 func (o Resource) marketOrderUpdate(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -148,7 +148,7 @@ func (o Resource) marketOrderUpdate(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {object} httperrors.Response
 // @Failure 404 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /orders/{reference_id}/partners [get]
+// @Router /api/v1/brokers/orders/{reference_id}/partners [get]
 func (o Resource) ordersByReference(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 

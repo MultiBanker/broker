@@ -46,8 +46,8 @@ func Routing(opts *config.Config, man manager.Managers) chi.Router {
 
 	// основные роутеры
 	r.Route(ApiPath, func(r chi.Router) {
-		r.Use(mware.All("/broker")...)
-		r.Route("/broker", func(r chi.Router) {
+		r.Use(mware.All("/brokers")...)
+		r.Route("/brokers", func(r chi.Router) {
 			r.Mount("/partners", partner.NewResource(man).Route())
 			r.Mount("/markets", market.NewResource(man).Route())
 		})

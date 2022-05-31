@@ -23,7 +23,7 @@ import (
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /offers [post]
+// @Router /api/v1/brokers/offers [post]
 func (res Resource) offers(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 

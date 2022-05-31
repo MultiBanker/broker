@@ -14,7 +14,7 @@ type resource struct {
 	set     *metrics.Set
 }
 
-func NewResource(man manager.Managers) *resource {
+func Newresource(man manager.Managers) *resource {
 	return &resource{
 		authMan: man.AuthMan,
 		loanMan: man.LoanMan,

@@ -1204,6 +1204,51 @@ paths:
       summary: Обновление кредитной программы
       tags:
       - programs
+  /api/v1/brokers/markets/login:
+    post:
+      consumes:
+      - application/json
+      description: Авторизация маркета
+      parameters:
+      - description: body
+        in: body
+        name: auth
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Login'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.TokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      summary: Авторизация маркета
+      tags:
+      - Market
+  /api/v1/brokers/markets/logout:
+    get:
+      consumes:
+      - application/json
+      description: выход с авторизации маркета
+      produces:
+      - application/json
+      responses: {}
+      summary: выход с авторизации маркета
+      tags:
+      - Market
   /api/v1/brokers/offers:
     get:
       consumes:
@@ -1250,26 +1295,28 @@ paths:
     post:
       consumes:
       - application/json
-      description: Создание нового оффера
+      description: Получение офферов по заказу
       parameters:
-      - description: body
-        in: body
-        name: partner
-        required: true
-        schema:
-          $ref: '#/definitions/dto.OfferRequest'
       - description: Authorization
         in: header
         name: Authorization
         required: true
         type: string
+      - description: body
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/dto.OffersRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Response'
+            items:
+              $ref: '#/definitions/models.Offer'
+            type: array
         "400":
           description: Bad Request
           schema:
@@ -1284,7 +1331,7 @@ paths:
             $ref: '#/definitions/httperrors.Response'
       security:
       - ApiKeyAuth: []
-      summary: Создание нового оффера
+      summary: Получение офферов по заказу
       tags:
       - Offers
   /api/v1/brokers/offers/{id}:
@@ -1494,6 +1541,44 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Обновление заказа
+      tags:
+      - Orders
+  /api/v1/brokers/orders/{reference_id}/partners:
+    get:
+      description: Получение заказов по reference_id
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: reference id of the order
+        in: path
+        name: reference_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Order'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение заказов по reference_id
       tags:
       - Orders
   /api/v1/brokers/partners:
@@ -1824,6 +1909,88 @@ paths:
       summary: VIN Connection
       tags:
       - Markets
+  /api/v1/orders:
+    post:
+      consumes:
+      - application/json
+      description: Создание нового заказа
+      parameters:
+      - description: body
+        in: body
+        name: market
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MarketOrderRequest'
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.BrokerResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Создание нового заказа
+      tags:
+      - Orders
+  /api/v1/orders/markets:
+    post:
+      consumes:
+      - application/json
+      description: Обновление заказа по решению клиента
+      parameters:
+      - description: body
+        in: body
+        name: market
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateMarketOrderRequest'
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "429":
+          description: Too Many Requests
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление заказа по решению клиента
+      tags:
+      - Orders
   /api/v1/partners/login:
     post:
       consumes:
@@ -2282,214 +2449,6 @@ paths:
       summary: Валидация OTP по номеру телефона
       tags:
       - verify
-  /markets/login:
-    post:
-      consumes:
-      - application/json
-      description: Авторизация маркета
-      parameters:
-      - description: body
-        in: body
-        name: auth
-        required: true
-        schema:
-          $ref: '#/definitions/dto.Login'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dto.TokenResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "429":
-          description: Too Many Requests
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      summary: Авторизация маркета
-      tags:
-      - Market
-  /markets/logout:
-    get:
-      consumes:
-      - application/json
-      description: выход с авторизации маркета
-      produces:
-      - application/json
-      responses: {}
-      summary: выход с авторизации маркета
-      tags:
-      - Market
-  /offers:
-    post:
-      consumes:
-      - application/json
-      description: Получение офферов по заказу
-      parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: body
-        in: body
-        name: order
-        required: true
-        schema:
-          $ref: '#/definitions/dto.OffersRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/models.Offer'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "429":
-          description: Too Many Requests
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Получение офферов по заказу
-      tags:
-      - Offers
-  /orders:
-    post:
-      consumes:
-      - application/json
-      description: Создание нового заказа
-      parameters:
-      - description: body
-        in: body
-        name: market
-        required: true
-        schema:
-          $ref: '#/definitions/dto.MarketOrderRequest'
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dto.BrokerResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "429":
-          description: Too Many Requests
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Создание нового заказа
-      tags:
-      - Orders
-  /orders/{reference_id}/partners:
-    get:
-      description: Получение заказов по reference_id
-      parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: reference id of the order
-        in: path
-        name: reference_id
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/models.Order'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Получение заказов по reference_id
-      tags:
-      - Orders
-  /orders/markets:
-    post:
-      consumes:
-      - application/json
-      description: Обновление заказа по решению клиента
-      parameters:
-      - description: body
-        in: body
-        name: market
-        required: true
-        schema:
-          $ref: '#/definitions/dto.UpdateMarketOrderRequest'
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "429":
-          description: Too Many Requests
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/httperrors.Response'
-      security:
-      - ApiKeyAuth: []
-      summary: Обновление заказа по решению клиента
-      tags:
-      - Orders
   /partners:
     get:
       consumes:

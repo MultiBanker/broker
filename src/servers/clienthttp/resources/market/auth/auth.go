@@ -26,7 +26,7 @@ const (
 // @Failure 400 {object} httperrors.Response
 // @Failure 429 {object} httperrors.Response
 // @Failure 500 {object} httperrors.Response
-// @Router /markets/login [post]
+// @Router /api/v1/brokers/markets/login [post]
 func (res Resource) auth() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
@@ -69,7 +69,7 @@ func (res Resource) auth() http.HandlerFunc {
 // @Description выход с авторизации маркета
 // @Accept  json
 // @Produce  json
-// @Router /markets/logout [get]
+// @Router /api/v1/brokers/markets/logout [get]
 func (res Resource) out() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		http.SetCookie(w, &http.Cookie{
