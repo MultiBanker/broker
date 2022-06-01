@@ -2,6 +2,7 @@ package auto
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/MultiBanker/broker/src/database/repository"
 	"github.com/MultiBanker/broker/src/models"
@@ -17,8 +18,10 @@ type Auto interface {
 }
 
 type autoImpl struct {
-	sequence repository.Sequencer
-	autoRepo repository.Auto
+	sequence      repository.Sequencer
+	autoRepo      repository.Auto
+	userApplyRepo repository.UserApplicationRepository
+	userAutoRepo  repository.UserAutoRepository
 }
 
 func NewAutoImpl(autoRepo repository.Auto) *autoImpl {
@@ -30,7 +33,18 @@ func (a autoImpl) Get(ctx context.Context, sku string) (models.Auto, error) {
 }
 
 func (a autoImpl) Create(ctx context.Context, auto models.Auto) (string, error) {
-	panic("implement me")
+	skuInt, err := a.sequence.NextSequenceValue(ctx, models.AutoSequences)
+	if err != nil {
+		return "", err
+	}
+
+	auto.SKU = strconv.Itoa(skuInt)
+	_, err = a.autoRepo.Create(ctx, auto)
+	if err != nil {
+		return "", err
+	}
+
+	return auto.SKU, nil
 }
 
 func (a autoImpl) Update(ctx context.Context, auto models.Auto) (string, error) {

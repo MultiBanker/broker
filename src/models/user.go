@@ -34,6 +34,7 @@ type UserInfo struct {
 }
 
 type UserApplication struct {
-	UserID    string
-	ChosenSKU string
+	ApplicationID string
+	UserID        string
+	ChosenSKU     string
 }

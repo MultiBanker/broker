@@ -41,3 +41,8 @@ type RecoveryRepository interface {
 	Update(ctx context.Context, recovery models.Recovery) error
 	Delete(ctx context.Context, recoveryID string) error
 }
+type UserApplicationRepository interface {
+	Create(ctx context.Context, application models.UserApplication) (string, error)
+	Get(ctx context.Context, sku string) (models.UserApplication, error)
+	Lock(ctx context.Context, id string) (models.UserApplication, error)
+}

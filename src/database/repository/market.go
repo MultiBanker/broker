@@ -15,3 +15,9 @@ type Marketer interface {
 	UpdateMarket(ctx context.Context, market models.Market) (string, error)
 	MarketByCode(ctx context.Context, code string) (models.Market, error)
 }
+
+type MarketAuto interface {
+	Create(ctx context.Context, auto models.MarketAuto) (string, error)
+	Get(ctx context.Context, sku string) (models.MarketAuto, error)
+	Lock(ctx context.Context, id string) (models.MarketAuto, error)
+}
