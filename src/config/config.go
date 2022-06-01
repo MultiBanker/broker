@@ -11,14 +11,14 @@ import (
 type Config struct {
 	*Database
 	*Servers
-	*WorkerConfigs
 	*Token
+	*NotifyConfig
+
 	Version string
 }
 
 type Servers struct {
 	HTTP            *HTTP
-	GRPC            *GRPC
 	VictoriaMetrics *VictoriaServer
 
 	Dbg    bool   `long:"dbg" env:"DEBUG" description:"debug mode"`
@@ -39,10 +39,6 @@ type Database struct {
 	DSURL  string `long:"ds-url" env:"DATASTORE_URL" description:"DataStore URL (format: mongodb://localhost:27017)" required:"false" default:"mongodb://localhost:27017/"`
 }
 
-type GRPC struct {
-	ListenAddr string `long:"grpc-listen" env:"GRPC_LISTEN" description:"Grpc Listen Address (format: :4000|127.0.0.1:4000)" required:"false" default:":4000"`
-}
-
 type VictoriaServer struct {
 	ListenAddr string `long:"victoria-metrics-listen" env:"VICTORIA_METRICS_LISTEN" description:"Victoria Metrics Listen Address (format: :9090|127.0.0.1:9090)" required:"false" default:":9090"`
 }
@@ -57,12 +53,15 @@ type Admin struct {
 	IsTesting  bool   `long:"broker-testing" env:"ADMIN_APP_TESTING" description:"testing mode"`
 }
 
-type WorkerConfigs struct {
-}
-
 type Token struct {
 	AccessTokenTime  time.Duration `long:"access-token" env:"ACCESS_TOKEN_DURATION_HOURS" description:"Access Token Duration" required:"true" default:"2h"`
 	RefreshTokenTime time.Duration `long:"refresh-token" env:"REFRESH_TOKEN_DURATION_MONTH" description:"Refresh Token Duration" required:"true" default:"1h"`
+}
+
+type NotifyConfig struct {
+	URL  string `long:"kaz_info_url" env:"NOTIFY_URL"`
+	User string `long:"kaz_info_user" env:"NOTIFY_USER"`
+	Pass string `long:"kaz_info_pass" env:"NOTIFY_PASSWORD"`
 }
 
 func (d Database) ToDataStore() drivers.DataStoreConfig {

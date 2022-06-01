@@ -2,15 +2,13 @@ package clienthttp
 
 import (
 	"github.com/MultiBanker/broker/pkg/httpresources"
-	"github.com/MultiBanker/broker/pkg/metric"
+	"github.com/MultiBanker/broker/src/servers/clienthttp/resources/auto"
 	"github.com/MultiBanker/broker/src/servers/clienthttp/resources/market"
 	"github.com/MultiBanker/broker/src/servers/clienthttp/resources/partner"
 	"github.com/MultiBanker/broker/src/servers/clienthttp/resources/user/application"
 	"github.com/MultiBanker/broker/src/servers/clienthttp/resources/user/auth"
 	"github.com/MultiBanker/broker/src/servers/clienthttp/resources/user/recovery"
 	"github.com/MultiBanker/broker/src/servers/clienthttp/resources/user/verification"
-	"github.com/VictoriaMetrics/metrics"
-
 	"github.com/go-chi/chi/v5"
 
 	"github.com/MultiBanker/broker/src/config"
@@ -42,16 +40,14 @@ func Routing(opts *config.Config, man manager.Managers) chi.Router {
 	r.Mount(swaggerRes.Path(), swaggerRes.Routes())
 	r.Mount(versionRes.Path(), versionRes.Routes())
 
-	mware := metric.NewMetricware(metrics.NewSet())
-
 	// основные роутеры
 	r.Route(ApiPath, func(r chi.Router) {
-		r.Use(mware.All("/brokers")...)
 		r.Route("/brokers", func(r chi.Router) {
 			r.Mount("/partners", partner.NewResource(man).Route())
 			r.Mount("/markets", market.NewResource(man).Route())
 		})
 
+		r.Mount("/auto/", auto.NewResource(man.AuthMan, man.AutoMan).Route())
 		r.Route("/users/", func(r chi.Router) {
 			r.Mount("/application",
 				application.NewResource(man.AuthMan, man.UserApplicationMan).Route())
