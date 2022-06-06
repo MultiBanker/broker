@@ -29,10 +29,10 @@ type Auto interface {
 	Get(ctx context.Context, sku string) (models.MarketAuto, error)
 }
 
-func (a auto) Create(ctx context.Context, auto models.MarketAuto) (string, error) {
+func (a auto) Create(ctx context.Context, auto models.MarketAuto) (id string, err error) {
 	tx, cb, err := a.tx.StartSession(ctx)
 	if err != nil {
-		return "", err
+		return
 	}
 	defer func() {
 		err = cb(err)
@@ -43,9 +43,9 @@ func (a auto) Create(ctx context.Context, auto models.MarketAuto) (string, error
 		return "", fmt.Errorf("user application: %w", err)
 	}
 
-	id, err := a.marketAutoRepo.Create(tx, auto)
+	id, err = a.marketAutoRepo.Create(tx, auto)
 	if err != nil {
-		return "", err
+		return
 	}
 
 	_, err = a.userAutoRepo.Create(tx, models.UserAuto{
@@ -53,7 +53,7 @@ func (a auto) Create(ctx context.Context, auto models.MarketAuto) (string, error
 		VIN:           auto.VIN,
 	})
 
-	return id, nil
+	return
 }
 
 func (a auto) Get(ctx context.Context, sku string) (models.MarketAuto, error) {

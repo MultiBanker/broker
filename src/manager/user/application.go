@@ -21,11 +21,11 @@ type ApplicationManagerImpl struct {
 	userAutoRepo   repository.UserAutoRepository
 }
 
-func (a ApplicationManagerImpl) Create(ctx context.Context, application models.UserApplication) (string, error) {
+func (a ApplicationManagerImpl) Create(ctx context.Context, application models.UserApplication) (id string, err error){
 	// TODO: transaction
 	tx, cb, err := a.tx.StartSession(ctx)
 	if err != nil {
-		return "", err
+		return
 	}
 	defer func() {
 		err = cb(err)
@@ -33,12 +33,12 @@ func (a ApplicationManagerImpl) Create(ctx context.Context, application models.U
 
 	auto, err := a.marketAutoRepo.Lock(tx, application.ChosenSKU)
 	if err != nil && !errors.Is(err, drivers.ErrDoesNotExist) {
-		return "", err
+		return
 	}
 
-	id, err := a.userApplyRepo.Create(tx, application)
+	id, err = a.userApplyRepo.Create(tx, application)
 	if err != nil {
-		return "", err
+		return
 	}
 
 	_, err = a.userAutoRepo.Create(tx, models.UserAuto{
@@ -46,10 +46,10 @@ func (a ApplicationManagerImpl) Create(ctx context.Context, application models.U
 		VIN:           auto.VIN,
 	})
 	if err != nil {
-		return "", err
+		return
 	}
 
-	return "", nil
+	return
 }
 
 func (a ApplicationManagerImpl) Get(ctx context.Context, id string) (models.UserApplication, error) {
