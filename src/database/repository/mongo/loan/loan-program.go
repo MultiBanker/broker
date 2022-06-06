@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
+	"github.com/MultiBanker/broker/src/database/repository/mongo/transaction"
 	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/models/selector"
 	"go.mongodb.org/mongo-driver/bson"
@@ -14,11 +15,12 @@ import (
 )
 
 type ProgramRepository struct {
-	coll *mongo.Collection
+	coll        *mongo.Collection
+	transaction transaction.Func
 }
 
-func NewProgramRepository(coll *mongo.Collection) *ProgramRepository {
-	return &ProgramRepository{coll: coll}
+func NewProgramRepository(coll *mongo.Collection, transaction transaction.Func) *ProgramRepository {
+	return &ProgramRepository{coll: coll, transaction: transaction}
 }
 
 func (l ProgramRepository) LoanProgram(ctx context.Context, code string) (models.LoanProgram, error) {

@@ -5,7 +5,10 @@ import (
 	"log"
 	"time"
 
+	"github.com/hashicorp/go-multierror"
 	"go.mongodb.org/mongo-driver/event"
+	"go.mongodb.org/mongo-driver/mongo/readconcern"
+	"go.mongodb.org/mongo-driver/mongo/writeconcern"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -161,4 +164,84 @@ func (m *Mongo) indexExistsByName(ctx context.Context, collection *mongo.Collect
 	}
 
 	return false, nil
+}
+
+func (m *Mongo) WithTransaction() func (ctx context.Context, sessionFunc func(session mongo.SessionContext) error) error {
+	return func(ctx context.Context, sessionFunc func(session mongo.SessionContext) error) error {
+		wc := writeconcern.New(writeconcern.WMajority())
+		rc := readconcern.Snapshot()
+
+		tnxOpts := options.Transaction().SetWriteConcern(wc).SetReadConcern(rc)
+
+		session, err := m.Client.StartSession()
+		if err != nil {
+			return err
+		}
+
+		defer session.EndSession(ctx)
+		mongo.NewSessionContext(ctx, session)
+		err = mongo.WithSession(ctx, session, func(sCtx mongo.SessionContext) error {
+			if err = session.StartTransaction(tnxOpts); err != nil {
+				return err
+			}
+
+			if err = sessionFunc(sCtx); err != nil {
+				return err
+			}
+
+			if err = session.CommitTransaction(sCtx); err != nil {
+				return err
+			}
+			return nil
+		})
+		if err != nil {
+			if abortErr := session.AbortTransaction(context.Background()); abortErr != nil {
+				return abortErr
+			}
+			return err
+		}
+
+		return nil
+	}
+}
+
+func (m *Mongo) StartSession(ctx context.Context) (context.Context, drivers.TxCallback, error) {
+	wc := writeconcern.New(writeconcern.WMajority())
+	rc := readconcern.Snapshot()
+	txOpts := options.Transaction().
+		SetWriteConcern(wc).
+		SetReadConcern(rc)
+
+	session, err := m.Client.StartSession()
+	if err != nil {
+		return nil, nil, err
+	}
+
+	if err = session.StartTransaction(txOpts); err != nil {
+		return nil, nil, err
+	}
+
+	return mongo.NewSessionContext(ctx, session), callback(session), nil
+}
+
+func callback(session mongo.Session) func(err error) error {
+	return func(err error) error {
+		var resultErr *multierror.Error
+
+		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+		defer cancel()
+
+		defer session.EndSession(ctx)
+
+		if err == nil {
+			err = session.CommitTransaction(ctx)
+		}
+		if err != nil {
+			resultErr = multierror.Append(resultErr, err)
+			if abortErr := session.AbortTransaction(ctx); abortErr != nil {
+				resultErr = multierror.Append(resultErr, abortErr)
+			}
+		}
+		return err
+	}
 }

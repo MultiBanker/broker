@@ -3,17 +3,20 @@ package user
 import (
 	"context"
 
+	"github.com/MultiBanker/broker/src/database/repository/mongo/transaction"
 	"github.com/MultiBanker/broker/src/models"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type VerificationRepositoryImpl struct {
-	coll *mongo.Collection
+	coll        *mongo.Collection
+	transaction transaction.Func
 }
 
-func NewVerificationRepositoryImpl(coll *mongo.Collection) *VerificationRepositoryImpl {
+func NewVerificationRepositoryImpl(coll *mongo.Collection, transaction transaction.Func) *VerificationRepositoryImpl {
 	return &VerificationRepositoryImpl{
-		coll: coll,
+		transaction: transaction,
+		coll:        coll,
 	}
 }
 

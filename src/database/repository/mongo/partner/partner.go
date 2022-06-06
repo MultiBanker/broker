@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
+	"github.com/MultiBanker/broker/src/database/repository/mongo/transaction"
 	"github.com/MultiBanker/broker/src/models/selector"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -15,11 +16,12 @@ import (
 )
 
 type Repository struct {
-	collection *mongo.Collection
+	collection  *mongo.Collection
+	transaction transaction.Func
 }
 
-func NewRepository(collection *mongo.Collection) Repository {
-	return Repository{collection: collection}
+func NewRepository(collection *mongo.Collection, transaction transaction.Func) Repository {
+	return Repository{collection: collection, transaction: transaction}
 }
 
 func (p Repository) NewPartner(ctx context.Context, partner *models.Partner) (string, error) {

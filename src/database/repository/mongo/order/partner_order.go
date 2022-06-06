@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
+	"github.com/MultiBanker/broker/src/database/repository/mongo/transaction"
 	"github.com/MultiBanker/broker/src/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -13,11 +14,12 @@ import (
 )
 
 type PartnerOrderRepository struct {
-	coll *mongo.Collection
+	coll        *mongo.Collection
+	transaction transaction.Func
 }
 
-func NewPartnerOrderRepository(coll *mongo.Collection) *PartnerOrderRepository {
-	return &PartnerOrderRepository{coll: coll}
+func NewPartnerOrderRepository(coll *mongo.Collection, transaction transaction.Func) *PartnerOrderRepository {
+	return &PartnerOrderRepository{coll: coll, transaction: transaction}
 }
 
 func (p PartnerOrderRepository) NewOrder(ctx context.Context, order models.PartnerOrder) (string, error) {

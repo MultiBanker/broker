@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 
+	"github.com/MultiBanker/broker/src/database/repository/mongo/transaction"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -15,11 +16,12 @@ type sequence struct {
 }
 
 type Repository struct {
-	collection *mongo.Collection
+	collection  *mongo.Collection
+	transaction transaction.Func
 }
 
-func NewRepository(collection *mongo.Collection) Repository {
-	return Repository{collection: collection}
+func NewRepository(collection *mongo.Collection, transaction transaction.Func) Repository {
+	return Repository{collection: collection, transaction: transaction}
 }
 
 // NextSequenceValue атомарно инкрементирует счетчик с именем sequenceName.

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
+	"github.com/MultiBanker/broker/src/database/repository/mongo/transaction"
 	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/models/selector"
 	"go.mongodb.org/mongo-driver/bson"
@@ -14,11 +15,12 @@ import (
 )
 
 type Repository struct {
-	coll *mongo.Collection
+	coll        *mongo.Collection
+	transaction transaction.Func
 }
 
-func NewRepository(coll *mongo.Collection) *Repository {
-	return &Repository{coll: coll}
+func NewRepository(coll *mongo.Collection, transaction transaction.Func) *Repository {
+	return &Repository{coll: coll, transaction: transaction}
 }
 
 func (r Repository) CreateOffer(ctx context.Context, offer models.Offer) (string, error) {
@@ -114,7 +116,7 @@ func (r Repository) OffersByTotalSum(ctx context.Context, total int) ([]*models.
 			{"$lte", total},
 		}},
 		{"max_order_sum", bson.D{
-			{"$gte",total},
+			{"$gte", total},
 		}},
 	}
 

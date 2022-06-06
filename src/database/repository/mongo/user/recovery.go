@@ -3,17 +3,20 @@ package user
 import (
 	"context"
 
+	"github.com/MultiBanker/broker/src/database/repository/mongo/transaction"
 	"github.com/MultiBanker/broker/src/models"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type RecoveryRepositoryImpl struct {
-	coll *mongo.Collection
+	coll        *mongo.Collection
+	transaction transaction.Func
 }
 
-func NewRecoveryRepositoryImpl(coll *mongo.Collection) *RecoveryRepositoryImpl {
+func NewRecoveryRepositoryImpl(coll *mongo.Collection, transaction transaction.Func) *RecoveryRepositoryImpl {
 	return &RecoveryRepositoryImpl{
-		coll: coll,
+		coll:        coll,
+		transaction: transaction,
 	}
 }
 

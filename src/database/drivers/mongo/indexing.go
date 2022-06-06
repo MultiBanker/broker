@@ -15,7 +15,6 @@ func (m Mongo) LoanIndexes(ctx context.Context) error {
 	var err error
 	var exists bool
 
-	col.Indexes().DropAll(ctx)
 	indexes := make([]mongo.IndexModel, 0)
 
 	exists, err = m.indexExistsByName(ctx, col, "code_idx")
@@ -44,7 +43,6 @@ func (m Mongo) MarketIndexes(ctx context.Context) error {
 	var err error
 	var exists bool
 
-	col.Indexes().DropAll(ctx)
 	indexes := make([]mongo.IndexModel, 0)
 
 	exists, err = m.indexExistsByName(ctx, col, "market_code_idx")
@@ -87,7 +85,6 @@ func (m Mongo) OrderIndexes(ctx context.Context) error {
 	var err error
 	var exists bool
 
-	col.Indexes().DropAll(ctx)
 	indexes := make([]mongo.IndexModel, 0)
 
 	exists, err = m.indexExistsByName(ctx, col, "reference_id_idx")
@@ -194,7 +191,6 @@ func (m Mongo) PartnerIndexes(ctx context.Context) error {
 	var exists bool
 
 
-	col.Indexes().DropAll(ctx)
 	indexes := make([]mongo.IndexModel, 0)
 
 	exists, err = m.indexExistsByName(ctx, col, "partner_code_idx")
@@ -238,7 +234,6 @@ func (m Mongo) SequenceIndexes(ctx context.Context) error {
 	var err error
 	var exists bool
 
-	col.Indexes().DropAll(ctx)
 	indexes := make([]mongo.IndexModel, 0)
 
 	exists, err = m.indexExistsByName(ctx, col, "val_seq_idx")

@@ -3,17 +3,19 @@ package auto
 import (
 	"context"
 
+	"github.com/MultiBanker/broker/src/database/repository/mongo/transaction"
 	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/models/selector"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type Repository struct {
-	coll *mongo.Collection
+	coll        *mongo.Collection
+	transaction transaction.Func
 }
 
-func NewRepository(coll *mongo.Collection) *Repository {
-	return &Repository{coll: coll}
+func NewRepository(coll *mongo.Collection, transaction transaction.Func) *Repository {
+	return &Repository{coll: coll, transaction: transaction}
 }
 
 func (r Repository) Get(ctx context.Context, sku string) (models.Auto, error) {

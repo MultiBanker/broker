@@ -11,6 +11,7 @@ import (
 )
 
 type auto struct {
+	tx             drivers.TxStarter
 	marketRepo     repository.Marketer
 	autoRepo       repository.Auto
 	marketAutoRepo repository.MarketAuto
@@ -19,8 +20,8 @@ type auto struct {
 	userAutoRepo   repository.UserAutoRepository
 }
 
-func NewAuto(marketRepo repository.Marketer, marketAutoRepo repository.MarketAuto, sequence repository.Sequencer) *auto {
-	return &auto{marketRepo: marketRepo, marketAutoRepo: marketAutoRepo, sequence: sequence}
+func NewAuto(marketRepo repository.Marketer, marketAutoRepo repository.MarketAuto, sequence repository.Sequencer, tx drivers.TxStarter) *auto {
+	return &auto{marketRepo: marketRepo, marketAutoRepo: marketAutoRepo, sequence: sequence, tx: tx}
 }
 
 type Auto interface {
@@ -29,18 +30,25 @@ type Auto interface {
 }
 
 func (a auto) Create(ctx context.Context, auto models.MarketAuto) (string, error) {
-	// TODO: transaction
-	userAppl, err := a.userApplyRepo.Lock(ctx, auto.AutoSKU)
+	tx, cb, err := a.tx.StartSession(ctx)
+	if err != nil {
+		return "", err
+	}
+	defer func() {
+		err = cb(err)
+	}()
+
+	userAppl, err := a.userApplyRepo.Lock(tx, auto.AutoSKU)
 	if err != nil && !errors.Is(err, drivers.ErrDoesNotExist) {
 		return "", fmt.Errorf("user application: %w", err)
 	}
 
-	id, err := a.marketAutoRepo.Create(ctx, auto)
+	id, err := a.marketAutoRepo.Create(tx, auto)
 	if err != nil {
 		return "", err
 	}
 
-	_, err = a.userAutoRepo.Create(ctx, models.UserAuto{
+	_, err = a.userAutoRepo.Create(tx, models.UserAuto{
 		ApplicationID: userAppl.ApplicationID,
 		VIN:           auto.VIN,
 	})

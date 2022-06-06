@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
+	"github.com/MultiBanker/broker/src/database/repository/mongo/transaction"
 	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/models/selector"
 	"go.mongodb.org/mongo-driver/bson"
@@ -15,12 +16,14 @@ import (
 )
 
 type UsersRepositoryImpl struct {
-	coll *mongo.Collection
+	coll        *mongo.Collection
+	transaction transaction.Func
 }
 
-func NewUsersRepositoryImpl(coll *mongo.Collection) *UsersRepositoryImpl {
+func NewUsersRepositoryImpl(coll *mongo.Collection, transaction transaction.Func) *UsersRepositoryImpl {
 	return &UsersRepositoryImpl{
-		coll: coll,
+		coll:        coll,
+		transaction: transaction,
 	}
 }
 

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
+	"github.com/MultiBanker/broker/src/database/repository/mongo/transaction"
 	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/models/selector"
 	"go.mongodb.org/mongo-driver/bson"
@@ -14,11 +15,12 @@ import (
 )
 
 type Repository struct {
-	collection *mongo.Collection
+	collection  *mongo.Collection
+	transaction transaction.Func
 }
 
-func NewRepository(collection *mongo.Collection) Repository {
-	return Repository{collection: collection}
+func NewRepository(collection *mongo.Collection, transaction transaction.Func) Repository {
+	return Repository{collection: collection, transaction: transaction}
 }
 
 func (or Repository) NewOrder(ctx context.Context, order *models.Order) (string, error) {
@@ -32,9 +34,7 @@ func (or Repository) UpdateOrder(ctx context.Context, order *models.Order) (stri
 		{"_id", order.ID},
 	}
 	update := bson.D{
-		{"$set", bson.D{
-
-		}},
+		{"$set", bson.D{}},
 		//{"reference_id", order.ReferenceID},
 		//{"order_state", order.OrderState},
 		//{"redirect_url", order.RedirectURL},

@@ -15,6 +15,7 @@ type ApplicationManager interface {
 }
 
 type ApplicationManagerImpl struct {
+	tx             drivers.TxStarter
 	marketAutoRepo repository.MarketAuto
 	userApplyRepo  repository.UserApplicationRepository
 	userAutoRepo   repository.UserAutoRepository
@@ -22,17 +23,25 @@ type ApplicationManagerImpl struct {
 
 func (a ApplicationManagerImpl) Create(ctx context.Context, application models.UserApplication) (string, error) {
 	// TODO: transaction
-	auto, err := a.marketAutoRepo.Lock(ctx, application.ChosenSKU)
+	tx, cb, err := a.tx.StartSession(ctx)
+	if err != nil {
+		return "", err
+	}
+	defer func() {
+		err = cb(err)
+	}()
+
+	auto, err := a.marketAutoRepo.Lock(tx, application.ChosenSKU)
 	if err != nil && !errors.Is(err, drivers.ErrDoesNotExist) {
 		return "", err
 	}
 
-	id, err := a.userApplyRepo.Create(ctx, application)
+	id, err := a.userApplyRepo.Create(tx, application)
 	if err != nil {
 		return "", err
 	}
 
-	_, err = a.userAutoRepo.Create(ctx, models.UserAuto{
+	_, err = a.userAutoRepo.Create(tx, models.UserAuto{
 		ApplicationID: id,
 		VIN:           auto.VIN,
 	})

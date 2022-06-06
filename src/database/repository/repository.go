@@ -46,17 +46,17 @@ func NewRepository(datastore drivers.Datastore) (Repositories, error) {
 	if datastore.Name() == "mongo" {
 		db := datastore.Database().(*mongo.Database)
 		return Repositories{
-			Sequence:     sequence.NewRepository(db.Collection(Sequence)),
-			Partner:      partner.NewRepository(db.Collection(Partner)),
-			Order:        order.NewRepository(db.Collection(Order)),
-			Market:       market.NewRepository(db.Collection(Market)),
-			PartnerOrder: order.NewPartnerOrderRepository(db.Collection(PartnerOrder)),
-			Offer:        offer.NewRepository(db.Collection(OfferColl)),
-			LoanProgram:  loan.NewProgramRepository(db.Collection(LoanPrograms)),
-			User:         user.NewUsersRepositoryImpl(db.Collection(User)),
-			Verify:       user.NewVerificationRepositoryImpl(db.Collection(Verify)),
-			Recovery:     user.NewRecoveryRepositoryImpl(db.Collection(Recovery)),
-			Auto:         auto.NewRepository(db.Collection(AutoColl)),
+			Sequence:     sequence.NewRepository(db.Collection(Sequence), datastore.WithTransaction()),
+			Partner:      partner.NewRepository(db.Collection(Partner), datastore.WithTransaction()),
+			Order:        order.NewRepository(db.Collection(Order), datastore.WithTransaction()),
+			Market:       market.NewRepository(db.Collection(Market), datastore.WithTransaction()),
+			PartnerOrder: order.NewPartnerOrderRepository(db.Collection(PartnerOrder), datastore.WithTransaction()),
+			Offer:        offer.NewRepository(db.Collection(OfferColl), datastore.WithTransaction()),
+			LoanProgram:  loan.NewProgramRepository(db.Collection(LoanPrograms), datastore.WithTransaction()),
+			User:         user.NewUsersRepositoryImpl(db.Collection(User), datastore.WithTransaction()),
+			Verify:       user.NewVerificationRepositoryImpl(db.Collection(Verify), datastore.WithTransaction()),
+			Recovery:     user.NewRecoveryRepositoryImpl(db.Collection(Recovery), datastore.WithTransaction()),
+			Auto:         auto.NewRepository(db.Collection(AutoColl), datastore.WithTransaction()),
 		}, nil
 	}
 	return Repositories{}, ErrDatastoreNotImplemented
