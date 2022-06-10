@@ -33,9 +33,9 @@ func (res resource) Route() chi.Router {
 		r.Route("/{id}", func(r chi.Router) {
 			r.Get("/", res.get)
 			r.Put("/", res.update)
-			r.Route("/auto/", func(r chi.Router) {
-				r.Post("/connect/", res.autoConnect)
-			})
+		})
+		r.Route("/auto", func(r chi.Router) {
+			r.Post("/connect/", res.autoConnect)
 		})
 	})
 

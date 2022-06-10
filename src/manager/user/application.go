@@ -21,8 +21,7 @@ type ApplicationManagerImpl struct {
 	userAutoRepo   repository.UserAutoRepository
 }
 
-func (a ApplicationManagerImpl) Create(ctx context.Context, application models.UserApplication) (id string, err error){
-	// TODO: transaction
+func (a ApplicationManagerImpl) Create(ctx context.Context, application models.UserApplication) (id string, err error) {
 	tx, cb, err := a.tx.StartSession(ctx)
 	if err != nil {
 		return
@@ -43,6 +42,7 @@ func (a ApplicationManagerImpl) Create(ctx context.Context, application models.U
 
 	_, err = a.userAutoRepo.Create(tx, models.UserAuto{
 		ApplicationID: id,
+		UserID:        application.UserID,
 		VIN:           auto.VIN,
 	})
 	if err != nil {
@@ -53,5 +53,5 @@ func (a ApplicationManagerImpl) Create(ctx context.Context, application models.U
 }
 
 func (a ApplicationManagerImpl) Get(ctx context.Context, id string) (models.UserApplication, error) {
-	panic("implement me")
+	return a.userApplyRepo.Get(ctx, id)
 }

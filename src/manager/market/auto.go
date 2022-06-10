@@ -49,6 +49,7 @@ func (a auto) Create(ctx context.Context, auto models.MarketAuto) (id string, er
 	}
 
 	_, err = a.userAutoRepo.Create(tx, models.UserAuto{
+		UserID:        userAppl.UserID,
 		ApplicationID: userAppl.ApplicationID,
 		VIN:           auto.VIN,
 	})
@@ -57,5 +58,5 @@ func (a auto) Create(ctx context.Context, auto models.MarketAuto) (id string, er
 }
 
 func (a auto) Get(ctx context.Context, sku string) (models.MarketAuto, error) {
-	panic("implement me")
+	return a.marketAutoRepo.Get(ctx, sku)
 }

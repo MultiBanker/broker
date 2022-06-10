@@ -90,7 +90,7 @@ definitions:
         type: string
       refresh_token:
         type: string
-      tdid:
+      user_id:
         type: string
     type: object
   dto.OffersRequest:
@@ -149,6 +149,8 @@ definitions:
     properties:
       first_name:
         description: Имя пользователя
+        type: string
+      iin:
         type: string
       last_name:
         description: Фамилия пользователя
@@ -460,9 +462,28 @@ definitions:
     type: object
   models.UserApplication:
     properties:
+      applicationID:
+        type: string
       chosenSKU:
         type: string
+      createdAt:
+        type: string
+      updatedAt:
+        type: string
       userID:
+        type: string
+    type: object
+  models.UserAuto:
+    properties:
+      application_id:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      user_id:
+        type: string
+      vin:
         type: string
     type: object
 host: api.test.somatic.dev
@@ -1040,6 +1061,37 @@ paths:
       summary: Регистрация пользователя
       tags:
       - auth
+  /api/v1/users/auto:
+    get:
+      description: user auto
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserAuto'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiTokenAuth: []
+      summary: user auto
+      tags:
+      - User
   /api/v1/users/recovery/phone:
     put:
       consumes:

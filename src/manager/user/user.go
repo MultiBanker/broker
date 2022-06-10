@@ -35,6 +35,11 @@ func NewUsersManagerImpl(usersRepo repository.UsersRepository) *UsersManagerImpl
 }
 
 func (man *UsersManagerImpl) Create(ctx context.Context, user models.User) (string, error) {
+	hashedPass, err := auth.HashPassword(user.Password)
+	if err != nil {
+		return "", ErrAuthorization
+	}
+	user.Password = string(hashedPass)
 	return man.usersRepo.Create(ctx, user)
 }
 

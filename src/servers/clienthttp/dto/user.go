@@ -2,6 +2,7 @@ package dto
 
 import (
 	"errors"
+	"strconv"
 	"strings"
 	"unicode/utf8"
 
@@ -28,8 +29,9 @@ type SignUp struct {
 	FirstName  string `json:"first_name"` // Имя пользователя
 	LastName   string `json:"last_name"`  // Фамилия пользователя
 	Patronymic string `json:"patronymic"` // Отчество пользователя
-	Phone      string `json:"phone"`      // Номер телефона пользователя
-	Password   string `json:"password"`   // Пароль пользователя
+	IIN        string `json:"iin"`
+	Phone      string `json:"phone"`    // Номер телефона пользователя
+	Password   string `json:"password"` // Пароль пользователя
 }
 
 func (su SignUp) Validate() error {
@@ -51,7 +53,33 @@ func (su SignUp) Validate() error {
 		result = multierror.Append(result, errors.New("password is wrong"))
 	}
 
+	if len(su.IIN) != 12 {
+		result = multierror.Append(result, errors.New("iin. length must be 12"))
+	}
+
+	if !isDigit(su.IIN) {
+		result = multierror.Append(result, errors.New("iin. must be digit"))
+	}
+
+	month, err := strconv.Atoi(su.IIN[2:4])
+	if err != nil || month <= 0 || month > 12 {
+		result = multierror.Append(result, errors.New("iin. invalid month in iin"))
+	}
+
+	day, err := strconv.ParseUint(su.IIN[4:6], 10, 64)
+	if err != nil || day <= 0 || day > 31 {
+		result = multierror.Append(result, errors.New("iin. invalid day in iin"))
+	}
+
 	return result.ErrorOrNil()
+}
+
+func isDigit(data string) bool {
+	if _, err := strconv.Atoi(data); err != nil {
+		return false
+	}
+
+	return true
 }
 
 // RecoveryPhone - модель для восстановления пароля зарегистрированного пользователя
@@ -68,7 +96,6 @@ func (rp RecoveryPhone) Validate() error {
 
 	return result.ErrorOrNil()
 }
-
 
 // VerifyPhone - модель для верификации номера телефона зарегистрированного пользователя
 type VerifyPhone struct {
@@ -136,8 +163,22 @@ type SignInByPhone struct {
 	Password string `json:"password"` // Пароль для аутентификации
 }
 
+func (vp SignInByPhone) Validate() error {
+	var result *multierror.Error
+
+	if !auth.ValidatePhone(vp.Phone) {
+		result = multierror.Append(result, errors.New("invalid phone"))
+	}
+
+	if utf8.RuneCountInString(vp.Password) < auth.PasswordLength {
+		result = multierror.Append(result, errors.New("password is wrong"))
+	}
+
+	return result.ErrorOrNil()
+}
+
 type NewJWTTokenResponse struct {
-	UserID       string `json:"tdid"`
+	UserID       string `json:"user_id"`
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token,omitempty"`
 }

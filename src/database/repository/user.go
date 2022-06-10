@@ -11,6 +11,7 @@ type UsersRepository interface {
 	Create(ctx context.Context, user models.User) (string, error)
 	Get(ctx context.Context, paging *selector.SearchQuery) ([]models.User, error)
 	GetOrCreateUserByPhone(ctx context.Context, phone string) (string, error)
+	GetByPhone(ctx context.Context, phone string) (models.User, error)
 	GetByID(ctx context.Context, userID string) (models.User, error)
 	GetByIDs(ctx context.Context, userIDs []string) ([]models.User, error)
 	Update(ctx context.Context, userID string, user models.User) error

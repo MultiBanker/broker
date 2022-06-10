@@ -9,6 +9,7 @@ import (
 type resource struct {
 	auther auth.Authenticator
 	user   user.UsersManager
+	login  user.LogInManager
 }
 
 func NewResource(auther auth.Authenticator, user user.UsersManager) *resource {

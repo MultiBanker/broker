@@ -2,10 +2,15 @@ package userauto
 
 import (
 	"context"
+	"errors"
+	"time"
 
+	"github.com/MultiBanker/broker/src/database/drivers"
 	"github.com/MultiBanker/broker/src/database/repository/mongo/transaction"
 	"github.com/MultiBanker/broker/src/models"
 	"github.com/MultiBanker/broker/src/models/selector"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -18,8 +23,21 @@ func NewUserAutoRepository(coll *mongo.Collection, transaction transaction.Func)
 	return &userAutoRepository{coll: coll, transaction: transaction}
 }
 
-func (u userAutoRepository) Get(ctx context.Context, sku string) (models.UserAuto, error) {
-	panic("implement me")
+func (u userAutoRepository) Get(ctx context.Context, userID string) (models.UserAuto, error) {
+	var userAuto models.UserAuto
+
+	filter := bson.D{
+		{Key: "user_id", Value: userID},
+	}
+
+	if err := u.coll.FindOne(ctx, filter).Decode(&userAuto); err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments){
+			return userAuto, drivers.ErrDoesNotExist
+		}
+		return userAuto, err
+	}
+
+	return userAuto, nil
 }
 
 func (u userAutoRepository) List(ctx context.Context, search selector.SearchQuery) ([]models.UserAuto, int64, error) {
@@ -27,5 +45,12 @@ func (u userAutoRepository) List(ctx context.Context, search selector.SearchQuer
 }
 
 func (u userAutoRepository) Create(ctx context.Context, auto models.UserAuto) (string, error) {
-	panic("implement me")
+	auto.ID = primitive.NewObjectID().Hex()
+	auto.CreatedAt = time.Now().UTC()
+
+	_, err := u.coll.InsertOne(ctx, auto)
+	if err != nil {
+		return "", err
+	}
+	return auto.ID, nil
 }

@@ -29,7 +29,7 @@ func NewAutoImpl(autoRepo repository.Auto) *autoImpl {
 }
 
 func (a autoImpl) Get(ctx context.Context, sku string) (models.Auto, error) {
-	panic("implement me")
+	return a.autoRepo.Get(ctx, sku)
 }
 
 func (a autoImpl) Create(ctx context.Context, auto models.Auto) (string, error) {
@@ -48,13 +48,13 @@ func (a autoImpl) Create(ctx context.Context, auto models.Auto) (string, error) 
 }
 
 func (a autoImpl) Update(ctx context.Context, auto models.Auto) (string, error) {
-	panic("implement me")
+	return a.autoRepo.Update(ctx, auto)
 }
 
 func (a autoImpl) List(ctx context.Context, query selector.SearchQuery) ([]models.Auto, int64, error) {
-	panic("implement me")
+	return a.autoRepo.List(ctx, query)
 }
 
 func (a autoImpl) Delete(ctx context.Context, sku string) error {
-	panic("implement me")
+	return a.autoRepo.Delete(ctx, sku)
 }

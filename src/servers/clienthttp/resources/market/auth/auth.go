@@ -51,6 +51,7 @@ func (res Resource) auth() http.HandlerFunc {
 		case nil:
 		default:
 			_ = render.Render(w, r, httperrors.Internal(err))
+			return
 		}
 
 		access, refresh, err := res.authMan.Tokens(market.ID, market.Code, models.MARKET)

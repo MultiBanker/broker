@@ -50,6 +50,11 @@ type ListAuto struct {
 }
 
 type ConnectAuto struct {
-	SKU       string
-	VIN       string
+	SKU string
+	VIN string
+}
+
+type ListUserAuto struct {
+	Autos []models.UserAuto `json:"autos"`
+	Count int64             `json:"count"`
 }

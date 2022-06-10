@@ -20,4 +20,6 @@ import (
 // @Failure      422      {object}  httperrors.Response
 // @Failure      500      {object}  httperrors.Response
 // @Router       /api/v1/markets/auto/connect [put]
-func (res resource) autoConnect(w http.ResponseWriter, r *http.Request) {}
+func (res resource) autoConnect(w http.ResponseWriter, r *http.Request) {
+
+}

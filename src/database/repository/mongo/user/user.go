@@ -58,7 +58,7 @@ func (u *UsersRepositoryImpl) Get(ctx context.Context, query *selector.SearchQue
 		})
 	}
 
-	cur, err := u.coll.Find(ctx, u.searchFilters(query), opts)
+	cur, err := u.coll.Find(ctx, query, opts)
 	if err != nil {
 		return users, err
 	}
@@ -104,6 +104,19 @@ func (u *UsersRepositoryImpl) GetOrCreateUserByPhone(ctx context.Context, phone 
 		return user.ID, nil
 	default:
 		return "", err
+	}
+}
+
+func (u *UsersRepositoryImpl) GetByPhone(ctx context.Context, phone string) (models.User, error) {
+	var user models.User
+
+	filter := bson.D{{Key: "phone", Value: phone}}
+	err := u.coll.FindOne(ctx, filter).Decode(user)
+	switch err {
+	case mongo.ErrNoDocuments:
+		return user, drivers.ErrDoesNotExist
+	default:
+		return user, err
 	}
 }
 
@@ -180,7 +193,6 @@ func (u *UsersRepositoryImpl) Update(ctx context.Context, userID string, user mo
 				{Key: "updated_at", Value: time.Now().UTC()},
 				{Key: "is_enabled", Value: user.IsEnabled},
 				{Key: "is_phone_verified", Value: user.IsPhoneVerified},
-				{Key: "is_email_verified", Value: user.IsEmailVerified},
 			},
 		},
 	}

@@ -34,7 +34,10 @@ type UserInfo struct {
 }
 
 type UserApplication struct {
-	ApplicationID string
-	UserID        string
-	ChosenSKU     string
+	ApplicationID string `bson:"application_id"`
+	UserID        string `bson:"user_id"`
+	ChosenSKU     string `bson:"chosen_sku"`
+
+	CreatedAt time.Time `bson:"created_at"`
+	UpdatedAt time.Time `bson:"updated_at"`
 }

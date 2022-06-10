@@ -900,6 +900,55 @@ const docTemplate_swagger = `{
                 }
             }
         },
+        "/api/v1/users/auto": {
+            "get": {
+                "security": [
+                    {
+                        "ApiTokenAuth": []
+                    }
+                ],
+                "description": "user auto",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "user auto",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.UserAuto"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/users/recovery/phone": {
             "put": {
                 "description": "Отправляет OTP на указанный номер телефона для восстановления пароля",
@@ -1237,7 +1286,7 @@ const docTemplate_swagger = `{
                 "refresh_token": {
                     "type": "string"
                 },
-                "tdid": {
+                "user_id": {
                     "type": "string"
                 }
             }
@@ -1323,6 +1372,9 @@ const docTemplate_swagger = `{
             "properties": {
                 "first_name": {
                     "description": "Имя пользователя",
+                    "type": "string"
+                },
+                "iin": {
                     "type": "string"
                 },
                 "last_name": {
@@ -1784,10 +1836,39 @@ const docTemplate_swagger = `{
         "models.UserApplication": {
             "type": "object",
             "properties": {
+                "applicationID": {
+                    "type": "string"
+                },
                 "chosenSKU": {
                     "type": "string"
                 },
+                "createdAt": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
                 "userID": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UserAuto": {
+            "type": "object",
+            "properties": {
+                "application_id": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "vin": {
                     "type": "string"
                 }
             }

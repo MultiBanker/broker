@@ -55,6 +55,15 @@ definitions:
         example: https://www.tinkoff.ru
         type: string
     type: object
+  dto.ListUserAuto:
+    properties:
+      autos:
+        items:
+          $ref: '#/definitions/models.UserAuto'
+        type: array
+      count:
+        type: integer
+    type: object
   dto.LoanProgramRequest:
     properties:
       code:
@@ -624,9 +633,28 @@ definitions:
     type: object
   models.UserApplication:
     properties:
+      applicationID:
+        type: string
       chosenSKU:
         type: string
+      createdAt:
+        type: string
+      updatedAt:
+        type: string
       userID:
+        type: string
+    type: object
+  models.UserAuto:
+    properties:
+      application_id:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      user_id:
+        type: string
+      vin:
         type: string
     type: object
 host: admin-api.test.somatic.dev
@@ -1642,7 +1670,7 @@ paths:
     post:
       description: user application
       parameters:
-      - description: add car
+      - description: add application
         in: body
         name: auto
         required: true
@@ -1651,8 +1679,10 @@ paths:
       produces:
       - application/json
       responses:
-        "204":
-          description: ""
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
         "400":
           description: Bad Request
           schema:
@@ -1783,6 +1813,46 @@ paths:
       security:
       - ApiTokenAuth: []
       summary: user application
+      tags:
+      - User
+  /api/v1/users/auto:
+    get:
+      description: user auto
+      parameters:
+      - description: pagination limit
+        in: query
+        name: limit
+        type: integer
+      - description: pagination skip
+        in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ListUserAuto'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httperrors.Response'
+      security:
+      - ApiTokenAuth: []
+      summary: user auto
       tags:
       - User
 schemes:

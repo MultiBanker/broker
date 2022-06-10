@@ -1,10 +1,18 @@
 package application
 
 import (
+	"encoding/json"
+	"errors"
 	"net/http"
 
+	"github.com/MultiBanker/broker/pkg/httperrors"
+	"github.com/MultiBanker/broker/src/database/drivers"
+	"github.com/MultiBanker/broker/src/models"
 	_ "github.com/MultiBanker/broker/src/models"
+	"github.com/MultiBanker/broker/src/servers/adminhttp/dto"
 	_ "github.com/MultiBanker/broker/src/servers/clienthttp/dto"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/render"
 )
 
 // @Summary      user application
@@ -19,8 +27,38 @@ import (
 // @Failure      404           {object}  httperrors.Response
 // @Failure      500           {object}  httperrors.Response
 // @Router       /api/v1/users/application/ [post]
-func (res resource) createApplication(w http.ResponseWriter, r *http.Request) {}
+func (res resource) createApplication(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
 
+	var userApply dto.UserApplication
+
+	userID := ctx.Value("user_id").(string)
+
+	if err := json.NewDecoder(r.Body).Decode(&userApply); err != nil {
+		_ = render.Render(w, r, httperrors.BadRequest(err))
+		return
+	}
+
+	if err := userApply.Validate(); err != nil {
+		_ = render.Render(w, r, httperrors.BadRequest(err))
+		return
+	}
+
+	id, err := res.user.Create(ctx, models.UserApplication{
+		UserID:    userID,
+		ChosenSKU: userApply.ChosenSKU,
+	})
+	if err != nil {
+		_ = render.Render(w, r, httperrors.BadRequest(err))
+		return
+	}
+
+	render.Status(r, http.StatusOK)
+	render.JSON(w, r, models.Response{
+		ID:     id,
+		Status: "created",
+	})
+}
 
 // @Summary      user application
 // @Description  user application
@@ -34,7 +72,24 @@ func (res resource) createApplication(w http.ResponseWriter, r *http.Request) {}
 // @Failure      404           {object}  httperrors.Response
 // @Failure      500           {object}  httperrors.Response
 // @Router       /api/v1/users/application/{id} [get]
-func (res resource) getApplication(w http.ResponseWriter, r *http.Request) {}
+func (res resource) getApplication(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	appID := chi.URLParam(r, "id")
+
+	app, err := res.user.Get(ctx, appID)
+	if err != nil {
+		if errors.Is(err, drivers.ErrDoesNotExist) {
+			_ = render.Render(w, r, httperrors.ResourceNotFound(err))
+			return
+		}
+		_ = render.Render(w, r, httperrors.Internal(err))
+		return
+	}
+
+	render.Status(r, http.StatusOK)
+	render.JSON(w, r, app)
+}
 
 // @Summary      user application
 // @Description  user application

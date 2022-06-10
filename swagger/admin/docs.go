@@ -1591,7 +1591,7 @@ const docTemplate_swagger = `{
                 "summary": "user application",
                 "parameters": [
                     {
-                        "description": "add car",
+                        "description": "add application",
                         "name": "auto",
                         "in": "body",
                         "required": true,
@@ -1601,8 +1601,11 @@ const docTemplate_swagger = `{
                     }
                 ],
                 "responses": {
-                    "204": {
-                        "description": ""
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
                     },
                     "400": {
                         "description": "Bad Request",
@@ -1804,6 +1807,69 @@ const docTemplate_swagger = `{
                     }
                 }
             }
+        },
+        "/api/v1/users/auto": {
+            "get": {
+                "security": [
+                    {
+                        "ApiTokenAuth": []
+                    }
+                ],
+                "description": "user auto",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "user auto",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "pagination limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pagination skip",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ListUserAuto"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httperrors.Response"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1881,6 +1947,20 @@ const docTemplate_swagger = `{
                     "description": "Веб адрес организации",
                     "type": "string",
                     "example": "https://www.tinkoff.ru"
+                }
+            }
+        },
+        "dto.ListUserAuto": {
+            "type": "object",
+            "properties": {
+                "autos": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.UserAuto"
+                    }
+                },
+                "count": {
+                    "type": "integer"
                 }
             }
         },
@@ -2702,10 +2782,39 @@ const docTemplate_swagger = `{
         "models.UserApplication": {
             "type": "object",
             "properties": {
+                "applicationID": {
+                    "type": "string"
+                },
                 "chosenSKU": {
                     "type": "string"
                 },
+                "createdAt": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
                 "userID": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UserAuto": {
+            "type": "object",
+            "properties": {
+                "application_id": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "vin": {
                     "type": "string"
                 }
             }
