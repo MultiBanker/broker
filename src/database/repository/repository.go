@@ -6,6 +6,7 @@ import (
 	"github.com/MultiBanker/broker/src/database/repository/mongo/market"
 	"github.com/MultiBanker/broker/src/database/repository/mongo/offer"
 	"github.com/MultiBanker/broker/src/database/repository/mongo/user"
+	"github.com/MultiBanker/broker/src/database/repository/mongo/userauto"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/MultiBanker/broker/src/database/drivers"
@@ -26,6 +27,7 @@ const (
 	Recovery     = "recovery"
 	Verify       = "verify"
 	AutoColl     = "auto"
+	UserAuto     = "user_auto"
 )
 
 type Repositories struct {
@@ -40,6 +42,7 @@ type Repositories struct {
 	Verify       VerificationRepository
 	Recovery     RecoveryRepository
 	Auto         Auto
+	UserAuto     UserAutoRepository
 }
 
 func NewRepository(datastore drivers.Datastore) (Repositories, error) {
@@ -57,6 +60,7 @@ func NewRepository(datastore drivers.Datastore) (Repositories, error) {
 			Verify:       user.NewVerificationRepositoryImpl(db.Collection(Verify), datastore.WithTransaction()),
 			Recovery:     user.NewRecoveryRepositoryImpl(db.Collection(Recovery), datastore.WithTransaction()),
 			Auto:         auto.NewRepository(db.Collection(AutoColl), datastore.WithTransaction()),
+			UserAuto:     userauto.NewUserAutoRepository(db.Collection(UserAuto), datastore.WithTransaction()),
 		}, nil
 	}
 	return Repositories{}, ErrDatastoreNotImplemented

@@ -12,6 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type userAutoRepository struct {
@@ -31,7 +32,7 @@ func (u userAutoRepository) Get(ctx context.Context, userID string) (models.User
 	}
 
 	if err := u.coll.FindOne(ctx, filter).Decode(&userAuto); err != nil {
-		if errors.Is(err, mongo.ErrNoDocuments){
+		if errors.Is(err, mongo.ErrNoDocuments) {
 			return userAuto, drivers.ErrDoesNotExist
 		}
 		return userAuto, err
@@ -41,7 +42,28 @@ func (u userAutoRepository) Get(ctx context.Context, userID string) (models.User
 }
 
 func (u userAutoRepository) List(ctx context.Context, search selector.SearchQuery) ([]models.UserAuto, int64, error) {
-	panic("implement me")
+	var opts *options.FindOptions
+
+	if search.HasSorting() {
+		opts.SetSort(bson.D{{Key: "created_at", Value: -1}}).
+			SetSkip(search.Pagination.Page).
+			SetLimit(search.Pagination.Limit)
+	}
+	count, err := u.coll.CountDocuments(ctx, bson.D{})
+	if err != nil {
+		return nil, 0, err
+	}
+	cur, err := u.coll.Find(ctx, bson.D{}, opts)
+	if err != nil {
+		return nil, 0, err
+	}
+	userAutos := make([]models.UserAuto, 0, search.Pagination.Limit)
+	err = cur.All(ctx, &userAutos)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return userAutos, count, nil
 }
 
 func (u userAutoRepository) Create(ctx context.Context, auto models.UserAuto) (string, error) {
